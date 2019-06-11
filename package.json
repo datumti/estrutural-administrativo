@@ -1,4 +1,7 @@
 {
+    "name": "estrutural-administrativo",
+    "author": "Igor Duarte",
+    "version": "1.0.0",
     "private": true,
     "scripts": {
         "dev": "npm run development",
@@ -9,6 +12,10 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/datumti/estrutural-administrativo"
+      },
     "devDependencies": {
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
@@ -18,5 +25,8 @@
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
         "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "mdbootstrap": "^4.8.2"
     }
 }
