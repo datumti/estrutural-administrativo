@@ -44,6 +44,7 @@ class CreatePeopleTable extends Migration
                 $table->string('shirtNumber')->nullable();
                 $table->string('markNumber')->nullable();
                 $table->string('number')->nullable();
+                $table->rememberToken();
                 $table->timestamps();
             });
         }
