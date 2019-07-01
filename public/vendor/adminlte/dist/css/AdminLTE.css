@@ -9,6 +9,12 @@
  * Core: General Layout Style
  * -------------------------
  */
+
+.table-actions form {
+  display: inline-block;
+}
+
+
 html,
 body {
   height: 100%;
@@ -516,6 +522,10 @@ a:focus {
   font-weight: bold;
   font-size: 15px !important;
   
+}
+
+.sidebar-menu > li.active a {
+  color: #cd4126;
 }
 
 .sidebar-menu > li > a:hover {

@@ -17,7 +17,7 @@ return [
 
     'title_prefix' => '',
 
-    'title_postfix' => '-RS',
+    'title_postfix' => '- Estrutural - RS',
 
     /*
     |--------------------------------------------------------------------------
@@ -118,44 +118,44 @@ return [
         ], */
         'Menu Principal',
         [
-            'text' => 'Dashboard',
-            'url'  => 'admin/settings',
+            'text' => 'Home',
+            'url'  => 'home',
             'icon' => 'home',
         ],
         [
             'text' => 'Gestão de Obras',
-            'url'  => 'admin/settings',
+            'url'  => 'gestao-obras',
             'icon' => 'wrench',
         ],
         [
             'text' => 'Processo Seletivo',
-            'url'  => 'admin/settings',
+            'url'  => 'processo-seletivo',
             'icon' => 'user',
         ],
         [
             'text' => 'Gestão de Pessoas',
-            'url'  => 'admin/settings',
+            'url'  => 'gestao-pessoas',
             'icon' => 'users',
         ],
         [
             'text' => 'Cadastros',
-            'url'  => 'admin/settings',
+            'url'  => 'cadastros',
             'icon' => 'list-alt',
         ],
         [
-            'text' => 'Restrição',
-            'url'  => 'admin/settings',
+            'text' => 'Restrições',
+            'url'  => 'restricoes',
             'icon' => 'ban',
         ],
         [
             'text' => 'Efetivo Diário',
-            'url'  => 'admin/settings',
+            'url'  => 'efetivo-diario',
             'icon' => 'history',
         ],
         [
             'text' => 'Relatórios',
-            'url'  => 'admin/settings',
-            'icon' => 'user',
+            'url'  => 'relatorios',
+            'icon' => 'list',
         ],
         /* [
             'text'    => 'Multilevel',

@@ -13,9 +13,37 @@ use App\Models\Vacancy;
 use App\Models\VacancyExam;
 use App\Models\VacancyTraining;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use App\Models\Exam;
+use App\Models\Training;
 
 class ConstructionController extends Controller
 {
+
+    // Seta na sessão do PHP a obra para facilitar gerenciamento
+    public function set($constructionId) {
+        
+        \Session::put('construction', Construction::find($constructionId));
+        $this->addFlash('Obra selecionada com sucesso!', 'success');
+
+        return redirect()->back();
+    }
+
+    public function create() {
+        return view('constructions.create');
+    }
+
+
+    public function edit($id) {
+
+        $construction = Construction::find($id);
+
+        $exams = Exam::orderBy('name')->pluck('name', 'id');
+        $trainings = Training::orderBy('name')->pluck('name', 'id');
+        
+        return view('constructions.edit', compact('construction', 'exams', 'trainings'));
+    }
+
     /**
      * Display a listing of the resource.
      * GET: /constructions
@@ -23,9 +51,13 @@ class ConstructionController extends Controller
      */
     public function index()
     {
-        $constructions = Construction::where('status', 1)->get();
-        $constructions = Construction::orderBy('name', 'asc')->get();
-        return response()->json($constructions, 200);
+        $constructions = Construction::with('contract')
+            ->where('status', 1)
+            ->orderBy('name', 'asc')
+            ->get();
+        //return response()->json($constructions, 200);
+
+        return view('constructions.list', compact('constructions'));
     }
 
     /**
@@ -37,13 +69,16 @@ class ConstructionController extends Controller
     public function store(Request $request)
     {
         $construction = Construction::create($request->all());
+        
         foreach ($request->contracts as $c) {
             $cc = new ContractConstruction;
-            $cc->contract_id = $c['id'];
+            $cc->contract_id = $c;
             $cc->construction_id = $construction->id;
             $cc->save();
         }
-        return response()->json($construction, 201);
+        //return response()->json($construction, 201);
+        return Redirect::route('gestao-obras.edit', ['id' => $construction->id]);
+        //return redirect('/gestao-obras/'.$construction->id.'/edit');
     }
 
     /**

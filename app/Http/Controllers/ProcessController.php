@@ -14,8 +14,9 @@ class ProcessController extends Controller
      */
     public function index()
     {
-        $processes = Process::all();
-        return response()->json($processes, 200);
+        $processes = Process::with('group.group_person')->get();
+        //return response()->json($processes, 200);
+        return view('processes.list', compact('processes'));
     }
 
     /**

@@ -38,6 +38,12 @@
 
                     <ul class="nav navbar-nav">
                         <li>
+                        <a href="/home" style="color:white;font-weight:bold">
+                            {{Session::get('construction.name', 'Nenhuma obra selecionada')}}
+                        </a>
+                            
+                        </li>
+                        <li>
                             @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
                                 <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
                                     <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
@@ -94,7 +100,15 @@
 
             <!-- Main content -->
             <section class="content">
-
+                @if (Session::has('flash-message'))
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-{!! Session::get('flash-alert') !!}">
+                                <p>{{ Session::get('flash-message') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 @yield('content')
 
             </section>

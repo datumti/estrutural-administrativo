@@ -10,4 +10,10 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function addFlash($message, $status = 'info')
+    {
+        \Session::flash('flash-message', $message);
+        \Session::flash('flash-alert', $status);
+    }
 }

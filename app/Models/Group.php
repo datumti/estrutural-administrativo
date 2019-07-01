@@ -31,4 +31,8 @@ class Group extends Model
     {
         return $this->belongsTo('App\Models\Training');
     }
+
+    public function group_person() {
+        return $this->hasMany(GroupPerson::class);
+    }
 }
