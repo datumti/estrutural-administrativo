@@ -4,11 +4,16 @@
 
 @section('content_header')
     <h3>Bem vindo!</h3>
-    <h4>Selecione a obra abaixo:</h4>
+    <h5>Selecione a obra abaixo</h5>
 @stop
 
 @section('content')
     <div class="box box-info">
+          <div class="box-header pull-right">
+            <a type="button" href="/gestao-obras/create" class="btn btn-flat btn-warning">
+                <i class="fa fa-plus"></i> Nova Obra
+            </a>
+          </div>
             <div class="box-body">
               <div class="table-responsive">
                 <table class="table no-margin">
@@ -61,7 +66,11 @@
 @section('scripts')
 
     <script>
-
+    $(document).ready( function () {
+        $('.table').DataTable({
+            "dom": "f"
+        });
+    } );
     </script>
 
 @stop

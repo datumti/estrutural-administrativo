@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\Exam;
 use App\Models\Training;
+use App\Models\Job;
 
 class ConstructionController extends Controller
 {
@@ -36,12 +37,18 @@ class ConstructionController extends Controller
 
     public function edit($id) {
 
-        $construction = Construction::find($id);
+        $construction = Construction::with('vacancy.job')
+            ->with('vacancy.vacancy_exam.exam')
+            ->with('vacancy.vacancy_training.training')
+            ->where('id', $id)
+            ->first();
 
         $exams = Exam::orderBy('name')->pluck('name', 'id');
         $trainings = Training::orderBy('name')->pluck('name', 'id');
+        $jobs = Job::orderBy('name')->pluck('name', 'id');
+        $contracts = ContractConstruction::where('construction_id', $construction->id)->orderBy('id')->pluck('contract_id', 'contract_id');
         
-        return view('constructions.edit', compact('construction', 'exams', 'trainings'));
+        return view('constructions.edit', compact('construction', 'exams', 'trainings', 'jobs', 'contracts'));
     }
 
     /**
@@ -77,6 +84,7 @@ class ConstructionController extends Controller
             $cc->save();
         }
         //return response()->json($construction, 201);
+        $this->addFlash('Obra criada com sucesso!', 'success');
         return Redirect::route('gestao-obras.edit', ['id' => $construction->id]);
         //return redirect('/gestao-obras/'.$construction->id.'/edit');
     }
@@ -102,18 +110,33 @@ class ConstructionController extends Controller
      * @param  \App\Construction  $construction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
-        $construction = Construction::findOrFail($request->id);
+        $construction = Construction::findOrFail($id);
         $construction->name = $request->name;
-        $construction->cut_grade = $request->cut_grade['cutnote'];
-        $construction->save();
+        $construction->cut_grade = $request->cut_grade;
+        
+        if($construction->save()) {
+            ContractConstruction::where('construction_id', $construction->id)->delete();
+            
+            foreach ($request->contracts as $c) {
+                $cc = new ContractConstruction;
+                $cc->contract_id = $c;
+                $cc->construction_id = $construction->id;
+                $cc->save();
+            }
 
-        $construction->vacancies = $this->updateConstructionVacancy($request);
+            $this->addFlash('Obra atualizada com sucesso!', 'success');
+
+            return redirect()->back();
+        }
+    
+
+        /* $construction->vacancies = $this->updateConstructionVacancy($request);
         $construction->managers = $this->updateConstructionManager($request);
-        $construction->teams = $this->updateConstructionTeam($request);
+        $construction->teams = $this->updateConstructionTeam($request); */
         //$construction->badge = $this->updateConstructionBadge($request);
-        return response()->json($construction, 200);
+        //return response()->json($construction, 200);
     }
 
     public function updateConstructionBadge(Request $request)

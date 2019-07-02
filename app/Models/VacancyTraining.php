@@ -16,6 +16,6 @@ class VacancyTraining extends Model
 
     public function training()
     {
-        return $this->hasOne('App\Models\Training');
+        return $this->belongsTo('App\Models\Training');
     }
 }

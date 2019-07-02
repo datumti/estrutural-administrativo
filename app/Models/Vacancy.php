@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Vacancy extends Model
 {
     protected $table = 'vacancies';
-    protected $fillable = ['construction_id', 'number', 'constract_id', 'job_id', 'quality_vancancy'];
+    protected $fillable = ['construction_id', 'number', 'contract_id', 'job_id', 'quality_vacancy'];
 
     public function construction()
     {
@@ -16,6 +16,14 @@ class Vacancy extends Model
 
     public function job()
     {
-        return $this->hasOne('App\Models\Job');
+        return $this->belongsTo('App\Models\Job');
+    }
+
+    public function vacancy_exam() {
+        return $this->hasMany(VacancyExam::class);
+    }
+
+    public function vacancy_training() {
+        return $this->hasMany(VacancyTraining::class);
     }
 }

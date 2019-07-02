@@ -50,8 +50,26 @@ class VacancyController extends Controller
      */
     public function store(Request $request)
     {
-        $vacancie = Vacancy::create($request->all());
-        return response()->json($vacancie, 201);
+        $vacancy = Vacancy::create($request->all());
+
+        foreach($request->exams as $exam) {
+            $vacancyExam = new VacancyExam();
+            $vacancyExam->vacancy_id = $vacancy->id;
+            $vacancyExam->exam_id = $exam;
+            $vacancyExam->save();
+        }
+
+        foreach($request->trainings as $training) {
+            $vacancyTraining = new VacancyTraining();
+            $vacancyTraining->vacancy_id = $vacancy->id;
+            $vacancyTraining->training_id = $training;
+            $vacancyTraining->save();
+        }
+
+        //return response()->json($vacancie, 201);
+        $this->addFlash('Vagas inseridas com sucesso!', 'success');
+
+        return redirect()->back();
     }
 
     /**

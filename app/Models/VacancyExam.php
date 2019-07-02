@@ -16,6 +16,6 @@ class VacancyExam extends Model
 
     public function exam()
     {
-        return $this->hasOne('App\Models\Exam');
+        return $this->belongsTo('App\Models\Exam');
     }
 }
