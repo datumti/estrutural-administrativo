@@ -42,7 +42,7 @@
                                                 {{$contract->contract_id}}
                                             </div>
                                             <div class="col-md-6 ">
-                                                <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-contract-delete">
+                                                <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-contract-delete" data-construction-id="{{$construction->id}}" data-contract-id="{{$contract->contract_id}}">
                                                     <i class="fa fa-trash"></i> 
                                                 </button>
                                             </div>
@@ -114,7 +114,7 @@
                                     <!-- <button type="submit" class="btn btn-flat btn-warning" title="Editar">
                                         <i class="fa fa-pencil"></i> 
                                     </button> -->
-                                    <button type="button" class="btn btn-flat btn-danger" title="Remover"  data-toggle="modal" data-target="#modal-vacancy-delete">
+                                    <button type="button" class="btn btn-flat btn-danger" title="Remover"  data-toggle="modal" data-target="#modal-vacancy-delete" data-vacancy-id="{{$vacancy->id}}">
                                         <i class="fa fa-trash"></i> 
                                     </button>
                                 </div>
@@ -183,7 +183,7 @@
     <div class="modal fade" id="modal-vacancy-delete" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                {!! Form::open(['method' => 'delete', 'route' => ['vacancy.destroy', 1]]) !!}
+                {!! Form::open(['method' => 'delete', 'route' => ['vacancy.destroy', '']]) !!}
                     <div class="modal-header">
                         <h4 class="modal-title" id="exampleModalLongTitle">Remover vaga</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -204,7 +204,7 @@
     <div class="modal fade" id="modal-contract-delete" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                {!! Form::open(['method' => 'delete', 'route' => ['vacancy.destroy', 1]]) !!}
+                {!! Form::open(['method' => 'delete', 'route' => ['contracts.destroy', '']]) !!}
                     <div class="modal-header">
                         <h4 class="modal-title" id="exampleModalLongTitle">Remover contrato</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -233,6 +233,20 @@
 @section('js')
 
     <script>
+
+        $('#modal-contract-delete').on('show.bs.modal', function(e) {
+            var contract_id = $(e.relatedTarget).data('contract-id');
+            var construction_id = $(e.relatedTarget).data('construction-id');
+            
+            $(e.currentTarget).find('form').attr('action', '/contracts/'+contract_id);
+            $(e.currentTarget).find('form').append(`<input type="hidden" name="construction_id" value="${construction_id}">`)
+        });
+
+        $('#modal-vacancy-delete').on('show.bs.modal', function(e) {
+            var vacancy_id = $(e.relatedTarget).data('vacancy-id');
+            $(e.currentTarget).find('form').attr('action', '/vacancy/'+vacancy_id);
+        });
+
         $(document).ready( function () {
             $('#add-contract').on('click', function() {
                 if($('#contract_number').val() != '') {
@@ -259,14 +273,6 @@
             $('#exams').select2();
             $('#trainings').select2();
             $('#jobs').select2();
-
-            /* $('#vacancies-add').on('click', function() {
-                $('#vacancies').append(`
-                    <li>
-                        ${$('#contract-selected').val()}
-                    </li>
-                `)
-            }) */
         });
     </script>
 @stop

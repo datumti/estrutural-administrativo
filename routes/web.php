@@ -63,7 +63,8 @@ Route::resources([
     'restrictions' => 'RestrictionController',
     'timesheets' => 'TimesheetController',
     'resignations' => 'ResignationController',
-    'profiles' => 'ProfileController'
+    'profiles' => 'ProfileController',
+    'cadastros' => 'RegistrationController'
 ]);
 
 // CONTRACTS

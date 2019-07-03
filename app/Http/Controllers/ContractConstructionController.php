@@ -86,7 +86,16 @@ class ContractConstructionController extends Controller
      */
     public function destroy($cc)
     {
-        $cc = ContractConstruction::findOrFail($cc);
+        
+        if(request()->construction_id == 'undefined') {
+            $this->addFlash('Contrato removido com sucesso!', 'success');
+            return redirect()->back();
+        }
+
+        $cc = ContractConstruction::where('contract_id', $cc)
+            ->where('construction_id', request()->construction_id)
+            ->first();
+
         // remove vacancies
         $vacancies = Vacancy::where('contract_id', $cc->contract_id)->get();
         foreach ($vacancies as $vacancy) {
@@ -112,6 +121,9 @@ class ContractConstructionController extends Controller
         }
         // delete contract_construction
         $cc->delete();
-        return response()->json(null, 204);
+        
+        $this->addFlash('Contrato removido com sucesso!', 'success');
+        return redirect()->back();
+        
     }
 }

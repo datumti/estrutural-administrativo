@@ -118,12 +118,13 @@ class ConstructionController extends Controller
         
         if($construction->save()) {
             ContractConstruction::where('construction_id', $construction->id)->delete();
-            
-            foreach ($request->contracts as $c) {
-                $cc = new ContractConstruction;
-                $cc->contract_id = $c;
-                $cc->construction_id = $construction->id;
-                $cc->save();
+            if($request->contracts) {
+                foreach ($request->contracts as $c) {
+                    $cc = new ContractConstruction;
+                    $cc->contract_id = $c;
+                    $cc->construction_id = $construction->id;
+                    $cc->save();
+                }
             }
 
             $this->addFlash('Obra atualizada com sucesso!', 'success');

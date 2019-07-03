@@ -126,9 +126,20 @@ class VacancyController extends Controller
     public function destroy(Vacancy $vacancy)
     {
         $vacancy = Vacancy::findOrFail($vacancy->id);
+        
+        $vt = VacancyTraining::where('vacancy_id', $vacancy->id)
+            ->delete();
+
+        $ve = VacancyExam::where('vacancy_id', $vacancy->id)
+            ->delete();
+
         $vacancy->delete();
-        return response()->json(null, 204);
+
+        $this->addFlash('Vagas removidas com sucesso!', 'success');
+        return redirect()->back();
+
     }
+
     public function findByJob(Request $request){
         $vacancy = Vacancy::where('job_id', $request->id);
         return response()->json($vacancy, 200);

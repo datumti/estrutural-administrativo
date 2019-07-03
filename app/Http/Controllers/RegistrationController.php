@@ -10,6 +10,24 @@ use App\Models\Training;
 
 class RegistrationController extends Controller
 {
+
+
+        /**
+     * Display a listing of the resource.
+     * GET: /groups
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $peoples = Person::orderBy('name')->get();
+        $jobs = Job::orderBy('name')->get();
+        $trainings = Training::orderBy('name')->get();
+        $exams = Exam::orderBy('name')->get();
+
+        return view('registrations.list', compact('peoples', 'jobs', 'trainings', 'exams'));
+    }
+
+
     /**
      * Display the required data for the registration page.
      * GET: /registration/populate
