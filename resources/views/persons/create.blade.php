@@ -111,7 +111,7 @@
             </div>
             <div class="form-group col-md-2">
                 <label for="profile">Perfil de acesso</label>
-                {!! Form::select('profile_id', $profiles, null, ['id' => 'profile', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                {!! Form::select('profile', $profiles, null, ['id' => 'profile', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
         </div>
         <!-- /.box-body -->
