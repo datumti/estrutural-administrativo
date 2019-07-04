@@ -14,13 +14,13 @@
                     <div class="card-header" id="headingOne">
                         <h5 class="mb-0" style="background: #cd4126;">
                             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="text-decoration:none">
-                            <strong style="color:white; font-size: 18px">PESSOAS</strong>
+                                <strong style="color:white; font-size: 18px">PESSOAS</strong>
                             </button>
                         </h5>
                     </div>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                            <button class="btn btn-warning">Adicionar</button>
+                            <a href="/pessoas/create" class="btn btn-warning">Adicionar</a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>

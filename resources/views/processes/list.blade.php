@@ -11,7 +11,7 @@
     <ul class="nav nav-tabs">
       @foreach($processes as $key => $process)
         <li class="nav-item {{$key == 0 ? 'active' : ''}}">
-          <a class="nav-link" data-toggle="tab" href="#{{$process->id}}">{{mb_strtoupper($process->name, 'UTF-8')}}</a>
+          <a class="nav-link" data-toggle="tab" href="#{{$process->id}}" style="color: black; font-size: 18px">{{mb_strtoupper($process->name, 'UTF-8')}}</a>
         </li>
       @endforeach
     </ul>

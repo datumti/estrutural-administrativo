@@ -32,6 +32,15 @@ class PersonController extends Controller
         return response()->json($people, 200);
     }
 
+
+    public function create() {
+
+        $jobs = Job::pluck('name', 'id');
+        $profiles = Profile::pluck('name', 'id');
+
+        return view('persons.create', compact('jobs', 'profiles'));
+    }
+
     /**
      * Display a listing of the resource.
      * POST: /people/login
@@ -316,34 +325,37 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
+        
         $person = new Person;
         $person->name = $request->name;
         $person->cpf = $request->cpf;
         $person->job_id = $request->job;
         $person->ctps = $request->ctps;
         $person->rg = $request->rg;
-        $person->phoneMobile = $request->phoneMobile;
-        $person->mobileAlternative = $request->mobileAlternative;
-        $request->birthDate != null ? $person->birthDate = explode("T", $request->birthDate)[0] : null;
+        $person->phoneMobile = $request->phone_mobile;
+        $person->mobileAlternative = $request->mobile_alternative;
+        $request->birthDate = $request->birthDate;
         $person->pcd = $request->pcd;
-        $person->motherName = $request->motherName;
+        $person->motherName = $request->mother_name;
         $person->address = $request->address;
-        $person->addressNumber = $request->addressNumber;
-        $person->addressExtra = $request->addressExtra;
+        $person->addressNumber = $request->address_number;
+        $person->addressExtra = $request->address_extra;
         $person->neighborhood = $request->neighborhood;
         $person->city = $request->city;
         $person->states = $request->states;
         $person->cep = $request->cep;
-        $person->bootNumber = $request->bootNumber;
-        $person->pantsNumber = $request->pantsNumber;
-        $person->shirtNumber = $request->shirtNumber;
-        $person->markNumber = $request->markNumber;
+        $person->bootNumber = $request->boot_number;
+        $person->pantsNumber = $request->pants_number;
+        $person->shirtNumber = $request->shirt_number;
+        $person->markNumber = $request->mark_number;
         $person->number = $request->number;
         $person->email = $request->email;
         if ($request->password != null && $request->password != '') $person->password = $request->password;
         $person->profile_id = $request->profile;
         $person->save();
         return response()->json($person, 201);
+
+
     }
 
     /**

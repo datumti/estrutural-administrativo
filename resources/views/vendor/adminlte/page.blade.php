@@ -14,6 +14,14 @@
 ][config('adminlte.layout')] : '') . (config('adminlte.collapse_sidebar') ? ' sidebar-collapse ' : ''))
 
 @section('body')
+
+<style>
+.navbar-nav > li > a {
+    color: black;
+    font-weight: bold;
+}
+</style>
+
     <div class="wrapper">
 
         <!-- Main Header -->
@@ -38,7 +46,7 @@
 
                     <ul class="nav navbar-nav">
                         <li>
-                        <a href="/home" style="color:white;font-weight:bold">
+                        <a href="/home" style="">
                             {{Session::get('construction.name', 'Nenhuma obra selecionada')}}
                         </a>
                             
@@ -51,7 +59,7 @@
                             @else
                                 <a href="#"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                   style="color:white">
+                                   style="">
                                     <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
                                 </a>
                                 <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">

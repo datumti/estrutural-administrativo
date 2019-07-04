@@ -27,7 +27,6 @@ class RegistrationController extends Controller
         return view('registrations.list', compact('peoples', 'jobs', 'trainings', 'exams'));
     }
 
-
     /**
      * Display the required data for the registration page.
      * GET: /registration/populate

@@ -19,5 +19,11 @@
         "lodash": "^4.17.4",
         "vue": "^2.5.7"
     },
-    "dependencies": {}
+    "dependencies": {
+        "bootstrap-datepicker": "^1.9.0",
+        "datepicker": "0.0.0",
+        "daterangepicker": "^3.0.5",
+        "inputmask": "^4.0.8",
+        "requirejs": "^2.3.6"
+    }
 }

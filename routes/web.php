@@ -23,9 +23,6 @@ Route::get('gestao-pessoas', function(){
     return view('persons.list');
 });
 
-Route::get('cadastros', function(){
-    return view('registrations.list');
-});
 
 Route::get('restricoes', function(){
     return view('restrictions.list');
@@ -46,7 +43,7 @@ Route::resources([
     'jobs' => 'JobController',
     'trainings' => 'TrainingController',
     'exams' => 'ExamController',
-    'people' => 'PersonController',
+    'pessoas' => 'PersonController',
     'teams' => 'TeamController',
     'contracts' => 'ContractConstructionController',
     'gestao-obras' => 'ConstructionController',
@@ -67,7 +64,14 @@ Route::resources([
     'cadastros' => 'RegistrationController'
 ]);
 
-// CONTRACTS
+/* Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');
+Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');
+Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');
+Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson'); */
+
+Route::post('/construction/{constructionId}', 'ConstructionController@set')->name('gestao-obras.set');
+
+/* // CONTRACTS
 Route::get('/contracts/construction/{id}', 'ContractConstructionController@showByConstruction');
 
 // STATUSES
@@ -77,7 +81,7 @@ Route::get('/statuses/group/all', 'StatusController@group');
 // CONSTRUCTIONS
 Route::get('/constructions/{id}/changestatus', 'ConstructionController@changeStatus');
 Route::get('/construction/{constructionId}/people/cpf/{cpf}/process/{process}', 'PersonController@showByCpf');
-Route::post('/construction/{constructionId}', 'ConstructionController@set')->name('gestao-obras.set');
+
 
 
 // GROUPS
@@ -140,4 +144,4 @@ Route::post('/resignations/transfer/construction/{id}', 'ResignationController@t
 
 Route::post('/access/getall', 'PermissionProfileController@getAll');	
 Route::get('/access/getall/{id}/{user}', 'PermissionProfileController@getAll');	
-Route::get('/reports/{id}', 'ReportController@report');
+Route::get('/reports/{id}', 'ReportController@report'); */

@@ -11,6 +11,12 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
+mix.scripts([
+   'node_modules/inputmask/dist/jquery.inputmask.bundle.js',
+   'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+], 'public/js/app.js')
    .sass('resources/assets/sass/app.scss', 'public/css')
+   .styles([
+      'node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css'
+      ], 'public/css/app.css')
    .copyDirectory('resources/assets/img', 'public/img');
