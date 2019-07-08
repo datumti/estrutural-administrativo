@@ -11,6 +11,6 @@ class ConstructionsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Construction::class, 10)->create();
+        factory(App\Models\Construction::class, 2)->create();
     }
 }

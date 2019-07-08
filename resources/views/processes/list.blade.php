@@ -25,10 +25,10 @@
           </button>
           <br><br>
           @switch($process->name)
-            @case ('Técnica')
-            @case ('Treinamento')
-            @case ('Psicológica')
-            @case ('Exame')
+            @case ('Seleção Técnica')
+            @case ('Seleção Treinamento')
+            @case ('Seleção Psicológica')
+            @case ('Seleção Exame')
               <div class="box box-info">
                 <div class="box-body">
                   <div class="table-responsive">
@@ -40,7 +40,7 @@
                           <td>Aprovados</td>
                           <td>Reprovados</td>
                           <td>Ressalva</td>
-                          @if ($process->name == 'Psicológica')
+                          @if ($process->name == 'Seleção Psicológica')
                             <td>Requer avaliação</td>
                           @endif
                           <td>Ações</td>
@@ -66,7 +66,7 @@
                 </div>
               </div>
             @break
-            @case ('Crachá')
+            @case ('Seleção Crachá')
             <div class="box box-info">
                 <div class="box-body">
                   <div class="table-responsive">

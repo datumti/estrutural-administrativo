@@ -11,6 +11,6 @@ class ContractConstructionTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\ContractConstruction::class, 25)->create();
+        factory(App\Models\ContractConstruction::class, 2)->create();
     }
 }

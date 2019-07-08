@@ -24,10 +24,6 @@ Route::get('gestao-pessoas', function(){
 });
 
 
-Route::get('restricoes', function(){
-    return view('restrictions.list');
-});
-
 Route::get('efetivo-diario', function(){
     return view('effectives.list');
 });
@@ -57,7 +53,7 @@ Route::resources([
     'statuses' => 'StatusController',
     'badges' => 'BadgeController',
     'fsas' => 'FsaController',
-    'restrictions' => 'RestrictionController',
+    'restricoes' => 'RestrictionController',
     'timesheets' => 'TimesheetController',
     'resignations' => 'ResignationController',
     'profiles' => 'ProfileController',

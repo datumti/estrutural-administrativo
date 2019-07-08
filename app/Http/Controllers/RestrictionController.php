@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Restriction;
+use App\Models\Person;
 use Illuminate\Http\Request;
+use DB;
 
 class RestrictionController extends Controller
 {
@@ -15,7 +17,10 @@ class RestrictionController extends Controller
     public function index()
     {
         $restrictions = Restriction::all();
-        return response()->json($restrictions, 200);
+        $peoples = Person::pluck('name', 'id');
+        $peoples = Person::select(DB::raw("CONCAT(name,' - ',cpf) AS name"),'id')->pluck('name', 'id');
+        $peoples->prepend('Selecione', '');
+        return view('restrictions.list', compact('restrictions', 'peoples'));
     }
 
     /**
@@ -27,7 +32,8 @@ class RestrictionController extends Controller
     public function store(Request $request)
     {
         $restriction = Restriction::create($request->all());
-        return response()->json($restriction, 201);
+        $this->addFlash('Restrição cadastrada com sucesso!', 'success');
+        return redirect()->route('restricoes.index');
     }
 
     /**

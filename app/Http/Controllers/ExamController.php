@@ -41,7 +41,6 @@ class ExamController extends Controller
             
         $this->addFlash('Exame criado com sucesso!', 'success');
         return redirect()->route('exames.edit', $exam->id);
-
     }
 
     /**

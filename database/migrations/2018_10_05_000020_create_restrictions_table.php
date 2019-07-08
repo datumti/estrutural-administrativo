@@ -16,7 +16,8 @@ class CreateRestrictionsTable extends Migration
         if (!Schema::hasTable('restrictions')) {
             Schema::create('restrictions', function (Blueprint $table) {
                 $table->increments('id');
-                $table->string('cpf');
+                $table->integer('people_id')->unsigned()->nullable();
+                $table->foreign('people_id')->references('id')->on('people');
                 $table->text('description');
                 $table->timestamps();
             });
