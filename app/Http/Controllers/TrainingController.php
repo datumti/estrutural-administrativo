@@ -19,6 +19,16 @@ class TrainingController extends Controller
         return response()->json($trainings, 200);
     }
 
+    public function create() {
+        return view('trainings.create');
+    }
+
+    public function edit($id) {
+
+        $training = Training::find($id);
+        return view('trainings.edit', compact('training'));
+    }
+
     /**
      * Store a newly created resource in storage.
      * POST: /trainings

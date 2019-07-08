@@ -38,7 +38,7 @@
                                                 <td>{{$people->cpf}}</td>
                                                 <td>{{$people->cpf}}</td>
                                                 <td class="table-actions">
-                                                    <button class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></button> 
+                                                    <a href="{{route('pessoas.edit', $people->id)}}" class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></a> 
                                                     <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button> 
                                                 </td>
                                             </tr>
@@ -59,7 +59,7 @@
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                         <div class="card-body">
-                            <button class="btn btn-warning">Adicionar</button>
+                            <a href="{{route('cargos.create')}}" class="btn btn-warning">Adicionar</a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>
@@ -94,7 +94,7 @@
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="card-body">
-                            <button class="btn btn-warning">Adicionar</button>
+                            <a href="{{route('treinamentos.create')}}" class="btn btn-warning">Adicionar</a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>
@@ -109,7 +109,7 @@
                                                 <td>{{$training->name}}</td>
 
                                                 <td class="table-actions">
-                                                    <button class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></button> 
+                                                    <a href="{{route('treinamentos.edit', $training->id)}}" class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></a> 
                                                     <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button> 
                                                 </td>
                                             </tr>
@@ -130,7 +130,7 @@
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                         <div class="card-body">
-                            <button class="btn btn-warning">Adicionar</button>
+                            <a href="{{route('exames.create')}}" class="btn btn-warning">Adicionar</a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>
@@ -144,7 +144,7 @@
                                             <tr>
                                                 <td>{{$exam->name}}</td>
                                                 <td class="table-actions">
-                                                    <button class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></button> 
+                                                    <a href="{{route('exames.edit', $exam->id)}}" class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></a> 
                                                     <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button> 
                                                 </td>
                                             </tr>

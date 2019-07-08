@@ -19,6 +19,15 @@ class ExamController extends Controller
         return response()->json($exams, 200);
     }
 
+    public function create() {
+        return view('exams.create');
+    }
+
+    public function edit($id) {
+
+        $exam = Exam::find($id);
+        return view('exams.edit', compact('exam'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -29,7 +38,10 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         $exam = Exam::create($request->all());
-        return response()->json($exam, 201);
+            
+        $this->addFlash('Exame criado com sucesso!', 'success');
+        return redirect()->route('exames.edit', $exam->id);
+
     }
 
     /**
@@ -55,8 +67,14 @@ class ExamController extends Controller
     {
         $exam = Exam::findOrFail($exam->id);
         $exam->fill($request->all());
-        $exam->save();
-        return response()->json($exam, 200);
+        
+        if ($exam->save()) {
+            $this->addFlash('Exame criado com sucesso!', 'success');
+            return redirect()->route('exames.edit', $exam->id);
+        } else {
+            $this->addFlash('Erro ao criar exame!', 'warning');
+            return redirect()->back()->withInputs();
+        }
     }
 
     /**

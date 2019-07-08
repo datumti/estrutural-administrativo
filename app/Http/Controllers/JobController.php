@@ -18,6 +18,17 @@ class JobController extends Controller
         return response()->json($jobs, 200);
     }
 
+    public function create() {
+        return view('jobs.create');
+    }
+
+    public function edit($id)
+    {
+        $job = Job::find($id);
+
+        return view('jobs.edit', compact('job'));
+    }
+
     /**
      * Store a newly created resource in storage.
      * POST: /jobs
@@ -26,8 +37,19 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        $job = Job::create($request->all());
-        return response()->json($job, 201);
+        $job = new Job();
+        $job->name = $request->name;
+        $job->description = $request->description;
+        $job->crm = 1;
+        $job->clinic = 1;
+
+        if ($job->save()) {
+            $this->addFlash('Cargo criado com sucesso!', 'success');
+            return redirect()->route('cargos.edit', $job->id);
+        } else {
+            $this->addFlash('Erro ao criar cargo!', 'warning');
+            return redirect()->back()->withInputs();
+        }
     }
 
     /**
@@ -53,8 +75,15 @@ class JobController extends Controller
     {
         $job = Job::findOrFail($job->id);
         $job->fill($request->all());
-        $job->save();
-        return response()->json($job, 200);
+        
+        if ($job->save()) {
+            $this->addFlash('Cargo criado com sucesso!', 'success');
+            return redirect()->route('cargos.edit', $job->id);
+        } else {
+            $this->addFlash('Erro ao criar cargo!', 'warning');
+            return redirect()->back()->withInputs();
+        }
+
     }
 
     /**

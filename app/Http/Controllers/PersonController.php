@@ -36,9 +36,21 @@ class PersonController extends Controller
     public function create() {
 
         $jobs = Job::pluck('name', 'id');
+        $jobs->prepend('Selecione', 0);
         $profiles = Profile::pluck('name', 'id');
-
+        $profiles->prepend('Selecione', 0);
         return view('persons.create', compact('jobs', 'profiles'));
+    }
+
+
+    public function edit($id)
+    {
+        $people = Person::find($id);
+        $jobs = Job::pluck('name', 'id');
+        $jobs->prepend('Selecione', 0);
+        $profiles = Profile::pluck('name', 'id');
+        $profiles->prepend('Selecione', 0);
+        return view('persons.edit', compact('people', 'jobs', 'profiles'));
     }
 
     /**
@@ -325,7 +337,14 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        
+
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'job' => 'required|gt:0',
+            'profile' => 'required|gt:0',
+            'email' => 'required|email|unique:people',
+        ]);
+
         $person = new Person;
         $person->name = $request->name;
         $person->cpf = $request->cpf;
@@ -352,8 +371,14 @@ class PersonController extends Controller
         $person->email = $request->email;
         if ($request->password != null && $request->password != '') $person->password = $request->password;
         $person->profile_id = $request->profile;
-        $person->save();
-        return response()->json($person, 201);
+        
+        if ($person->save()) {
+            $this->addFlash('Pessoa criada com sucesso!', 'success');
+            return redirect()->back();
+        } else {
+            $this->addFlash('Erro!', 'warning');
+            return redirect()->back()->withInputs();
+        }
 
 
     }
@@ -403,6 +428,14 @@ class PersonController extends Controller
      */
     public function update(Request $request, Person $person)
     {
+
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'job' => 'required|gt:0',
+            'profile' => 'required|gt:0',
+            'email' => 'required|email|unique:people',
+        ]);
+
         $person = Person::findOrFail($person->id);
         $person->name = $request->name;
         $person->cpf = $request->cpf;
@@ -429,8 +462,15 @@ class PersonController extends Controller
         $person->email = $request->email;
         if ($request->password != null && $request->password != '') $person->password = $request->password;
         $person->profile_id = $request->profile;
-        $person->save();
-        return response()->json($person, 200);
+        
+        if ($person->save()) {
+            $this->addFlash('Pessoa alterada com sucesso!', 'success');
+            return redirect()->back();
+        } else {
+            $this->addFlash('Erro!', 'warning');
+            return redirect()->back()->withInputs();
+        }
+        
     }
 
 

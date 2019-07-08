@@ -40,9 +40,9 @@ Route::get('relatorios', function(){
 
 
 Route::resources([
-    'jobs' => 'JobController',
-    'trainings' => 'TrainingController',
-    'exams' => 'ExamController',
+    'cargos' => 'JobController',
+    'treinamentos' => 'TrainingController',
+    'exames' => 'ExamController',
     'pessoas' => 'PersonController',
     'teams' => 'TeamController',
     'contracts' => 'ContractConstructionController',
