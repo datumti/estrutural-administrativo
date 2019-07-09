@@ -19,11 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('gestao-pessoas', function(){
-    return view('persons.list');
-});
-
-
 Route::get('efetivo-diario', function(){
     return view('effectives.list');
 });
@@ -39,7 +34,7 @@ Route::resources([
     'cargos' => 'JobController',
     'treinamentos' => 'TrainingController',
     'exames' => 'ExamController',
-    'pessoas' => 'PersonController',
+    'gestao-pessoas' => 'PersonController',
     'teams' => 'TeamController',
     'contracts' => 'ContractConstructionController',
     'gestao-obras' => 'ConstructionController',

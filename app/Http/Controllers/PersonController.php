@@ -23,13 +23,10 @@ class PersonController extends Controller
      */
     public function index()
     {
-        $people = Person::all();
-        // $people = Person::orderBy('name', 'asc')->get();
-        foreach ($people as $p) {
-            $p->job;
-            $p->profile;
-        }
-        return response()->json($people, 200);
+
+        $peoples = Person::all();
+    
+        return view('persons.list', compact('peoples'));
     }
 
 

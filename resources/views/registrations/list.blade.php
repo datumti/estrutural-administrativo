@@ -38,7 +38,7 @@
                                                 <td>{{$people->cpf}}</td>
                                                 <td>{{$people->cpf}}</td>
                                                 <td class="table-actions">
-                                                    <a href="{{route('pessoas.edit', $people->id)}}" class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></a> 
+                                                    <a href="{{route('gestao-pessoas.edit', $people->id)}}" class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></a> 
                                                     <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button> 
                                                 </td>
                                             </tr>
