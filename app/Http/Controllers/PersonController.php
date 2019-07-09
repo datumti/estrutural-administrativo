@@ -53,6 +53,15 @@ class PersonController extends Controller
         return view('persons.edit', compact('people', 'jobs', 'profiles'));
     }
 
+    public function getbycpf() {
+
+        $person = Person::where('cpf', request()->cpf)->first();
+        if ($person) {
+            return response()->json($person, 200);
+        }
+        return response()->json(null, 204);
+    }
+
     /**
      * Display a listing of the resource.
      * POST: /people/login

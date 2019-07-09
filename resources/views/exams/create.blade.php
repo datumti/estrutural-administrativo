@@ -4,16 +4,6 @@
 
 @section('content_header')
     <h1>Novo Exame</h1>
-    <br>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 @stop
 
 @section('content')

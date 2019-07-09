@@ -47,7 +47,7 @@ Route::resources([
     'badgetrainings' => 'BadgeTrainingController',
     'badgeexams' => 'BadgeExamController',
     'managers' => 'ManagerController',
-    'groups' => 'GroupController',
+    'grupos' => 'GroupController',
     'grouppeople' => 'GroupPersonController',
     'processo-seletivo' => 'ProcessController',
     'statuses' => 'StatusController',
@@ -66,6 +66,14 @@ Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');
 Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson'); */
 
 Route::post('/construction/{constructionId}', 'ConstructionController@set')->name('gestao-obras.set');
+
+
+Route::get('/processo-seletivo/{processId}/grupos/create', 'ProcessController@create');
+Route::get('/processo-seletivo/{processId}/grupos/{groupId}/edit', 'ProcessController@edit');
+
+
+Route::post('/pessoas/getbycpf', 'PersonController@getByCpf');
+
 
 /* // CONTRACTS
 Route::get('/contracts/construction/{id}', 'ContractConstructionController@showByConstruction');

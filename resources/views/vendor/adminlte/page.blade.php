@@ -104,6 +104,16 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 @yield('content_header')
+                @if ($errors->any())
+                    <br>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </section>
 
             <!-- Main content -->

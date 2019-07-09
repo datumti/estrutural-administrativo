@@ -8,6 +8,7 @@ use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
 
 class GroupController extends Controller
 {
@@ -22,6 +23,7 @@ class GroupController extends Controller
         return response()->json($groups, 200);
     }
 
+
     /**
      * Store a newly created resource in storage.
      * POST: /groups
@@ -30,9 +32,19 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        $group = Group::create($request->all());
-        $group->creation_date = explode("T", $request->creation_date)[0];
-        return response()->json($group, 201);
+
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'creation_date' => 'required'
+        ]);
+
+        $data = $request->all();
+        $data['creation_date'] = Carbon::createFromFormat('d/m/Y', $data['creation_date'])->format('Y-m-d');
+
+        $group = Group::create($data);
+        $this->addFlash('Grupo criado com sucesso!', 'success');
+        
+        return redirect('processo-seletivo/'.$request->process_id.'/grupos/'.$group->id.'/edit');
     }
 
     /**

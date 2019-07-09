@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Group extends Model
 {
@@ -34,5 +35,9 @@ class Group extends Model
 
     public function group_person() {
         return $this->hasMany(GroupPerson::class);
+    }
+
+    public function getCreationDateAttribute($value) {
+        return Carbon::parse($value)->format('d/m/Y');
     }
 }

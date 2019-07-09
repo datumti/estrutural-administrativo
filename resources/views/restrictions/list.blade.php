@@ -52,15 +52,17 @@
                             <td>{{$restriction->people->cpf}}</td>
                             <td>{{$restriction->description}}</td>
                             <td>
-                            <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-restriction-delete" data-restriction-id="{{$restriction->id}}">
+                                <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-restriction-delete" data-restriction-id="{{$restriction->id}}">
                                     <i class="fa fa-trash"></i> 
                                 </button>
                             </td>
                         </tr>
                     @empty
-                        <td>
-                            nenhuma restrição até o momento...
-                        </td>
+                        <tr>
+                            <td colspan="4">
+                                nenhuma restrição até o momento...
+                            </td>
+                        </tr>
                     @endforelse
                   </tbody>
                 </table>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Process;
+use App\Models\Group;
 use Illuminate\Http\Request;
+use App\Models\Status;
 
 class ProcessController extends Controller
 {
@@ -17,6 +19,31 @@ class ProcessController extends Controller
         $processes = Process::with('group.group_person')->get();
         //return response()->json($processes, 200);
         return view('processes.list', compact('processes'));
+    }
+
+
+    //CRIAÇÃO DE GRUPOS DENTRO DO PROCESSO
+    public function create($id) {
+
+        $process = Process::find($id);
+        $status = Status::pluck('name', 'id');
+        $status->prepend('Selecione', 0);
+
+        return view('processes.groups.create', compact('process', 'status'));
+    }
+
+    public function edit($idProcess, $idGroup) {
+        
+        $process = Process::find($idProcess);
+        
+        $group = Group::with('group_person.person')
+            ->where('id', $idGroup)
+            ->first();
+
+        $status = Status::pluck('name', 'id');
+        $status->prepend('Selecione', 0);
+
+        return view('processes.groups.edit', compact('process', 'group', 'status'));
     }
 
     /**
