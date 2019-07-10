@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Carbon\Carbon;
 
 class Person extends Authenticatable
 {
@@ -49,5 +50,9 @@ class Person extends Authenticatable
     public function profile()
     {
         return $this->belongsTo('App\Models\Profile');
+    }
+
+    public function getBirthDateAttribute($value) {
+        return Carbon::parse($value)->format('d/m/Y');
     }
 }

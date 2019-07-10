@@ -21,7 +21,7 @@
         <input type="hidden" name="construction_id" value="{{Session::get('construction.id')}}">
         <div class="box-body">
             <div class="form-group col-md-4">
-                <label for="creation_date">Nome do Grupo</label>
+                <label for="name">Nome</label>
                 {!! Form::text('name', $group->name, ['id' => 'name', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
             <div class="form-group col-md-2">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="box-header with-border">
-            <h3 class="box-title">Candidato</h3>
+            <h3 class="box-title">Adicionar Candidato</h3>
             <h5><span style="" id="feedback-person"></span></h5>
         </div>
         <div class="box-body" style="">

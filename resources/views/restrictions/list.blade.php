@@ -18,7 +18,7 @@
                     {!! Form::select('people_id', $peoples, null, ['id' => 'name', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                 </div>
                 <div class="form-group col-md-7">
-                    <label for="cpf">Motivo</label>
+                    <label for="cpf">Descrição</label>
                     {!! Form::textarea('description', null, ['id' => 'description', 'rows' => '3','class' => 'form-control', 'style' => 'width: 100%']) !!}
                 </div>
             </div>

@@ -13,7 +13,7 @@
       <h3 class="box-title">Informações básicas</h3>
     </div>
     <!-- /.box-header -->
-    {!! Form::model($people,['method' => 'put', 'route' => ['pessoas.update', $people->id]]) !!}
+    {!! Form::model($people,['method' => 'put', 'route' => ['gestao-pessoas.update', $people->id]]) !!}
         <input type="hidden" name="status" value="1">
         <div class="box-body">
             <div class="form-group col-md-2">

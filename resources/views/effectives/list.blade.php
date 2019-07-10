@@ -4,6 +4,11 @@
 
 @section('content_header')
     <h1>Efetivo Diário</h1>
+    <a href="" class="btn btn-warning pull-right" href="#">
+        <i class="fa fa-plus"></i> Importar
+    </a>
+    <br>
+    <br>
 @stop
 
 @section('content')
@@ -13,10 +18,11 @@
                 <table class="table no-margin">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Contrato(s)</th>
-                            <th>Ações</th>
+                            <th>Chapa</th>
+                            <th>Hora</th>
+                            <th>Hora</th>
+                            <th>Hora</th>
+                            <th>Hora</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,11 +33,6 @@
             <!-- /.table-responsive -->
         </div>
         <!-- /.box-body -->
-        <div class="box-footer">
-            <a type="button" href="/gestao-obras/create" class="btn btn-flat btn-warning">
-                <i class="fa fa-plus"></i> Nova Obra
-            </a>
-        </div>
     </div>
 
 @stop

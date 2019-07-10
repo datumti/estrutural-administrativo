@@ -31,8 +31,15 @@ class RestrictionController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validatedData = $request->validate([
+            'people_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $restriction = Restriction::create($request->all());
         $this->addFlash('Restrição cadastrada com sucesso!', 'success');
+        
         return redirect()->route('restricoes.index');
     }
 
