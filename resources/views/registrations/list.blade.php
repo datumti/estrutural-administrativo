@@ -20,7 +20,7 @@
                     </div>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                            <a href="/pessoas/create" class="btn btn-warning">Adicionar</a>
+                            <a href="{{route('gestao-pessoas.create')}}" class="btn btn-warning">Adicionar</a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>

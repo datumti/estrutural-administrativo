@@ -45,6 +45,9 @@
                                         {!! Form::button('<i class="fa fa-check"></i>', ['type' => 'submit', 'class' => 'btn btn-flat btn-default btn', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Selecionar']) !!}
                                     {!! Form::close() !!}
                                 @endif
+                                {!! Form::open(['method' => 'get', 'route' => ['gestao-obras.edit', $construction->id]]) !!}
+                                  {!! Form::button('<i class="fa fa-pencil"></i>', ['type' => 'submit', 'class' => 'btn btn-flat btn-default', 'data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => 'Editar']) !!}
+                                {!! Form::close() !!}
                             </td>
                         </tr>
                     @endforeach
