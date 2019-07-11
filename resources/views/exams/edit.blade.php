@@ -9,6 +9,12 @@
 @section('content')
 
 <div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Informações do Exame</h3>
+        <a type="button" href="{{route('cadastros.index')}}" class="btn btn-flat btn-secondary pull-right">
+            <i class="fa fa-arrow-left"></i> Voltar
+        </a>
+    </div>
     <!-- /.box-header -->
     {!! Form::model($exam,['method' => 'put', 'route' => ['exames.update', $exam->id]]) !!}
         <input type="hidden" name="status" value="1">

@@ -9,6 +9,12 @@
 @section('content')
 
 <div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Informações do Treinamento</h3>
+        <a type="button" href="{{route('cadastros.index')}}" class="btn btn-flat btn-secondary pull-right">
+            <i class="fa fa-arrow-left"></i> Voltar
+        </a>
+    </div>
     <!-- /.box-header -->
     {!! Form::model($training,['method' => 'put', 'route' => ['cargos.update', $training->id]]) !!}
         <input type="hidden" name="status" value="1">
