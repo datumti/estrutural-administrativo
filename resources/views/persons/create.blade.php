@@ -11,7 +11,7 @@
 <div class="box box-info">
     <div class="box-header with-border">
       <h3 class="box-title">Informações básicas</h3>
-        <a type="button" href="{{route('processo-seletivo.index')}}" class="btn btn-flat btn-secondary pull-right">
+        <a type="button" href="{{route('cadastros.index')}}" class="btn btn-flat btn-secondary pull-right">
             <i class="fa fa-arrow-left"></i> Voltar
         </a>
     </div>
