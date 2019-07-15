@@ -20,6 +20,7 @@ class CreateRestrictionsTable extends Migration
                 //$table->foreign('people_id')->references('id')->on('people');
                 $table->text('description');
                 $table->timestamps();
+                $table->softDeletes();
             });
         }
     }

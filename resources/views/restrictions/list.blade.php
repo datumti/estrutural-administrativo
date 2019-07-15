@@ -74,11 +74,16 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Tem certeza que deseja remover essa restrição?
+                                                    <div class="form-group">
+                                                        <h5>Tem certeza que deseja remover essa restrição?</h5>
+                                                        <br>
+                                                        <label for="description" id="label-description">Descrição*</label>
+                                                        {!! Form::textarea('description', null, ['id' => 'exclusion-description', 'rows' => '3','class' => 'form-control', 'style' => 'width: 100%']) !!}
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-danger" id="vacancies-remove">Remover</button>
+                                                    <button type="submit" class="btn btn-danger" id="restriction-remove">Remover</button>
                                                 </div>
                                             {!! Form::close() !!}
                                         </div>
@@ -100,7 +105,49 @@
             </div>
             <!-- /.box-body -->
         </div>
-
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Exclusão de Restrições</h3>
+            </div>
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Motivo da restrição</th>
+                    <th>Data da restrição</th>
+                    <th>Motivo da exclusão</th>
+                    <th>Data da exclusão</th>
+                    <th>Responsável</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @forelse ($restrictionExclusions as $exclusion)
+                        <tr>
+                            <td>{{$exclusion->restriction->name}}</td>
+                            <td>{{$exclusion->restriction->cpf}}</td>
+                            <td>{{$exclusion->restriction->description}}</td>
+                            <td>{{$exclusion->restriction->created_at->format('d/m/Y')}}</td>
+                            <td>{{$exclusion->description}}</td>
+                            <td>{{$exclusion->created_at->format('d/m/Y')}}</td>
+                            <td>{{$exclusion->people->name}}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4">
+                                nenhuma exclusão até o momento...
+                            </td>
+                        </tr>
+                    @endforelse
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+        </div>
 @stop
 
 @section('css')
@@ -109,9 +156,20 @@
 
 @section('js')
     <script>
-        //$('#name').select2();
+
         $(document).ready(function() {
             $('#cpf').inputmask('999.999.999-99');
+
+            $('#restriction-remove').on('click', function(e){
+                e.preventDefault();
+                if($('#exclusion-description').val() == '') {
+                    $('#label-description').css('color', 'red');
+                } else {
+                    $('#label-description').removeAttr('css');
+                    $('#restriction-remove').unbind('click').click();
+                }
+            })
+
         });
     </script>
 

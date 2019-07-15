@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Restriction;
-use App\Models\Person;
+
 use Illuminate\Http\Request;
+use App\Models\RestrictionExclusion;
 use DB;
+use Auth;
 
 class RestrictionController extends Controller
 {
@@ -17,10 +19,14 @@ class RestrictionController extends Controller
     public function index()
     {
         $restrictions = Restriction::all();
-        //$peoples = Person::pluck('name', 'id');
-        //$peoples = Person::select(DB::raw("CONCAT(name,' - ',cpf) AS name"),'id')->pluck('name', 'id');
-        //$peoples->prepend('Selecione', '');
-        return view('restrictions.list', compact('restrictions'));
+
+        $restrictionExclusions = RestrictionExclusion::with(['restriction' => function($query) {
+                $query->withTrashed();
+            }])
+            ->with('people')
+            ->get();
+
+            return view('restrictions.list', compact('restrictions', 'restrictionExclusions'));
     }
 
     /**
@@ -31,15 +37,17 @@ class RestrictionController extends Controller
      */
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'name' => 'required',
             'cpf' => 'required',
             'description' => 'required',
         ]);
 
-        $restriction = Restriction::create($request->all());
-        $this->addFlash('Restrição cadastrada com sucesso!', 'success');
+        if(Restriction::create($request->all())) {
+            $this->addFlash('Restrição cadastrada com sucesso!', 'success');
+        } else {
+            $this->addFlash('Erro ao inserir restrição!', 'success');
+        }
 
         return redirect()->route('restricoes.index');
     }
@@ -94,15 +102,23 @@ class RestrictionController extends Controller
      * @param  \App\Restriction  $restriction
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        if(Restriction::findOrFail($id)->delete()) {
+        $restriction = Restriction::findOrFail($id);
+
+        if($restriction->delete()) {
+
+            $restrictionExclusion = new RestrictionExclusion();
+            $restrictionExclusion->people_id = Auth::user()->id;
+            $restrictionExclusion->restriction_id = $id;
+            $restrictionExclusion->description = $request->description;
+            $restrictionExclusion->save();
+
             $this->addFlash('Restrição removida com sucesso!', 'success');
         } else {
-            $this->addFlash('Erro ao remover restrição!', 'success');
+            $this->addFlash('Erro ao remover restrição!', 'danger');
         }
 
         return redirect()->route('restricoes.index');
-
     }
 }
