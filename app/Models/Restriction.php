@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Restriction extends Model
 {
-    protected $fillable = ['people_id', 'description'];
+    protected $fillable = ['name', 'cpf', 'description'];
 
 
     public function people() {

@@ -17,10 +17,10 @@ class RestrictionController extends Controller
     public function index()
     {
         $restrictions = Restriction::all();
-        $peoples = Person::pluck('name', 'id');
-        $peoples = Person::select(DB::raw("CONCAT(name,' - ',cpf) AS name"),'id')->pluck('name', 'id');
-        $peoples->prepend('Selecione', '');
-        return view('restrictions.list', compact('restrictions', 'peoples'));
+        //$peoples = Person::pluck('name', 'id');
+        //$peoples = Person::select(DB::raw("CONCAT(name,' - ',cpf) AS name"),'id')->pluck('name', 'id');
+        //$peoples->prepend('Selecione', '');
+        return view('restrictions.list', compact('restrictions'));
     }
 
     /**
@@ -33,13 +33,14 @@ class RestrictionController extends Controller
     {
 
         $validatedData = $request->validate([
-            'people_id' => 'required',
+            'name' => 'required',
+            'cpf' => 'required',
             'description' => 'required',
         ]);
 
         $restriction = Restriction::create($request->all());
         $this->addFlash('Restrição cadastrada com sucesso!', 'success');
-        
+
         return redirect()->route('restricoes.index');
     }
 
@@ -93,10 +94,15 @@ class RestrictionController extends Controller
      * @param  \App\Restriction  $restriction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Restriction $restriction)
+    public function destroy($id)
     {
-        $restriction = Restriction::findOrFail($restriction->id);
-        $restriction->delete();
-        return response()->json(null, 204);
+        if(Restriction::findOrFail($id)->delete()) {
+            $this->addFlash('Restrição removida com sucesso!', 'success');
+        } else {
+            $this->addFlash('Erro ao remover restrição!', 'success');
+        }
+
+        return redirect()->route('restricoes.index');
+
     }
 }
