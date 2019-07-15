@@ -110,9 +110,9 @@ class ManagerController extends Controller
         $manager->person_id_discipline = $request->people_discipline;
 
         if($manager->save()) {
-            $this->addFlash('Gerentes atualizados com sucesso!', 'success');
+            $this->addFlash('Responsáveis atualizados com sucesso!', 'success');
         } else {
-            $this->addFlash('Erro ao atualizar gerentes da obra!', 'danger');
+            $this->addFlash('Erro ao atualizar responsáveis da obra!', 'danger');
         }
 
         return redirect()->back();
@@ -127,9 +127,9 @@ class ManagerController extends Controller
     public function destroy($id)
     {
         if(Manager::where('contract_id', $id)->delete()) {
-            $this->addFlash('Gerentes removidos com sucesso!', 'success');
+            $this->addFlash('Responsáveis removidos com sucesso!', 'success');
         } else {
-            $this->addFlash('Erro ao remover gerentes da obra!', 'danger');
+            $this->addFlash('Erro ao remover responsáveis da obra!', 'danger');
         }
 
         return redirect()->back();

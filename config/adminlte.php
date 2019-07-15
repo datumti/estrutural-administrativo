@@ -116,17 +116,12 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ], */
-        'Menu Principal',
         [
             'text' => 'Home',
             'url'  => 'home',
             'icon' => 'home',
         ],
-        [
-            'text' => 'Gestão de Obras',
-            'url'  => 'gestao-obras',
-            'icon' => 'wrench',
-        ],
+        ' ',
         [
             'text' => 'Processo Seletivo',
             'url'  => 'processo-seletivo',
@@ -138,6 +133,17 @@ return [
             'icon' => 'users',
         ],
         [
+            'text' => 'Efetivo Diário',
+            'url'  => 'efetivo-diario',
+            'icon' => 'history',
+        ],
+        ' ',
+        [
+            'text' => 'Gestão de Obras',
+            'url'  => 'gestao-obras',
+            'icon' => 'wrench',
+        ],
+        [
             'text' => 'Cadastros',
             'url'  => 'cadastros',
             'icon' => 'list-alt',
@@ -147,11 +153,7 @@ return [
             'url'  => 'restricoes',
             'icon' => 'ban',
         ],
-        [
-            'text' => 'Efetivo Diário',
-            'url'  => 'efetivo-diario',
-            'icon' => 'history',
-        ],
+        ' ',
         [
             'text' => 'Relatórios',
             'url'  => 'relatorios',
