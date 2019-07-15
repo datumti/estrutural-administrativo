@@ -40,15 +40,20 @@ class ConstructionController extends Controller
         $construction = Construction::with('vacancy.job')
             ->with('vacancy.vacancy_exam.exam')
             ->with('vacancy.vacancy_training.training')
+            ->with('manager')
             ->where('id', $id)
             ->first();
+
+        $peoples = Person::pluck('name', 'id');            
+        $peoples->prepend('Selecione', '0');
 
         $exams = Exam::orderBy('name')->pluck('name', 'id');
         $trainings = Training::orderBy('name')->pluck('name', 'id');
         $jobs = Job::orderBy('name')->pluck('name', 'id');
         $contracts = ContractConstruction::where('construction_id', $construction->id)->orderBy('id')->pluck('contract_id', 'contract_id');
+        $contracts->prepend('Selecione', '');
         
-        return view('constructions.edit', compact('construction', 'exams', 'trainings', 'jobs', 'contracts'));
+        return view('constructions.edit', compact('construction', 'exams', 'trainings', 'jobs', 'contracts', 'peoples'));
     }
 
     /**

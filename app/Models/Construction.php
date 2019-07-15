@@ -15,4 +15,8 @@ class Construction extends Model
     public function vacancy() {
         return $this->hasMany(Vacancy::class);
     }
+
+    public function manager() {
+        return $this->hasMany(Manager::class);
+    }
 }

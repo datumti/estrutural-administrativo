@@ -55,9 +55,23 @@ class ManagerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $manager = Manager::create($request->all());
-        return response()->json($manager, 201);
+    {   
+
+        $manager = new Manager();
+        $manager->construction_id = $request->construction_id;
+        $manager->contract_id = $request->contract_id;
+        $manager->person_id_sms = $request->people_sms;
+        $manager->person_id_quality = $request->people_quality;
+        $manager->person_id_production = $request->people_production;
+        $manager->person_id_discipline = $request->people_discipline;
+
+        if($manager->save()) {
+            $this->addFlash('Gerentes inseridos com sucesso!', 'success');
+        } else {
+            $this->addFlash('Erro ao inserir gerentes da obra!', 'danger');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -86,12 +100,22 @@ class ManagerController extends Controller
      * @param  \App\Manager  $manager
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Manager $manager)
+    public function update(Request $request, $id)
     {
-        $manager = Manager::findOrFail($manager->id);
-        $manager->fill($request->all());
-        $manager->save();
-        return response()->json($manager, 200);
+        $manager = Manager::find($id);
+        $manager->contract_id = $request->contract_id;
+        $manager->person_id_sms = $request->people_sms;
+        $manager->person_id_quality = $request->people_quality;
+        $manager->person_id_production = $request->people_production;
+        $manager->person_id_discipline = $request->people_discipline;
+
+        if($manager->save()) {
+            $this->addFlash('Gerentes atualizados com sucesso!', 'success');
+        } else {
+            $this->addFlash('Erro ao atualizar gerentes da obra!', 'danger');
+        }
+
+        return redirect()->back();
     }
 
     /**
@@ -100,10 +124,21 @@ class ManagerController extends Controller
      * @param  \App\Manager  $manager
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Manager $manager)
+    public function destroy($id)
     {
-        $manager = Manager::findOrFail($manager->id);
-        $manager->delete();
-        return response()->json(null, 204);
+        if(Manager::where('contract_id', $id)->delete()) {
+            $this->addFlash('Gerentes removidos com sucesso!', 'success');
+        } else {
+            $this->addFlash('Erro ao remover gerentes da obra!', 'danger');
+        }
+
+        return redirect()->back();
+    }
+
+    public function get($id) {
+
+        $manager = Manager::find($id);
+
+        return response()->json($manager, 200);
     }
 }

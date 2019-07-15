@@ -38,10 +38,10 @@ Route::resources([
     'teams' => 'TeamController',
     'contracts' => 'ContractConstructionController',
     'gestao-obras' => 'ConstructionController',
-    'vacancy' => 'VacancyController',
+    'vagas' => 'VacancyController',
     'badgetrainings' => 'BadgeTrainingController',
     'badgeexams' => 'BadgeExamController',
-    'managers' => 'ManagerController',
+    'gerentes' => 'ManagerController',
     'grupos' => 'GroupController',
     'grouppeople' => 'GroupPersonController',
     'processo-seletivo' => 'ProcessController',
@@ -68,6 +68,7 @@ Route::get('/processo-seletivo/{processId}/grupos/{groupId}/edit', 'ProcessContr
 
 
 Route::post('/pessoas/getbycpf', 'PersonController@getByCpf');
+Route::get('/gerentes/get/{managerId}', 'ManagerController@get');
 
 
 /* // CONTRACTS
