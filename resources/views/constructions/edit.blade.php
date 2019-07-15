@@ -67,6 +67,11 @@
                 </div>
             </div>
         </div>
+        <div class="box-footer clearfix">
+            <button type="submit" class="btn btn-flat btn-success">
+                <i class="fa fa-floppy-o"></i> Salvar
+            </button>
+        </div>
     </div>
     <div class="box box-info">
         <div class="box-header with-border">
@@ -199,11 +204,6 @@
     </div>
     
         <!-- /.box-body -->
-        <div class="box-footer clearfix">
-            <button type="submit" class="btn btn-flat btn-success">
-                <i class="fa fa-floppy-o"></i> Salvar
-            </button>
-        </div>
     {!! Form::close() !!}
 
     <div class="modal fade" id="modal-vacancy" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -486,6 +486,8 @@
                     $('#contract_number').val('')
                     $('#add-vacancy').attr('disabled', true)
                     $('#add-vacancy').attr('title', 'Salve as alterações da obra para poder adicionar vagas')
+                    $('#add-manager').attr('disabled', true)
+                    $('#add-manager').attr('title', 'Salve as alterações da obra para poder adicionar responsáveis')
                 }
             })
 
