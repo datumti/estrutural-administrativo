@@ -123,6 +123,11 @@ return [
         ],
         ' ',
         [
+            'text' => 'Gestão de Obras',
+            'url'  => 'gestao-obras',
+            'icon' => 'wrench',
+        ],
+        [
             'text' => 'Processo Seletivo',
             'url'  => 'processo-seletivo',
             'icon' => 'user',
@@ -138,11 +143,6 @@ return [
             'icon' => 'history',
         ],
         ' ',
-        [
-            'text' => 'Gestão de Obras',
-            'url'  => 'gestao-obras',
-            'icon' => 'wrench',
-        ],
         [
             'text' => 'Cadastros',
             'url'  => 'cadastros',
