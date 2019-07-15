@@ -30,7 +30,7 @@
                     <label for="contract_number">Número do contrato</label>
                     <input type="number" class="form-control" name="" id="contract_number" style="width:148px">
                     <button class="btn btn-flat btn-warning" type="button" name="" id="add-contract"  style="width:148px">
-                        <i class="fa fa-plus"></i> 
+                        <i class="fa fa-plus"></i>
                     </button>
                 </div>
                 <div class="form-group col-md-2">
@@ -46,7 +46,7 @@
                                             </div>
                                             <div class="col-md-6 ">
                                                 <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-contract-delete" data-construction-id="{{$construction->id}}" data-contract-id="{{$contract->contract_id}}">
-                                                    <i class="fa fa-trash"></i> 
+                                                    <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
 
@@ -55,11 +55,11 @@
                                 @empty
                                     <h5 id="contract-empty" class="text-center"><i>nenhum contrato até o momento...</i></h5>
                                 @endforelse
-                            
+
                         </div>
-                        
-                    </div>                
-                    
+
+                    </div>
+
                 </div>
                 <div class="form-group col-md-4">
                     <label for="cut_grade">Nota de corte</label>
@@ -123,7 +123,7 @@
                                 </td>
                                 <td class="table-actions">
                                     <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-vacancy-delete" data-vacancy-id="{{$vacancy->id}}">
-                                        <i class="fa fa-trash"></i> 
+                                        <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -133,7 +133,7 @@
                                 <td colspan="6">
                                     nenhuma vaga cadastrada até o momento...
                                 </td>
-                            </tr>    
+                            </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -145,7 +145,7 @@
     <div class="box box-info">
     <div class="box-header with-border">
         <h3 class="box-title">Responsáveis</h3>&nbsp;
-    <button class="btn btn-flat btn-warning form-control pull-right" type="button" name="" id="add-manager"  data-toggle="modal" data-target="#modal-manager-add" data-construction-id="{{$construction->id}}" data-contract-id="{{$contract->contract_id}}" style="width:147px">
+        <button class="btn btn-flat btn-warning form-control pull-right" type="button" name="" id="add-manager"  data-toggle="modal" data-target="#modal-manager-add" data-construction-id="{{$construction->id}}" data-contract-id="" style="width:147px">
             <i class="fa fa-plus"></i> Adicionar
         </button>
     </div>
@@ -183,10 +183,10 @@
                             </td>
                             <td>
                                 <button type="button" class="btn btn-flat btn-info btn-xs" style="margin:2px 0 2px 5px" title="Editar" data-toggle="modal" data-target="#modal-manager-edit" data-manager-id="{{$manager->id}}">
-                                    <i class="fa fa-pencil"></i> 
+                                    <i class="fa fa-pencil"></i>
                                 </button>
                                 <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-manager-delete" data-construction-id="{{$manager->construction_id}}" data-contract-id="{{$manager->contract_id}}">
-                                    <i class="fa fa-trash"></i> 
+                                    <i class="fa fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
@@ -195,14 +195,14 @@
                             <td colspan="6">
                                 nenhum responsável até o momento...
                             </td>
-                        </tr>    
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
         <!-- /.table-responsive -->
     </div>
-    
+
         <!-- /.box-body -->
     {!! Form::close() !!}
 
@@ -290,7 +290,7 @@
             </div>
         </div>
     </div>
-  
+
     <div class="modal fade" id="modal-manager-add" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -401,7 +401,7 @@
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
@@ -411,7 +411,7 @@
         $('#modal-contract-delete').on('show.bs.modal', function(e) {
             var contract_id = $(e.relatedTarget).data('contract-id');
             var construction_id = $(e.relatedTarget).data('construction-id');
-            
+
             $(e.currentTarget).find('form').attr('action', '/contracts/'+contract_id);
             $(e.currentTarget).find('form').append(`<input type="hidden" name="construction_id" value="${construction_id}">`)
         });
@@ -430,14 +430,14 @@
 
         $('#modal-manager-edit').on('show.bs.modal', function(e) {
             var manager_id = $(e.relatedTarget).data('manager-id');
-            
+
             $.ajax({
                     type: "GET",
                     url: "/gerentes/get/"+manager_id,
-                    data: { 
+                    data: {
 
                     },
-                    dataType: "JSON", 
+                    dataType: "JSON",
                     beforeSend: function(){
 
                     },
@@ -476,7 +476,7 @@
                             </div>
                             <div class="col-md-6 ">
                                 <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-contract-delete">
-                                    <i class="fa fa-trash"></i> 
+                                    <i class="fa fa-trash"></i>
                                 </button>
                             </div>
                             <input type="hidden" name="contracts[]" value="${$('#contract_number').val()}">

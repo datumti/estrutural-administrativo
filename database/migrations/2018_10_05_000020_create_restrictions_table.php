@@ -17,7 +17,7 @@ class CreateRestrictionsTable extends Migration
             Schema::create('restrictions', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('people_id')->unsigned()->nullable();
-                $table->foreign('people_id')->references('id')->on('people');
+                //$table->foreign('people_id')->references('id')->on('people');
                 $table->text('description');
                 $table->timestamps();
             });
