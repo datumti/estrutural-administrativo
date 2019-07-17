@@ -32,7 +32,7 @@ class TimesheetController extends Controller
             $filter['start_time'] = $request->start_time;
             $filter['end_time'] = $request->end_time;
 
-            $timesheets = Timesheet::whereRaw($query)->get();
+            $timesheets = Timesheet::whereRaw($query)->orderBy('employee')->get();
 
             foreach($timesheets as $key => $ef) {
                 $effective[$ef->employee][] = $ef->time;
