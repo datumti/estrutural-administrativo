@@ -20,7 +20,7 @@ class CreateTimesheetsTable extends Migration
                 $table->date('date');
                 $table->string('time');
                 $table->integer('construction_id');
-                $table->foreign('construction_id')->references('id')->on('constructions');
+                //$table->foreign('construction_id')->references('id')->on('constructions');
                 $table->timestamps();
             });
         }
