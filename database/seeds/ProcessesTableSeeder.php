@@ -14,6 +14,7 @@ class ProcessesTableSeeder extends Seeder
     {
         DB::table('processes')->insert([ 'name' => 'Seleção Técnica', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ]);
         DB::table('processes')->insert([ 'name' => 'Seleção Psicológica', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ]);
+        DB::table('processes')->insert([ 'name' => 'FSA', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ]);
         DB::table('processes')->insert([ 'name' => 'Seleção Treinamento', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ]);
         DB::table('processes')->insert([ 'name' => 'Seleção Exame', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ]);
         DB::table('processes')->insert([ 'name' => 'Seleção Crachá', 'created_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s') ]);
