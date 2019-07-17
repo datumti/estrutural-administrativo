@@ -22,6 +22,7 @@ class TimesheetController extends Controller
         $filter['start_time'] = '';
         $filter['end_time'] = '';
 
+        //se filtragem
         if($request->date) {
             $date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
 
@@ -38,7 +39,14 @@ class TimesheetController extends Controller
                 $effective[$ef->employee][] = $ef->time;
             }
 
-            return view('effectives.list', compact('effective', 'filter'));
+        } else {
+            //default dia atual
+            $query = "YEAR(date) = YEAR(CURRENT_DATE()) AND MONTH(date) = MONTH(CURRENT_DATE()) AND DAY(date) = DAY(CURRENT_DATE())";
+            $timesheets = Timesheet::whereRaw($query)->orderBy('employee')->get();
+
+            foreach($timesheets as $key => $ef) {
+                $effective[$ef->employee][] = $ef->time;
+            }
         }
 
         return view('effectives.list', compact('effective', 'filter'));

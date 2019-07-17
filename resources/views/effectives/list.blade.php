@@ -154,29 +154,46 @@
         });
 
         $(function () {
+            var timeStart = moment().toDate();
+            timeStart.setHours(0);
+            timeStart.setMinutes(0);
+            timeStart.setSeconds(0);
+            timeStart.setMilliseconds(0);
+
+            var timeEnd = moment().toDate();
+            timeEnd.setHours(23);
+            timeEnd.setMinutes(59);
+            timeEnd.setSeconds(59);
+            timeEnd.setMilliseconds(0);
+
             $('#date').datetimepicker({
                 format: 'L',
                 locale: 'pt-BR',
                 widgetPositioning: {
                     vertical: 'auto',
                     horizontal: 'left'
-                }
+                },
+                defaultDate : moment()
             });
+
             $('#start_time').datetimepicker({
                 format: 'LT',
                 locale: 'pt-BR',
                 widgetPositioning: {
                     vertical: 'auto',
                     horizontal: 'left'
-                }
+                },
+                defaultDate: timeStart
             });
+
             $('#end_time').datetimepicker({
                 format: 'LT',
                 locale: 'pt-BR',
                 widgetPositioning: {
                     vertical: 'auto',
                     horizontal: 'left'
-                }
+                },
+                defaultDate: timeEnd
             });
         });
     </script>
