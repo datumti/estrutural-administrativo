@@ -17,11 +17,16 @@
       </div>
     {!! Form::open(['method' => 'post', 'route' => ['cargos.store']]) !!}
         <div class="box-body">
-            <div class="form-group col-md-7">
+            <div class="form-group col-md-6">
                 <label for="cpf">Nome</label>
                 {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
-            <div class="form-group col-md-7">
+            <div class="form-group col-md-4">
+                <label for="journey">Mão de obra</label><br>
+                {!! Form::radio('type', 'D') !!} Mão de obra direta &nbsp;&nbsp;
+                {!! Form::radio('type', 'I') !!} Mão de obra indireta
+            </div>
+            <div class="form-group col-md-10">
                 <label for="name">Descrição</label>
                 {!! Form::textarea('description', null, ['id' => 'description', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
@@ -38,10 +43,10 @@
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
 
-    
+
 @stop

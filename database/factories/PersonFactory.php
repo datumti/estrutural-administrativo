@@ -36,6 +36,7 @@ $factory->define(App\Models\Person::class, function (Faker $faker) {
         'pantsNumber' => $faker->randomNumber($nbDigits = 2, $strict = true),
         'shirtNumber' => $faker->randomNumber($nbDigits = 2, $strict = true),
         'markNumber' => $faker->randomNumber($nbDigits = 2, $strict = true),
-        'number' => $faker->randomNumber($nbDigits = 5, $strict = true)
+        'number' => $faker->randomNumber($nbDigits = 5, $strict = true),
+        'journey' => rand(1, 5)
     ];
 });

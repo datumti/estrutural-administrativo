@@ -20,6 +20,7 @@ class CreateJobsTable extends Migration
                 $table->text('description');
                 $table->string('crm');
                 $table->string('clinic');
+                $table->enum('type', ['D', 'I']);
                 $table->timestamps();
             });
         }

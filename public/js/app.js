@@ -6511,3 +6511,69 @@ headTemplate:'<thead><tr><th colspan="7" class="datepicker-title"></th></tr><tr>
 
     return $.fn.datetimepicker;
 }));
+
+function dateNum(v, date1904) {
+    if(date1904) v+=1462;
+    var epoch = Date.parse(v);
+    return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000);
+}
+
+function createSheet(data, opts) {
+    var ws = {};
+    var range = {s: {c:10000000, r:10000000}, e: {c:0, r:0 }};
+    for(var R = 0; R != data.length; ++R) {
+        for(var C = 0; C != data[R].length; ++C) {
+            if(range.s.r > R) range.s.r = R;
+            if(range.s.c > C) range.s.c = C;
+            if(range.e.r < R) range.e.r = R;
+            if(range.e.c < C) range.e.c = C;
+            var cell = {v: data[R][C] };
+            if(cell.v == null) continue;
+            var cell_ref = XLSX.utils.encode_cell({c:C,r:R});
+
+            if(typeof cell.v === 'number') cell.t = 'n';
+            else if(typeof cell.v === 'boolean') cell.t = 'b';
+            else if(cell.v instanceof Date) {
+                cell.t = 'n'; cell.z = XLSX.SSF._table[14];
+                cell.v = dateNum(cell.v);
+            }
+            else cell.t = 's';
+
+            ws[cell_ref] = cell;
+        }
+    }
+    if(range.s.c < 10000000) ws['!ref'] = XLSX.utils.encode_range(range);
+    return ws;
+}
+
+function Workbook() {
+    if(!(this instanceof Workbook)) return new Workbook();
+    this.SheetNames = [];
+    this.Sheets = {};
+}
+
+function string2ArrayBuffer(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+}
+
+function export2xlsx (data, name) {
+    var wb = new Workbook(),
+        ws = createSheet(data);
+
+    wb.SheetNames.push(name);
+    wb.Sheets[name] = ws;
+
+    var wopts = { bookType:'xlsx', bookSST:false, type:'binary' };
+    var wbout = XLSX.write(wb,wopts);
+
+    saveAs(new Blob([string2ArrayBuffer(wbout)],
+            {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}),
+        name + ".xlsx");
+}
+
+
+
+(function(a){a.fn.tableExport=function(c){var e=a.extend({},a.fn.tableExport.defaults,c),f='"'+e.separator+'"',d='"\r\n"',g=e.spacing?"btn-toolbar":"",b="."+e.defaultClass;return[this.each(function(){var p=a(this),o=e.headings?p.find("tr"):p.find("tr:has(td)"),m='"'+o.map(function(r,s){var q=a(s).find("th, td");return q.map(function(t,u){return a(u).text().replace(/"/g,'""')}).get().join(f)}).get().join(d)+'"',i=o.map(function(r,s){var q=a(s).find("th, td");return q.map(function(t,u){return a(u).text()})}).get(),n="#",j="",k=e.fileName,l=p.find("caption:not(.head)");switch(k){case"id":k=p.attr("id");break;case"name":k=p.data("name");break}switch(e.type){case"xlsx":j=JSON.stringify({data:i,name:k});break;case"csv":default:n="data:text/csv;charset=utf-8,"+encodeURIComponent(m);k+=".csv";break;case"txt":m=a.fn.tableExport.txtFormat(m,e.stripQuotes);n="data:text/plain;charset=utf-8,"+encodeURIComponent(m);k+=".txt";break}var h="<a href='"+n+"' data-obj='"+j+"' download='"+k+"' role='button' class='"+e.defaultClass+" "+e.defaultTheme+" "+e.addClass+"'>"+e.buttonContent+"</a>";l.length?l.append(h):p.prepend('<caption class="'+g+" "+e.position+'">'+h+"</caption>")}),a.fn.tableExport.addEvent(b)]};a.fn.tableExport.defaults={separator:",",headings:true,buttonContent:"Export",addClass:"",defaultClass:"btn",defaultTheme:"btn-default",type:"csv",fileName:"export",position:"bottom",spacing:true,stripQuotes:true};a.fn.tableExport.txtFormat=function(b,c){if(c){return b.replace(/"(?!")/g,"")}return b.replace(/""/g,'"')};a.fn.tableExport.addEvent=function(b){return[a(b).off("click"),a(b).on("click",function(d){if(a(this).data("obj")){d.preventDefault();var c=a(this).data("obj"),g=c.data,f=c.name;export2xlsx(g,f)}})]}}(jQuery));

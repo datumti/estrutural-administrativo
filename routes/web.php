@@ -53,6 +53,7 @@ Route::resources([
 ]);
 
 Route::post('efetivo-diario/search', 'TimesheetController@search')->name('efetivo-diario.search');
+Route::post('efetivo-diario/export', 'TimesheetController@eexport')->name('efetivo-diario.export');
 
 /* Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');
 Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');

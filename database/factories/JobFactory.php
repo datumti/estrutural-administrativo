@@ -7,6 +7,7 @@ $factory->define(App\Models\Job::class, function (Faker $faker) {
         'name' => $faker->jobTitle,
         'description' => $faker->sentence($nbWords = 6, $variableNbWords = true),
         'crm' => rand(1,8),
-        'clinic' => $faker->company
+        'clinic' => $faker->company,
+        'type' => 'D'
     ];
 });

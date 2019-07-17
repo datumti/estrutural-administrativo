@@ -21,7 +21,7 @@
                     <label for="name">Nome</label>
                     {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control']) !!}
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                     <label for="cpf">CPF</label>
                     {!! Form::text('cpf', null, ['id' => 'cpf', 'class' => 'form-control']) !!}
                 </div>

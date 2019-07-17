@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Timesheet;
 use Illuminate\Http\Request;
-use DB;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\File;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TimesheetExport;
 
 class TimesheetController extends Controller
 {
@@ -17,40 +15,41 @@ class TimesheetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($query = null, $params = null)
+    public function index(Request $request)
     {
-        $filter['date'] = $params['date'];
-        $filter['start_time'] = $params['start_time'];
-        $filter['end_time'] = $params['end_time'];
-
-        if ($query == null) $query = "YEAR(date) = YEAR(CURRENT_DATE()) AND MONTH(date) = MONTH(CURRENT_DATE())";
-
-        $timesheets = Timesheet::whereRaw($query)->get();
-
         $effective = [];
-        foreach($timesheets as $key => $ef) {
-            $effective[$ef->employee][] = $ef->time;
+        $filter['date'] = '';
+        $filter['start_time'] = '';
+        $filter['end_time'] = '';
+
+        if($request->date) {
+            $date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
+
+            $query = "date = '" . $date . "'";
+            $query = $query . " AND time >= '" . $request->start_time . "' AND time <= '" . $request->end_time . "'" ;
+
+            $filter['date'] = $request->date;
+            $filter['start_time'] = $request->start_time;
+            $filter['end_time'] = $request->end_time;
+
+            $timesheets = Timesheet::whereRaw($query)->get();
+
+            foreach($timesheets as $key => $ef) {
+                $effective[$ef->employee][] = $ef->time;
+            }
+
+            return view('effectives.list', compact('effective', 'filter'));
         }
 
         return view('effectives.list', compact('effective', 'filter'));
 
     }
 
-    public function search(Request $request) {
-
-        $validateData = $request->validate([
-            'date' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required'
-        ]);
-
-        $date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
-
-        $query = "date = '" . $date . "'";
-        $query = $query . " AND time >= '" . $request->start_time . "' AND time <= '" . $request->end_time . "'" ;
-
-        return $this->index($query, $request->all());
+    public function export()
+    {
+        return Excel::download(new TimesheetExport, 'timesheet.xlsx');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -60,7 +59,6 @@ class TimesheetController extends Controller
      */
     public function store(Request $request)
     {
-
         $validateData = $request->validate([
             'file' => 'required'
         ]);
@@ -86,6 +84,7 @@ class TimesheetController extends Controller
             $timesheet->employee = $employee;
             $timesheet->date = $date;
             $timesheet->time = $time;
+            $timesheet->construction_id = 1;
             $timesheet->save();
         }
 
@@ -107,8 +106,6 @@ class TimesheetController extends Controller
     {
         /* $timesheet = Timesheet::find($timesheet->id);
         return response()->json($timesheet, 200); */
-
-
 
     }
 

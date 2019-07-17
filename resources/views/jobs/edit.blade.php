@@ -19,11 +19,16 @@
     {!! Form::model($job,['method' => 'put', 'route' => ['cargos.update', $job->id]]) !!}
         <input type="hidden" name="status" value="1">
         <div class="box-body">
-            <div class="form-group col-md-7">
+            <div class="form-group col-md-6">
                 <label for="name">Nome</label>
                 {!! Form::text('name', $job->name, ['id' => 'name', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
-            <div class="form-group col-md-7">
+            <div class="form-group col-md-4">
+                    <label for="journey">Mão de obra</label><br>
+                    {!! Form::radio('type', 'D') !!} Mão de obra direta &nbsp;&nbsp;
+                    {!! Form::radio('type', 'I') !!} Mão de obra indireta
+                </div>
+            <div class="form-group col-md-10">
                 <label for="name">Descrição</label>
                 {!! Form::textarea('description', $job->description, ['id' => 'description', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
@@ -40,10 +45,10 @@
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
 
-   
+
 @stop

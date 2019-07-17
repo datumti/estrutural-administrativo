@@ -26,6 +26,7 @@
         "eonasdan-bootstrap-datetimepicker": "^4.17.47",
         "inputmask": "^4.0.8",
         "moment": "^2.24.0",
-        "requirejs": "^2.3.6"
+        "requirejs": "^2.3.6",
+        "tableexport": "^5.2.0"
     }
 }
