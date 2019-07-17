@@ -19,9 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('efetivo-diario', function(){
-    return view('effectives.list');
-});
 
 Route::get('relatorios', function(){
     return view('reports.list');
@@ -49,11 +46,13 @@ Route::resources([
     'badges' => 'BadgeController',
     'fsas' => 'FsaController',
     'restricoes' => 'RestrictionController',
-    'timesheets' => 'TimesheetController',
+    'efetivo-diario' => 'TimesheetController',
     'resignations' => 'ResignationController',
     'profiles' => 'ProfileController',
     'cadastros' => 'RegistrationController'
 ]);
+
+Route::post('efetivo-diario/search', 'TimesheetController@search')->name('efetivo-diario.search');
 
 /* Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');
 Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');
@@ -77,7 +76,7 @@ Route::get('/contracts/construction/{id}', 'ContractConstructionController@showB
 // STATUSES
 Route::get('/statuses/group/psico', 'StatusController@psico');
 Route::get('/statuses/group/all', 'StatusController@group');
-  
+
 // CONSTRUCTIONS
 Route::get('/constructions/{id}/changestatus', 'ConstructionController@changeStatus');
 Route::get('/construction/{constructionId}/people/cpf/{cpf}/process/{process}', 'PersonController@showByCpf');
@@ -142,6 +141,6 @@ Route::post('/resignations/evaluation', 'ResignationController@storeEvaluations'
 Route::post('/resignations/dismiss', 'ResignationController@dismiss');
 Route::post('/resignations/transfer/construction/{id}', 'ResignationController@transfer');
 
-Route::post('/access/getall', 'PermissionProfileController@getAll');	
-Route::get('/access/getall/{id}/{user}', 'PermissionProfileController@getAll');	
+Route::post('/access/getall', 'PermissionProfileController@getAll');
+Route::get('/access/getall/{id}/{user}', 'PermissionProfileController@getAll');
 Route::get('/reports/{id}', 'ReportController@report'); */

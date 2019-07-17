@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Timesheet;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
+use Illuminate\Support\Carbon;
 
 class TimesheetController extends Controller
 {
@@ -13,55 +17,39 @@ class TimesheetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($query = null)
+    public function index($query = null, $params = null)
     {
+        $filter['date'] = $params['date'];
+        $filter['start_time'] = $params['start_time'];
+        $filter['end_time'] = $params['end_time'];
+
         if ($query == null) $query = "YEAR(date) = YEAR(CURRENT_DATE()) AND MONTH(date) = MONTH(CURRENT_DATE())";
+
         $timesheets = Timesheet::whereRaw($query)->get();
-        $times = array();
-        foreach ($timesheets as $ts) {
-            $times[$ts->employee] = [];
+
+        $effective = [];
+        foreach($timesheets as $key => $ef) {
+            $effective[$ef->employee][] = $ef->time;
         }
-        foreach ($timesheets as $ts) {
-            $times[$ts->employee][$ts->date] = [];
-        }
-        foreach ($timesheets as $ts) {
-            array_push($times[$ts->employee][$ts->date], $ts->time);
-            sort($times[$ts->employee][$ts->date]);
-        }
-        $responseTimes = array();
-        foreach ($times as $key => $t) {
-            $dates = array();
-            foreach ($t as $day => $time) {
-                $date = new \stdClass();
-                $date->date = $day;
-                $date->times = $time;
-                array_push($dates, $date);
-            }
-            array_push($responseTimes, [
-                'employee' => $key,
-                'dates' => $dates
-            ]);
-        }
-        return response()->json($responseTimes, 200);
+
+        return view('effectives.list', compact('effective', 'filter'));
+
     }
 
-    /**
-     * Search the resources by range filter.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(Request $request)
-    {
-        $query = "";
-        if ($request->start_date != 'Invalid date') {
-            $query = $query . "date >= '" . $request->start_date . "'";
-            if ($request->end_date != 'Invalid date') $query = $query . ' AND ';
-        }
-        if ($request->end_date != 'Invalid date') {
-            $query = $query . "date <= '" . $request->end_date . "'";
-        }
-        return $this->index($query);
+    public function search(Request $request) {
+
+        $validateData = $request->validate([
+            'date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required'
+        ]);
+
+        $date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
+
+        $query = "date = '" . $date . "'";
+        $query = $query . " AND time >= '" . $request->start_time . "' AND time <= '" . $request->end_time . "'" ;
+
+        return $this->index($query, $request->all());
     }
 
     /**
@@ -72,9 +60,42 @@ class TimesheetController extends Controller
      */
     public function store(Request $request)
     {
-        $timesheet = Timesheet::create($request->all());
-        return response()->json($timesheet, 201);
+
+        $validateData = $request->validate([
+            'file' => 'required'
+        ]);
+
+        $realpath = $request->file('file')->getRealPath();
+        $file = file($realpath);
+
+        $deleted = false;
+
+        foreach($file as $row) {
+            $employee = substr($row, 0, 6);
+            $date = Carbon::createFromFormat('dmy', substr($row, 6, 6), null)->format('Y-m-d');
+            $time = Carbon::createFromFormat('Hi', substr($row, 12, 4), null)->format('H:i');
+
+            if(!$deleted) {
+                if(Timesheet::where('date', $date)->count()) {
+                    Timesheet::where('date', $date)->delete();
+                    $deleted = true;
+                }
+            }
+
+            $timesheet = new Timesheet();
+            $timesheet->employee = $employee;
+            $timesheet->date = $date;
+            $timesheet->time = $time;
+            $timesheet->save();
+        }
+
+        $this->addFlash('Importação efetuada com sucesso!', 'success');
+
+        return redirect()->back();
     }
+
+
+
 
     /**
      * Display the specified resource.
@@ -84,8 +105,11 @@ class TimesheetController extends Controller
      */
     public function show(Timesheet $timesheet)
     {
-        $timesheet = Timesheet::find($timesheet->id);
-        return response()->json($timesheet, 200);
+        /* $timesheet = Timesheet::find($timesheet->id);
+        return response()->json($timesheet, 200); */
+
+
+
     }
 
     /**
@@ -116,33 +140,5 @@ class TimesheetController extends Controller
         return response()->json(null, 204);
     }
 
-    /**
-     * Imports timesheet file to database.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function importTimesheetFile(Request $request)
-    {
-        foreach ($request->input() as $row) {
-            if ($row != null) {
-                $employee = $row[5].$row[6].$row[7].$row[8].$row[9];
-                
-                $date = $row[10].$row[11].$row[12].$row[13].$row[14].$row[15];
-                $date = str_split($date);
-                $date = '20'.$date[4].$date[5].'-'.$date[2].$date[3].'-'.$date[0].$date[1];
-                
-                $time = $row[16].$row[17].$row[18].$row[19];
-                $time = str_split($time);
-                $time = $time[0].$time[1].':'.$time[2].$time[3];
-                
-                $timesheet = new Timesheet;
-                $timesheet->employee = $employee;
-                $timesheet->date = $date;
-                $timesheet->time = $time;
-                $timesheet->save();
-            }
-        }
-        return response()->json($request->input(), 200);
 
-    }
 }

@@ -23,7 +23,9 @@
         "bootstrap-datepicker": "^1.9.0",
         "datepicker": "0.0.0",
         "daterangepicker": "^3.0.5",
+        "eonasdan-bootstrap-datetimepicker": "^4.17.47",
         "inputmask": "^4.0.8",
+        "moment": "^2.24.0",
         "requirejs": "^2.3.6"
     }
 }
