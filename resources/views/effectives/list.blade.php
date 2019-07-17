@@ -21,8 +21,9 @@
                 <input type="file" name="file" id="file" class="form-control">
             </div>
             <div class="form-group col-md-1">
-                <label for="">&nbsp;</label>
-                <button href="" class="btn btn-warning pull-right" href="#">
+                <label for="importar">&nbsp;</label>
+                <br>
+                <button href="" class="btn btn-warning pull-right" href="#" id="importar">
                     <i class="fa fa-plus"></i> Importar
                 </button>
             </div>
@@ -43,11 +44,11 @@
                     <label for="date">Data</label>
                 <input type="text" name="date" id="date" class="form-control" value="{{$filter['date']}}">
                 </div>
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-2">
                     <label for="date">Hora inicial</label>
                 <input type="text" name="start_time" id="start_time" class="form-control" value="{{$filter['start_time']}}">
                 </div>
-                <div class="form-group col-md-1">
+                <div class="form-group col-md-2">
                     <label for="date">Hora final</label>
                 <input type="text" name="end_time" id="end_time" class="form-control" value="{{$filter['end_time']}}">
                 </div>
