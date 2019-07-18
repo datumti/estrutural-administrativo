@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TimesheetExport;
+use App\Exports\TimesheetViewExport;
+use App\Models\Job;
+use App\Models\Construction;
 
 class TimesheetController extends Controller
 {
@@ -39,6 +42,12 @@ class TimesheetController extends Controller
                 $effective[$ef->employee][] = $ef->time;
             }
 
+            $construction = $request->session()->get('construction');
+
+            $construction = $construction::with('vacancy.job')->with('job')->first();
+
+            Excel::store(new TimesheetViewExport($filter, $construction), rand(1, 99).'.xlsx');
+
         } else {
             //default dia atual
             $query = "YEAR(date) = YEAR(CURRENT_DATE()) AND MONTH(date) = MONTH(CURRENT_DATE()) AND DAY(date) = DAY(CURRENT_DATE())";
@@ -55,7 +64,7 @@ class TimesheetController extends Controller
 
     public function export()
     {
-        return Excel::download(new TimesheetExport, 'timesheet.xlsx');
+        return Excel::store(new TimesheetExport, 'timesheet.xlsx');
     }
 
 

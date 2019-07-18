@@ -2,12 +2,12 @@
 
 namespace App\Exports;
 
-use App\Models\Timesheet;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Models\Construction;
+use Maatwebsite\Excel\Concerns\FromView;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 
-class TimesheetExport implements FromCollection, WithHeadings
+class TimesheetViewExport implements FromView
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -22,12 +22,11 @@ class TimesheetExport implements FromCollection, WithHeadings
         $this->construction = $construction;
     }
 
-    public function collection()
+    public function view(): View
     {
 
+        return view('exports.timesheet', ['construction' => $this->construction]);
 
-
-        return $this->timesheets;
     }
 
     public function headings(): array

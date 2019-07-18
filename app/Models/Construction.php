@@ -19,4 +19,9 @@ class Construction extends Model
     public function manager() {
         return $this->hasMany(Manager::class);
     }
+
+    public function job() {
+        return $this->hasManyThrough(Job::class, Vacancy::class, 'job_id', 'id');
+    }
+
 }
