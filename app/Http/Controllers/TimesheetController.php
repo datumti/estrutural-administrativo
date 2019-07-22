@@ -44,6 +44,11 @@ class TimesheetController extends Controller
 
             $construction = $request->session()->get('construction');
 
+            if(!$construction) {
+                $this->addFlash('Você deve selecionar uma obra para pesquisar seu efetivo!', 'info');
+                return redirect()->route('home');
+            }
+
             $construction = $construction::with('vacancy.job')->with('job')->first();
 
             Excel::store(new TimesheetViewExport($filter, $construction), rand(1, 99).'.xlsx');
@@ -76,8 +81,15 @@ class TimesheetController extends Controller
      */
     public function store(Request $request)
     {
+        $construction = $request->session()->get('construction');
+
+        if(!$construction) {
+            $this->addFlash('Você deve selecionar uma obra para importar seu efetivo!', 'info');
+            return redirect()->route('home');
+        }
+
         $validateData = $request->validate([
-            'file' => 'required'
+            'file' => 'required|mimes:txt'
         ]);
 
         $realpath = $request->file('file')->getRealPath();
@@ -86,27 +98,31 @@ class TimesheetController extends Controller
         $deleted = false;
 
         foreach($file as $row) {
-            $employee = substr($row, 0, 6);
-            $date = Carbon::createFromFormat('dmy', substr($row, 6, 6), null)->format('Y-m-d');
-            $time = Carbon::createFromFormat('Hi', substr($row, 12, 4), null)->format('H:i');
+            if($row != '') {
+                $employee = substr($row, 0, 6);
+                $date = Carbon::createFromFormat('dmy', substr($row, 6, 6), null)->format('Y-m-d');
+                $time = Carbon::createFromFormat('Hi', substr($row, 12, 4), null)->format('H:i');
 
-            if(!$deleted) {
-                if(Timesheet::where('date', $date)->count()) {
-                    Timesheet::where('date', $date)->delete();
-                    $deleted = true;
+                if(!$deleted) {
+                    if(Timesheet::where('date', $date)->count()) {
+                        Timesheet::where('date', $date)->delete();
+                        $deleted = true;
+                    }
                 }
-            }
 
-            $timesheet = new Timesheet();
-            $timesheet->employee = $employee;
-            $timesheet->date = $date;
-            $timesheet->time = $time;
-            $timesheet->construction_id = 1;
-            $timesheet->save();
+                $timesheet = new Timesheet();
+                $timesheet->employee = $employee;
+                $timesheet->date = $date;
+                $timesheet->time = $time;
+                $timesheet->construction_id = 1;
+                $timesheet->save();
+            } else {
+                $this->addFlash('Erro ao importar arquivo', 'danger');
+                return redirect()->back();
+            }
         }
 
         $this->addFlash('Importação efetuada com sucesso!', 'success');
-
         return redirect()->back();
     }
 

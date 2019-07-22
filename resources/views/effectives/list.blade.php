@@ -20,10 +20,14 @@
                     <label for="file">Arquivo</label>
                     <input type="file" name="file" id="file" class="form-control">
                 </div>
+                {{-- <div class="form-group col-md-1">
+                    <label for="importar">&nbsp;</label>
+                    <i class="fa fa-info"></i>
+                </div> --}}
                 <div class="form-group col-md-1">
                     <label for="importar">&nbsp;</label>
                     <br>
-                    <button class="btn btn-warning pull-right" href="#" id="importar">
+                    <button class="btn btn-warning" href="#" id="importar">
                         <i class="fa fa-plus"></i> Importar
                     </button>
                 </div>
