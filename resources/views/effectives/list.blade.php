@@ -28,7 +28,7 @@
                     <label for="importar">&nbsp;</label>
                     <br>
                     <button class="btn btn-warning" href="#" id="importar">
-                        <i class="fa fa-plus"></i> Importar
+                        <i class="fa fa-upload"></i> Importar
                     </button>
                 </div>
             {!! Form::close() !!}
@@ -58,10 +58,16 @@
                 </div>
                 <div class="form-group col-md-1">
                     <label for="">&nbsp;</label>
-                    <button href="" class="btn btn-warning pull-right" href="#">
+                    <button href="" class="btn btn-warning pull-right" href="#" title="Pesquisar">
                         <i class="fa fa-search"></i> Pesquisar
                     </button>
                 </div>
+               {{--  <div class="form-group col-md-1">
+                    <label for="">&nbsp;</label>
+                <button href="" class="btn btn-info pull-right" href="{{route('efetivo-diario.export', $fileName)}}" title="{{$filter['date'] == '' ? 'Pesquise para habilitar a exportação' : 'Exportar'}}" {{($filter['date'] == '' ? 'disabled' : '')}}>
+                        <i class="fa fa-download"></i> Exportar
+                    </button>
+                </div> --}}
             {!! Form::close() !!}
             <div class="form-group col-md-12">
                 <div class="table-responsive">
@@ -113,7 +119,7 @@
 
     <script>
 
-        $(document).ready( function () {
+      /*   $(document).ready( function () {
 
             $(".table").tableExport({
 
@@ -156,7 +162,7 @@
                 });
 
         });
-
+ */
         $(function () {
             var timeStart = moment().toDate();
             timeStart.setHours(0);

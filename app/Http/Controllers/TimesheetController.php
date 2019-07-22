@@ -24,6 +24,7 @@ class TimesheetController extends Controller
         $filter['date'] = '';
         $filter['start_time'] = '';
         $filter['end_time'] = '';
+        $fileName = '';
 
         //se filtragem
         if($request->date) {
@@ -43,9 +44,16 @@ class TimesheetController extends Controller
             }
 
             $construction = $this->getCheckConstruction('Você deve selecionar uma obra para pesquisar seu efetivo!', 'info');
-            $construction = $construction::with('vacancy.job')->with('job')->first();
 
-            Excel::store(new TimesheetViewExport($filter, $construction), rand(1, 99).'.xlsx');
+            $report = new TimesheetViewExport($filter, $construction);
+            $fileName = str_replace('/', '', $filter['date']).'.xlsx';
+
+            Excel::store($report, $fileName);
+            //Excel::download($report, storage_path().'/app/'.$fileName);
+            return response()->download(storage_path().'/app/'.$fileName, $fileName, [
+                'Content-Type' => 'application/vnd.ms-excel',
+                'Content-Disposition' => "attachment; filename='".$fileName."'"
+           ]);
 
         } else {
             //default dia atual
@@ -57,13 +65,15 @@ class TimesheetController extends Controller
             }
         }
 
-        return view('effectives.list', compact('effective', 'filter'));
+        return view('effectives.list', compact('effective', 'filter', 'fileName'));
 
     }
 
-    public function export()
+    public function export($fileName)
     {
-        return Excel::store(new TimesheetExport, 'timesheet.xlsx');
+//dd($fileName);
+
+
     }
 
 

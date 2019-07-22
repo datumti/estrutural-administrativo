@@ -20,7 +20,9 @@
                     </div>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                         <div class="card-body">
-                            <a href="{{route('gestao-pessoas.create')}}" class="btn btn-warning">Adicionar</a>
+                            <a href="{{route('gestao-pessoas.create')}}" class="btn btn-warning">
+                                <i class="fa fa-plus"></i> Adicionar</a>
+                            </a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>
@@ -59,7 +61,9 @@
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                         <div class="card-body">
-                            <a href="{{route('cargos.create')}}" class="btn btn-warning">Adicionar</a>
+                            <a href="{{route('cargos.create')}}" class="btn btn-warning">
+                                <i class="fa fa-plus"></i> Adicionar</a>
+                            </a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>
@@ -94,7 +98,9 @@
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                         <div class="card-body">
-                            <a href="{{route('treinamentos.create')}}" class="btn btn-warning">Adicionar</a>
+                            <a href="{{route('treinamentos.create')}}" class="btn btn-warning">
+                                <i class="fa fa-plus"></i> Adicionar</a>
+                            </a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>
@@ -130,7 +136,8 @@
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                         <div class="card-body">
-                            <a href="{{route('exames.create')}}" class="btn btn-warning">Adicionar</a>
+                            <a href="{{route('exames.create')}}" class="btn btn-warning">
+                                    <i class="fa fa-plus"></i> Adicionar</a>
                             <div class="table-responsive">
                                 <table class="table no-margin">
                                     <thead>

@@ -8,6 +8,8 @@ class Construction extends Model
 {
     protected $fillable = ['name', 'status', 'cut_grade'];
 
+    protected $with = ['contract', 'vacancy', 'job'];
+
     public function contract() {
         return $this->hasMany(ContractConstruction::class);
     }

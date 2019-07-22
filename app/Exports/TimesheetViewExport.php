@@ -6,8 +6,9 @@ use App\Models\Construction;
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class TimesheetViewExport implements FromView
+class TimesheetViewExport implements FromView, ShouldAutoSize
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -25,7 +26,7 @@ class TimesheetViewExport implements FromView
     public function view(): View
     {
 
-        return view('exports.timesheet', ['construction' => $this->construction]);
+        return view('exports.timesheet', ['construction' => $this->construction, 'filter' => $this->filter]);
 
     }
 

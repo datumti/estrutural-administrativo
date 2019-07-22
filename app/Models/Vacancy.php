@@ -9,6 +9,8 @@ class Vacancy extends Model
     protected $table = 'vacancies';
     protected $fillable = ['construction_id', 'number', 'contract_id', 'job_id', 'quality_vacancy'];
 
+    protected $with = ['job'];
+
     public function construction()
     {
         return $this->hasOne('App\Models\Construction');
