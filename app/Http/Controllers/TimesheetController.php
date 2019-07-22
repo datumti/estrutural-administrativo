@@ -48,12 +48,12 @@ class TimesheetController extends Controller
             $report = new TimesheetViewExport($filter, $construction);
             $fileName = str_replace('/', '', $filter['date']).'.xlsx';
 
-            Excel::store($report, $fileName);
+            //Excel::store($report, $fileName);
             //Excel::download($report, storage_path().'/app/'.$fileName);
-            return response()->download(storage_path().'/app/'.$fileName, $fileName, [
+            /* return response()->download(storage_path().'/app/'.$fileName, $fileName, [
                 'Content-Type' => 'application/vnd.ms-excel',
                 'Content-Disposition' => "attachment; filename='".$fileName."'"
-           ]);
+           ]); */
 
         } else {
             //default dia atual
