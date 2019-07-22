@@ -38,7 +38,7 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         $exam = Exam::create($request->all());
-            
+
         $this->addFlash('Exame criado com sucesso!', 'success');
         return redirect()->route('exames.edit', $exam->id);
     }
@@ -62,11 +62,11 @@ class ExamController extends Controller
      * @param  \App\Exam  $exam
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Exam $exam)
+    public function update(Request $request, $id)
     {
-        $exam = Exam::findOrFail($exam->id);
+        $exam = Exam::findOrFail($id);
         $exam->fill($request->all());
-        
+
         if ($exam->save()) {
             $this->addFlash('Exame criado com sucesso!', 'success');
             return redirect()->route('exames.edit', $exam->id);

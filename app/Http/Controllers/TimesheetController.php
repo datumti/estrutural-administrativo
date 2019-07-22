@@ -42,13 +42,7 @@ class TimesheetController extends Controller
                 $effective[$ef->employee][] = $ef->time;
             }
 
-            $construction = $request->session()->get('construction');
-
-            if(!$construction) {
-                $this->addFlash('Você deve selecionar uma obra para pesquisar seu efetivo!', 'info');
-                return redirect()->route('home');
-            }
-
+            $construction = $this->getCheckConstruction('Você deve selecionar uma obra para pesquisar seu efetivo!', 'info');
             $construction = $construction::with('vacancy.job')->with('job')->first();
 
             Excel::store(new TimesheetViewExport($filter, $construction), rand(1, 99).'.xlsx');
@@ -81,12 +75,7 @@ class TimesheetController extends Controller
      */
     public function store(Request $request)
     {
-        $construction = $request->session()->get('construction');
-
-        if(!$construction) {
-            $this->addFlash('Você deve selecionar uma obra para importar seu efetivo!', 'info');
-            return redirect()->route('home');
-        }
+        $construction = $this->getCheckConstruction('Você deve selecionar uma obra para importar seu efetivo!', 'info');
 
         $validateData = $request->validate([
             'file' => 'required|mimes:txt'
@@ -114,7 +103,7 @@ class TimesheetController extends Controller
                 $timesheet->employee = $employee;
                 $timesheet->date = $date;
                 $timesheet->time = $time;
-                $timesheet->construction_id = 1;
+                $timesheet->construction_id = $construction->id;
                 $timesheet->save();
             } else {
                 $this->addFlash('Erro ao importar arquivo', 'danger');

@@ -38,8 +38,8 @@
                                                 <td>{{$people->cpf}}</td>
                                                 <td>{{$people->cpf}}</td>
                                                 <td class="table-actions">
-                                                    <a href="{{route('gestao-pessoas.edit', $people->id)}}" class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></a> 
-                                                    <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button> 
+                                                    <a href="{{route('gestao-pessoas.edit', $people->id)}}" class="btn btn-info" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                    <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -73,8 +73,8 @@
                                             <tr>
                                                 <td>{{$job->name}}</td>
                                                 <td class="table-actions">
-                                                    <button class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></button> 
-                                                    <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button> 
+                                                    <a href="{{route('cargos.edit', $job->id)}}" class="btn btn-info" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                    <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -109,8 +109,8 @@
                                                 <td>{{$training->name}}</td>
 
                                                 <td class="table-actions">
-                                                    <a href="{{route('treinamentos.edit', $training->id)}}" class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></a> 
-                                                    <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button> 
+                                                    <a href="{{route('treinamentos.edit', $training->id)}}" class="btn btn-info" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                    <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -144,8 +144,8 @@
                                             <tr>
                                                 <td>{{$exam->name}}</td>
                                                 <td class="table-actions">
-                                                    <a href="{{route('exames.edit', $exam->id)}}" class="btn btn-primary" title="Visualizar"><i class="fa fa-eye"></i></a> 
-                                                    <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button> 
+                                                    <a href="{{route('exames.edit', $exam->id)}}" class="btn btn-info" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                    <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -158,11 +158,11 @@
             </div>
         </div>
     </div>
-    
+
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
@@ -172,6 +172,6 @@
                 "dom": "bfrtip",
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
             });
-        } );        
+        } );
     </script>
 @stop

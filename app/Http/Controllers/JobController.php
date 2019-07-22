@@ -71,16 +71,16 @@ class JobController extends Controller
      * @param  \App\Job  $job
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Job $job)
+    public function update(Request $request, $id)
     {
-        $job = Job::findOrFail($job->id);
+        $job = Job::findOrFail($id);
         $job->fill($request->all());
-        
+
         if ($job->save()) {
-            $this->addFlash('Cargo criado com sucesso!', 'success');
+            $this->addFlash('Cargo atualizado com sucesso!', 'success');
             return redirect()->route('cargos.edit', $job->id);
         } else {
-            $this->addFlash('Erro ao criar cargo!', 'warning');
+            $this->addFlash('Erro ao atualizar cargo!', 'warning');
             return redirect()->back()->withInputs();
         }
 

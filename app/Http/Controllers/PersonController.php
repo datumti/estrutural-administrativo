@@ -25,7 +25,7 @@ class PersonController extends Controller
     {
 
         $peoples = Person::all();
-    
+
         return view('persons.list', compact('peoples'));
     }
 
@@ -326,9 +326,9 @@ class PersonController extends Controller
             }
         }
         $resources = array(
-            'person' => $person, 
-            'jobs' => $jobs, 
-            'evaluation' => $groupPeople, 
+            'person' => $person,
+            'jobs' => $jobs,
+            'evaluation' => $groupPeople,
             'attachments' => $attachmentsArray,
             'profiles' => $profiles
         );
@@ -377,7 +377,7 @@ class PersonController extends Controller
         $person->email = $request->email;
         if ($request->password != null && $request->password != '') $person->password = $request->password;
         $person->profile_id = $request->profile;
-        
+
         if ($person->save()) {
             $this->addFlash('Pessoa criada com sucesso!', 'success');
             return redirect()->back();
@@ -432,43 +432,46 @@ class PersonController extends Controller
      * @param  \App\Person  $person
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Person $person)
+    public function update(Request $request, $id)
     {
 
         $validatedData = $request->validate([
             'name' => 'required',
             'job' => 'required|gt:0',
             'profile' => 'required|gt:0',
-            'email' => 'required|email|unique:people',
+            'email' => 'required|email',
         ]);
 
-        $person = Person::findOrFail($person->id);
+        $person = Person::find($id);
         $person->name = $request->name;
         $person->cpf = $request->cpf;
         $person->job_id = $request->job;
         $person->ctps = $request->ctps;
         $person->rg = $request->rg;
-        $person->phoneMobile = $request->phoneMobile;
-        $person->mobileAlternative = $request->mobileAlternative;
-        $request->birthDate != null ? $person->birthDate = explode("T", $request->birthDate)[0] : null;
+        $person->phoneMobile = $request->phone_mobile;
+        $person->mobileAlternative = $request->mobile_alternative;
+        $request->birthDate = $request->birthDate;
         $person->pcd = $request->pcd;
-        $person->motherName = $request->motherName;
+        $person->motherName = $request->mother_name;
         $person->address = $request->address;
-        $person->addressNumber = $request->addressNumber;
-        $person->addressExtra = $request->addressExtra;
+        $person->addressNumber = $request->address_number;
+        $person->addressExtra = $request->address_extra;
         $person->neighborhood = $request->neighborhood;
         $person->city = $request->city;
         $person->states = $request->states;
         $person->cep = $request->cep;
-        $person->bootNumber = $request->bootNumber;
-        $person->pantsNumber = $request->pantsNumber;
-        $person->shirtNumber = $request->shirtNumber;
-        $person->markNumber = $request->markNumber;
+        $person->bootNumber = $request->boot_number;
+        $person->pantsNumber = $request->pants_number;
+        $person->shirtNumber = $request->shirt_number;
+        $person->markNumber = $request->mark_number;
         $person->number = $request->number;
         $person->email = $request->email;
-        if ($request->password != null && $request->password != '') $person->password = $request->password;
+        $person->journey = $request->journey;
+        if ($request->password != null && $request->password != '') {
+            $person->password = $request->password;
+        }
         $person->profile_id = $request->profile;
-        
+
         if ($person->save()) {
             $this->addFlash('Pessoa alterada com sucesso!', 'success');
             return redirect()->back();
@@ -476,7 +479,7 @@ class PersonController extends Controller
             $this->addFlash('Erro!', 'warning');
             return redirect()->back()->withInputs();
         }
-        
+
     }
 
 
@@ -541,7 +544,7 @@ class PersonController extends Controller
         return response()->json($people, 200);
     }*/
 
-    /**  
+    /**
      * Display a listing of the resource based on job X people X Training.
      * GET: /people/suggestions/trainings
      * @return \Illuminate\Http\Response

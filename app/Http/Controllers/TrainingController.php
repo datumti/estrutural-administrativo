@@ -37,8 +37,17 @@ class TrainingController extends Controller
      */
     public function store(Request $request)
     {
-        $training = Training::create($request->all());
-        return response()->json($training, 201);
+        $training = new Training();
+        $training->name = $request->name;
+        $training->description = $request->description;
+
+        if ($training->save()) {
+            $this->addFlash('Treinamento criado com sucesso!', 'success');
+            return redirect()->route('treinamentos.edit', $training->id);
+        } else {
+            $this->addFlash('Erro ao criar treinamento!', 'warning');
+            return redirect()->back()->withInputs();
+        }
     }
 
     /**
@@ -60,12 +69,19 @@ class TrainingController extends Controller
      * @param  \App\Training  $training
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Training $training)
+    public function update(Request $request, $id)
     {
-        $training = Training::findOrFail($training->id);
+        $training = Training::findOrFail($id);
         $training->fill($request->all());
-        $training->save();
-        return response()->json($training, 200);
+
+        if ($training->save()) {
+            $this->addFlash('Treinamento atualizado com sucesso!', 'success');
+            return redirect()->route('treinamentos.edit', $training->id);
+        } else {
+            $this->addFlash('Erro ao atualizar treinamento!', 'warning');
+            return redirect()->back()->withInputs();
+        }
+
     }
 
     /**

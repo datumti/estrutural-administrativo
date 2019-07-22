@@ -118,7 +118,7 @@
             </div>
             <div class="form-group col-md-2">
                 <label for="profile">Turno</label>
-                {!! Form::select('journey', ['1' => '1','2' => '2','3' => '3','4' => '4','5' => '5' ], null, ['id' => 'journey', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                {!! Form::select('journey', ['0' => 'Selecione', '1' => '1','2' => '2','3' => '3','4' => '4','5' => '5' ], null, ['id' => 'journey', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
         </div>
         <!-- /.box-body -->

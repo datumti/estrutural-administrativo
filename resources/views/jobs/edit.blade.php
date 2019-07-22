@@ -24,7 +24,7 @@
                 {!! Form::text('name', $job->name, ['id' => 'name', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
             <div class="form-group col-md-4">
-                    <label for="journey">Mão de obra</label><br>
+                    <label for="type">Mão de obra</label><br>
                     {!! Form::radio('type', 'D') !!} Mão de obra direta &nbsp;&nbsp;
                     {!! Form::radio('type', 'I') !!} Mão de obra indireta
                 </div>

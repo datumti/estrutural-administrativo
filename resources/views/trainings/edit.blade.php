@@ -16,7 +16,7 @@
         </a>
     </div>
     <!-- /.box-header -->
-    {!! Form::model($training,['method' => 'put', 'route' => ['cargos.update', $training->id]]) !!}
+    {!! Form::model($training,['method' => 'put', 'route' => ['treinamentos.update', $training->id]]) !!}
         <input type="hidden" name="status" value="1">
         <div class="box-body">
             <div class="form-group col-md-7">
@@ -40,7 +40,7 @@
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')

@@ -116,6 +116,10 @@
                 <label for="profile">Perfil de acesso</label>
                 {!! Form::select('profile', $profiles, $people->profile_id, ['id' => 'profile', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
+            <div class="form-group col-md-2">
+                <label for="profile">Turno</label>
+                {!! Form::select('journey', ['0' => 'Selecione', '1' => '1','2' => '2','3' => '3','4' => '4','5' => '5' ], null, ['id' => 'journey', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+            </div>
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
@@ -129,7 +133,7 @@
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
@@ -152,7 +156,7 @@
                 format: 'dd/mm/yyyy',
                 autoclose: true,
                 orientation: "bottom",
-                mask:true, 
+                mask:true,
             }).inputmask('99/99/9999')
 
         })
