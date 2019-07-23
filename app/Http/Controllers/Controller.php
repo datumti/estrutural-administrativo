@@ -27,6 +27,6 @@ class Controller extends BaseController
             return redirect()->route('home');
         }
 
-        return collect($construction);
+        return $construction;
     }
 }
