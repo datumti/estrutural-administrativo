@@ -25,7 +25,7 @@ Route::get('relatorios', function(){
 });
 
 
-
+Route::get('efetivo-diario/export', 'TimesheetController@export')->name('efetivo-diario.export');
 
 Route::resources([
     'cargos' => 'JobController',
@@ -53,7 +53,6 @@ Route::resources([
 ]);
 
 Route::post('efetivo-diario/search', 'TimesheetController@search')->name('efetivo-diario.search');
-Route::get('efetivo-diario/export/{fileName}', 'TimesheetController@eexport')->name('efetivo-diario.export');
 
 /* Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');
 Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson');

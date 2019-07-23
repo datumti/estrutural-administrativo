@@ -11,6 +11,6 @@ class TimesheetsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Timesheet::class, 30)->create();
+        //factory(App\Models\Timesheet::class, 30)->create();
     }
 }

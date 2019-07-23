@@ -11,4 +11,9 @@ class Timesheet extends Model
         'date',
         'time'
     ];
+
+    public function people() {
+        return $this->belongsTo(Person::class, 'employee', 'number');
+    }
+
 }

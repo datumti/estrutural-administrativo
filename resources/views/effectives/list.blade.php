@@ -48,13 +48,17 @@
                     <label for="date">Data</label>
                 <input type="text" name="date" id="date" class="form-control" value="{{$filter['date']}}">
                 </div>
-                <div class="form-group col-md-2">
+               {{--  <div class="form-group col-md-2">
                     <label for="date">Hora inicial</label>
                 <input type="text" name="start_time" id="start_time" class="form-control" value="{{$filter['start_time']}}">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="date">Hora final</label>
                 <input type="text" name="end_time" id="end_time" class="form-control" value="{{$filter['end_time']}}">
+                </div> --}}
+                <div class="form-group col-md-2">
+                    <label for="profile">Turno</label>
+                    {!! Form::select('journey', ['0' => 'Selecione', '1' => '1','2' => '2','3' => '3','4' => '4','5' => '5' ], $filter['journey'], ['id' => 'journey', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                 </div>
                 <div class="form-group col-md-1">
                     <label for="">&nbsp;</label>
@@ -62,19 +66,19 @@
                         <i class="fa fa-search"></i> Pesquisar
                     </button>
                 </div>
-               {{--  <div class="form-group col-md-1">
-                    <label for="">&nbsp;</label>
-                <button href="" class="btn btn-info pull-right" href="{{route('efetivo-diario.export', $fileName)}}" title="{{$filter['date'] == '' ? 'Pesquise para habilitar a exportação' : 'Exportar'}}" {{($filter['date'] == '' ? 'disabled' : '')}}>
-                        <i class="fa fa-download"></i> Exportar
-                    </button>
-                </div> --}}
             {!! Form::close() !!}
+            <div class="form-group col-md-1">
+                <label for="">&nbsp;</label>
+                <a class="btn btn-info pull-right" href="{{route('efetivo-diario.export')}}">
+                    <i class="fa fa-download"></i> Exportar
+                </a>
+            </div>
             <div class="form-group col-md-12">
                 <div class="table-responsive">
                     <table class="table no-margin">
                         <thead>
                             <tr>
-                                <th>Chapa</th>
+                                <th>Chapa/Nome</th>
                                 <th>Data</th>
                                 <th>Hora</th>
                                 <th>Hora</th>
@@ -84,13 +88,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($effective as $key => $item)
+                            @forelse ($effective as $chapa => $item)
                                 <tr>
                                     <td>
-                                        {{$key}}
+                                        {{$chapa}}
                                     </td>
-                                    @foreach ($item as $chave => $time)
-                                        <td>{{$time}}</td>
+                                    @foreach ($item as $date => $times)
+                                        <td>{{\Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d/m/Y')}}</td>
+                                        @foreach ($times as $time)
+                                            <td>{{$time}}</td>
+                                        @endforeach
                                     @endforeach
                                 </tr>
                             @empty

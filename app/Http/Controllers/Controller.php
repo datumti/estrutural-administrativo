@@ -19,7 +19,7 @@ class Controller extends BaseController
         Session::flash('flash-alert', $status);
     }
 
-    public function getCheckConstruction($warningMessage, $warningType) : Construction {
+    public function getCheckConstruction($warningMessage, $warningType) {
         $construction = Session::get('construction');
 
         if(!$construction) {
@@ -27,6 +27,6 @@ class Controller extends BaseController
             return redirect()->route('home');
         }
 
-        return $construction;
+        return collect($construction);
     }
 }

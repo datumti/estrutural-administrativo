@@ -17,7 +17,7 @@ class TimesheetViewExport implements FromView, ShouldAutoSize
     protected $filter;
     protected $construction;
 
-    public function __construct($filter, Construction $construction)
+    public function __construct($filter, $construction)
     {
         $this->filter = $filter;
         $this->construction = $construction;

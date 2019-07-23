@@ -26,7 +26,7 @@ td {
         </tr>
         <tr>
             <td style="height:20cm; text-align: center; font-size: 15cm" colspan="7">
-                <strong>TURNO: {{$filter['date']}} {{$filter['start_time']}} A {{$filter['end_time']}}</strong>
+                <strong>TURNO: {{$filter['date']}} - TURNO {{$filter['journey']}}</strong>
             </td>
         </tr>
         <tr>

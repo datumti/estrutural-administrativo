@@ -10,6 +10,7 @@ use App\Exports\TimesheetExport;
 use App\Exports\TimesheetViewExport;
 use App\Models\Job;
 use App\Models\Construction;
+use Illuminate\Support\Facades\Session;
 
 class TimesheetController extends Controller
 {
@@ -22,56 +23,75 @@ class TimesheetController extends Controller
     {
         $effective = [];
         $filter['date'] = '';
-        $filter['start_time'] = '';
-        $filter['end_time'] = '';
+/*         $filter['start_time'] = '';
+        $filter['end_time'] = ''; */
+        $filter['journey'] = '';
         $fileName = '';
 
         //se filtragem
         if($request->date) {
+
+            $construction = $this->getCheckConstruction('Você deve selecionar uma obra para pesquisar ou exportar seu efetivo!', 'info');
+
             $date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
 
             $query = "date = '" . $date . "'";
-            $query = $query . " AND time >= '" . $request->start_time . "' AND time <= '" . $request->end_time . "'" ;
 
             $filter['date'] = $request->date;
-            $filter['start_time'] = $request->start_time;
-            $filter['end_time'] = $request->end_time;
+            /* $filter['start_time'] = $request->start_time;
+            $filter['end_time'] = $request->end_time; */
+            $filter['journey'] = $request->journey;
+            $journey = $filter['journey'];
 
-            $timesheets = Timesheet::whereRaw($query)->orderBy('employee')->get();
+            Session::put('filter', $filter);
+
+            $timesheets = Timesheet::select('employee', 'date', 'time')
+                /* ->with(['people' => function($query) use ($journey) {
+                    $query->where('journey', $journey);
+                }]) */
+                ->join('people', 'people.number', '=', 'timesheets.employee')
+                ->whereRaw($query)->groupBy('employee', 'date', 'time')
+                ->where('people.journey', $journey)
+                ->get();
 
             foreach($timesheets as $key => $ef) {
-                $effective[$ef->employee][] = $ef->time;
+                $effective[$ef->employee.'-'.$ef->people->name][$ef->date][] = $ef->time;
             }
-
-            $construction = $this->getCheckConstruction('Você deve selecionar uma obra para pesquisar seu efetivo!', 'info');
-
-            $report = new TimesheetViewExport($filter, $construction);
-            $fileName = str_replace('/', '', $filter['date']).'.xlsx';
-
-            //Excel::store($report, $fileName);
-            //Excel::download($report, storage_path().'/app/'.$fileName);
-            /* return response()->download(storage_path().'/app/'.$fileName, $fileName, [
-                'Content-Type' => 'application/vnd.ms-excel',
-                'Content-Disposition' => "attachment; filename='".$fileName."'"
-           ]); */
 
         } else {
             //default dia atual
             $query = "YEAR(date) = YEAR(CURRENT_DATE()) AND MONTH(date) = MONTH(CURRENT_DATE()) AND DAY(date) = DAY(CURRENT_DATE())";
-            $timesheets = Timesheet::whereRaw($query)->orderBy('employee')->get();
+
+            $timesheets = Timesheet::select('employee', 'date', 'time')
+                ->with('people')
+                ->whereRaw($query)->groupBy('employee', 'date', 'time')
+                ->get();
 
             foreach($timesheets as $key => $ef) {
-                $effective[$ef->employee][] = $ef->time;
+                $effective[$ef->employee.'-'.$ef->people->name][$ef->date][] = $ef->time;
             }
+
         }
 
         return view('effectives.list', compact('effective', 'filter', 'fileName'));
 
     }
 
-    public function export($fileName)
+    public function export()
     {
-//dd($fileName);
+
+        $filter = Session::get('filter');
+        $construction = Session::get('construction');
+
+        $report = new TimesheetViewExport($filter, $construction);
+        $fileName = str_replace('/', '', $filter['date']).'.xlsx';
+
+        Excel::store($report, $fileName);
+        //Excel::download($report, storage_path().'/app/'.$fileName);
+        return response()->download(storage_path().'/app/'.$fileName, $fileName, [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => "attachment; filename='".$fileName."'"
+       ]);
 
 
     }
@@ -103,18 +123,17 @@ class TimesheetController extends Controller
                 $time = Carbon::createFromFormat('Hi', substr($row, 12, 4), null)->format('H:i');
 
                 if(!$deleted) {
-                    if(Timesheet::where('date', $date)->count()) {
-                        Timesheet::where('date', $date)->delete();
-                        $deleted = true;
-                    }
+                    Timesheet::where('date', $date)->delete();
+                    $deleted = true;
                 }
 
                 $timesheet = new Timesheet();
                 $timesheet->employee = $employee;
                 $timesheet->date = $date;
                 $timesheet->time = $time;
-                $timesheet->construction_id = $construction->id;
+                $timesheet->construction_id = $construction['id'];
                 $timesheet->save();
+
             } else {
                 $this->addFlash('Erro ao importar arquivo', 'danger');
                 return redirect()->back();
