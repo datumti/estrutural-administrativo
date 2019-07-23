@@ -33,6 +33,11 @@ class TimesheetController extends Controller
 
             $construction = $this->getCheckConstruction('Você deve selecionar uma obra para pesquisar ou exportar seu efetivo!', 'info');
 
+            $validateData = $request->validate([
+                'date' => 'required',
+                'journey' => 'required|in:1,2,3,4,5',
+            ]);
+
             $date = Carbon::createFromFormat('d/m/Y', $request->date)->format('Y-m-d');
 
             $query = "date = '" . $date . "'";
@@ -80,8 +85,8 @@ class TimesheetController extends Controller
     public function export()
     {
 
+        $construction = $this->getCheckConstruction('Você deve selecionar uma obra para exportar sem efetivo!', 'info');
         $filter = Session::get('filter');
-        $construction = Session::get('construction');
 
         $report = new TimesheetViewExport($filter, $construction);
         $fileName = str_replace('/', '', $filter['date']).'.xlsx';
