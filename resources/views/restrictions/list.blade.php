@@ -62,35 +62,10 @@
                             <td>{{$restriction->description}}</td>
                             <td>{{$restriction->created_at->format('d/m/Y')}}</td>
                             <td>
-                                <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-restriction-delete-{{$restriction->id}}" data-restriction-id="{{$restriction->id}}">
+                                <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-restriction-delete" data-restriction-id="{{$restriction->id}}">
                                     <i class="fa fa-trash"></i>
                                 </button>
-                                <div class="modal fade" id="modal-restriction-delete-{{$restriction->id}}" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                        <div class="modal-content">
-                                            {!! Form::open(['method' => 'delete', 'route' => ['restricoes.destroy', $restriction->id]]) !!}
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" id="exampleModalLongTitle">Remover restrição</h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <h5>Tem certeza que deseja remover essa restrição?</h5>
-                                                        <br>
-                                                        <label for="description" class="label-description">Motivo*</label>
-                                                        {!! Form::textarea('description', null, ['rows' => '3','class' => 'form-control exclusion-description', 'style' => 'width: 100%']) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-danger restriction-remove">Remover</button>
-                                                </div>
-                                            {!! Form::close() !!}
-                                        </div>
-                                    </div>
-                                </div>
+
                             </td>
                         </tr>
                     @empty
@@ -157,6 +132,34 @@
               </div>
               <!-- /.table-responsive -->
             </div>
+
+            <div class="modal fade" id="modal-restriction-delete" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content">
+                            {!! Form::open(['method' => 'delete', 'route' => ['restricoes.destroy', $restriction->id]]) !!}
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="exampleModalLongTitle">Remover restrição</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <h5>Tem certeza que deseja remover essa restrição?</h5>
+                                        <br>
+                                        <label for="description" class="label-description">Motivo*</label>
+                                        {!! Form::textarea('description', null, ['rows' => '3','class' => 'form-control exclusion-description', 'style' => 'width: 100%']) !!}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-danger restriction-remove">Remover</button>
+                                </div>
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+
             <!-- /.box-body -->
         </div>
 @stop
@@ -167,6 +170,13 @@
 
 @section('js')
     <script>
+
+        $('#modal-restriction-delete').on('show.bs.modal', function(e) {
+            var restriction_id = $(e.relatedTarget).data('restriction-id');
+
+            $(e.currentTarget).find('form').attr('action', '/restricoes/'+restriction_id);
+        });
+
 
         $(document).ready(function() {
             $('.table').DataTable({
