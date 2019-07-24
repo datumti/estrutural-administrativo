@@ -50,6 +50,7 @@
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Motivo</th>
+                    <th>Data</th>
                     <th>Ações</th>
                   </tr>
                   </thead>
@@ -59,11 +60,12 @@
                             <td>{{$restriction->name}}</td>
                             <td>{{$restriction->cpf}}</td>
                             <td>{{$restriction->description}}</td>
+                            <td>{{$restriction->created_at->format('d/m/Y')}}</td>
                             <td>
-                                <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-restriction-delete" data-restriction-id="{{$restriction->id}}">
+                                <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-restriction-delete-{{$restriction->id}}" data-restriction-id="{{$restriction->id}}">
                                     <i class="fa fa-trash"></i>
                                 </button>
-                                <div class="modal fade" id="modal-restriction-delete" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal fade" id="modal-restriction-delete-{{$restriction->id}}" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                         <div class="modal-content">
                                             {!! Form::open(['method' => 'delete', 'route' => ['restricoes.destroy', $restriction->id]]) !!}
@@ -77,13 +79,13 @@
                                                     <div class="form-group">
                                                         <h5>Tem certeza que deseja remover essa restrição?</h5>
                                                         <br>
-                                                        <label for="description" id="label-description">Descrição*</label>
-                                                        {!! Form::textarea('description', null, ['id' => 'exclusion-description', 'rows' => '3','class' => 'form-control', 'style' => 'width: 100%']) !!}
+                                                        <label for="description" class="label-description">Descrição*</label>
+                                                        {!! Form::textarea('description', null, ['rows' => '3','class' => 'form-control exclusion-description', 'style' => 'width: 100%']) !!}
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" class="btn btn-danger" id="restriction-remove">Remover</button>
+                                                    <button type="submit" class="btn btn-danger restriction-remove">Remover</button>
                                                 </div>
                                             {!! Form::close() !!}
                                         </div>
@@ -93,9 +95,13 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4">
+                            <td>
                                 nenhuma restrição até o momento...
                             </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     @endforelse
                   </tbody>
@@ -136,9 +142,14 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4">
+
+                            <td>
                                 nenhuma exclusão até o momento...
                             </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     @endforelse
                   </tbody>
@@ -158,15 +169,20 @@
     <script>
 
         $(document).ready(function() {
+            $('.table').DataTable({
+                "dom": "bfrtp", //i
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+            });
+
             $('#cpf').inputmask('999.999.999-99');
 
-            $('#restriction-remove').on('click', function(e){
+            $('.restriction-remove').on('click', function(e){
                 e.preventDefault();
-                if($('#exclusion-description').val() == '') {
-                    $('#label-description').css('color', 'red');
+                if($('.exclusion-description').val() == '') {
+                    $('.label-description').css('color', 'red');
                 } else {
-                    $('#label-description').removeAttr('css');
-                    $('#restriction-remove').unbind('click').click();
+                    $('.label-description').removeAttr('css');
+                    $('.restriction-remove').unbind('click').click();
                 }
             })
 

@@ -43,35 +43,39 @@
             </a> --}}
         </div>
         <div class="box-body">
-            {!! Form::open(['method' => 'get', 'route' => ['efetivo-diario.index']]) !!}
-                <div class="form-group col-md-2">
-                    <label for="date">Data</label>
-                <input type="text" name="date" id="date" class="form-control" value="{{$filter['date']}}">
-                </div>
-               {{--  <div class="form-group col-md-2">
-                    <label for="date">Hora inicial</label>
-                <input type="text" name="start_time" id="start_time" class="form-control" value="{{$filter['start_time']}}">
-                </div>
-                <div class="form-group col-md-2">
-                    <label for="date">Hora final</label>
-                <input type="text" name="end_time" id="end_time" class="form-control" value="{{$filter['end_time']}}">
-                </div> --}}
-                <div class="form-group col-md-2">
-                    <label for="profile">Turno</label>
-                    {!! Form::select('journey', ['0' => 'Selecione', '1' => '1','2' => '2','3' => '3','4' => '4','5' => '5' ], $filter['journey'], ['id' => 'journey', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
-                </div>
-                <div class="form-group col-md-1">
-                    <label for="">&nbsp;</label>
-                    <button href="" class="btn btn-warning pull-right" href="#" title="Pesquisar">
-                        <i class="fa fa-search"></i> Pesquisar
-                    </button>
-                </div>
-            {!! Form::close() !!}
-            <div class="form-group col-md-1">
-                <label for="">&nbsp;</label>
-                <a class="btn btn-info pull-right" href="{{route('efetivo-diario.export')}}">
-                    <i class="fa fa-download"></i> Exportar
-                </a>
+            <div class="row">
+                {!! Form::open(['method' => 'get', 'route' => ['efetivo-diario.index']]) !!}
+                    <div class="form-group col-md-2">
+                        <label for="date">Data</label>
+                    <input type="text" name="date" id="date" class="form-control" value="{{$filter['date']}}">
+                    </div>
+                {{--  <div class="form-group col-md-2">
+                        <label for="date">Hora inicial</label>
+                    <input type="text" name="start_time" id="start_time" class="form-control" value="{{$filter['start_time']}}">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="date">Hora final</label>
+                    <input type="text" name="end_time" id="end_time" class="form-control" value="{{$filter['end_time']}}">
+                    </div> --}}
+                    <div class="form-group col-md-2">
+                        <label for="profile">Turno</label>
+                        {!! Form::select('journey', ['0' => 'Selecione', '1' => '1','2' => '2','3' => '3','4' => '4','5' => '5' ], $filter['journey'], ['id' => 'journey', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label for="pesquisar">&nbsp;</label><br>
+                        <button href="" class="btn btn-warning" href="#" title="Pesquisar" id="pesquisar" name="pesquisar">
+                            <i class="fa fa-search"></i> Pesquisar
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2 pull-right">
+                        <label for="exportar">&nbsp;</label><br>
+                        <a class="btn btn-info" href="{{route('efetivo-diario.export')}}" name="exportar" id="exportar">
+                            <i class="fa fa-download"></i> Exportar
+                        </a>
+                    </div>
+                {!! Form::close() !!}
+
             </div>
             <div class="form-group col-md-12">
                 <div class="table-responsive">

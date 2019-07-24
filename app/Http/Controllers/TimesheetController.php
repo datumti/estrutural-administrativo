@@ -84,7 +84,7 @@ class TimesheetController extends Controller
 
     public function export()
     {
-        $construction = $this->getCheckConstruction('Você deve selecionar uma obra para exportar sem efetivo!', 'info');
+        $construction = $this->getCheckConstruction('Você deve selecionar uma obra para exportar seu efetivo!', 'info');
         $filter = Session::get('filter');
 
         $report = new TimesheetViewExport($filter, $construction);
