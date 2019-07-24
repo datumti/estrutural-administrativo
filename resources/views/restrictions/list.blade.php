@@ -136,7 +136,7 @@
             <div class="modal fade" id="modal-restriction-delete" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content">
-                            {!! Form::open(['method' => 'delete', 'route' => ['restricoes.destroy', $restriction->id]]) !!}
+                            {!! Form::open(['method' => 'delete', 'route' => ['restricoes.destroy', '']]) !!}
                                 <div class="modal-header">
                                     <h4 class="modal-title" id="exampleModalLongTitle">Remover restrição</h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
