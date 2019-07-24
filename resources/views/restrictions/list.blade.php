@@ -26,7 +26,7 @@
                     {!! Form::text('cpf', null, ['id' => 'cpf', 'class' => 'form-control']) !!}
                 </div>
                 <div class="form-group col-md-7">
-                    <label for="description">Descrição</label>
+                    <label for="description">Motivo</label>
                     {!! Form::textarea('description', null, ['id' => 'description', 'rows' => '3','class' => 'form-control', 'style' => 'width: 100%']) !!}
                 </div>
             </div>
@@ -79,7 +79,7 @@
                                                     <div class="form-group">
                                                         <h5>Tem certeza que deseja remover essa restrição?</h5>
                                                         <br>
-                                                        <label for="description" class="label-description">Descrição*</label>
+                                                        <label for="description" class="label-description">Motivo*</label>
                                                         {!! Form::textarea('description', null, ['rows' => '3','class' => 'form-control exclusion-description', 'style' => 'width: 100%']) !!}
                                                     </div>
                                                 </div>
