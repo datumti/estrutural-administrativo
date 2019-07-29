@@ -16,7 +16,7 @@
         </a>
     </div>
     <!-- /.box-header -->
-    {!! Form::model($group,['method' => 'put', 'route' => ['grupos.update', $group->id]]) !!}
+    {!! Form::model($group,['method' => 'put', 'route' => ['grupos.update', $group->id], 'id' => 'formGroup','files' => true]) !!}
         <input type="hidden" name="process_id" value="{{$process->id}}">
         <input type="hidden" name="construction_id" value="{{Session::get('construction.id')}}">
         <div class="box-body">
@@ -49,13 +49,24 @@
 
             <div class="form-group col-md-4">
                 <label for="job">Cargo</label>
-                {!! Form::text('job', null, ['id' => 'job', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                {!! Form::select('job', $jobs, null, ['id' => 'jobs', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
             <div class="form-group col-md-2">
                 <label for="status">Status</label>
                 {!! Form::select('status', $status, null,['id' => 'status', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
+            <div class="form-group col-md-6">
+               {{--  <button type="button" class="btn btn-flat btn-info" style="margin:25px 0 0 0" title="Informações">
+                    <i class="fa fa-info fa-1x"></i>
+                </button> --}}
+                <label for="file">Anexos (você pode selecionar mais de um arquivo)</label>
+                <input type="file" class="form-control" name="files[]" multiple />
+
+            </div>
+
         </div>
+
+
         <!-- /.box-body -->
         <div class="box-footer clearfix">
             <button type="submit" class="btn btn-flat btn-success">
@@ -93,16 +104,24 @@
                                         {{$gp->note}}
                                     </td>
                                     <td>
-                                        {{$gp->person->job_id}}
+                                        {{$gp->person->job->name}}
                                     </td>
                                     <td>
-                                        {{$gp->status_id}}
+                                        {{$gp->status->name}}
                                     </td>
                                     <td class="table-actions">
-                                        <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button> 
+                                        <button type="button" class="btn btn-flat btn-warning btn-xs" style="margin:2px 0 2px 5px" title="Editar" data-toggle="modal" data-target="#modal-person-edit">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-flat btn-info btn-xs" style="margin:2px 0 2px 5px" title="Informações" data-toggle="modal" data-target="#modal-person-edit">
+                                            <i class="fa fa-info"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-person-delete">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                     </td>
                                 </tr>
-                            
+
                             @empty
                                 <tr>
                                     <td colspan="7">nenhum integrante até o momento...</td>
@@ -115,12 +134,57 @@
             </div>
             <!-- /.box-body -->
     {!! Form::close() !!}
+
+    <div class="modal fade" id="modal-person-delete" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                {!! Form::open(['method' => 'delete', 'route' => ['processo-seletivo.destroy', '']]) !!}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLongTitle">Remover candidato</h4>
+                    </div>
+                    <div class="modal-body">
+                        Tem certeza que deseja remover esse cadidato do do grupo?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger" id="contract-remove">Remover</button>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-person-edit" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                {!! Form::open(['method' => 'put', 'route' => ['processo-seletivo.update', '']]) !!}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLongTitle">Atualizar candidato</h4>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" id="">Salvar</button>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+
   </div>
 
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
@@ -128,6 +192,27 @@
     <script>
 
         $(document).ready( function () {
+
+            /* $("#files").dropzone({ url: "/file/post" }); */
+
+            $('#jobs').select2();
+
+            $('#modal-person-delete').on('show.bs.modal', function(e) {
+                var person_id = $(e.relatedTarget).data('person-id');
+                var group_id = $(e.relatedTarget).data('group-id');
+
+                $(e.currentTarget).find('form').attr('action', '/processo-seletivo/'+group_id);
+                $(e.currentTarget).find('form').append(`<input type="hidden" name="person_id" value="${person_id}">`)
+            });
+
+            $('#modal-person-edit').on('show.bs.modal', function(e) {
+                var person_id = $(e.relatedTarget).data('person-id');
+                var group_id = $(e.relatedTarget).data('group-id');
+
+                $(e.currentTarget).find('form').attr('action', '/processo-seletivo/'+group_id);
+                $(e.currentTarget).find('form').append(`<input type="hidden" name="person_id" value="${person_id}">`)
+            });
+
             $('#cpf').inputmask('999.999.999-99');
 
             $('#cpf').on('blur', function() {
@@ -138,7 +223,7 @@
                     data: { "_token": "{{ csrf_token() }}",
                             cpf : $(this).val()
                     },
-                    dataType: "JSON", 
+                    dataType: "JSON",
                     beforeSend: function(){
                         $('#feedback-person').html('')
                         $('#cpf').attr('disabled', true);
@@ -153,8 +238,9 @@
                             $('#feedback-person').html('Candidato já encontrado no sistema.')
                             $('#fullName').val(response.name)
                         }
-                            
+
                         $('#cpf').attr('disabled', false);
+                        $('#formGroup').append('<input type="hidden" name="person_id" value="${person_id}">');
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         $('#cpf').attr('disabled', false);
@@ -170,7 +256,7 @@
                 format: 'dd/mm/yyyy',
                 autoclose: true,
                 orientation: "bottom",
-                mask:true, 
+                mask:true,
             }).inputmask('99/99/9999')
 
         })

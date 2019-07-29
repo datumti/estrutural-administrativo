@@ -11,4 +11,5 @@ class Process extends Model
     public function group() {
         return $this->hasMany(Group::class);
     }
+
 }

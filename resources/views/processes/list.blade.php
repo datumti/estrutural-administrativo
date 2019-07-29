@@ -45,20 +45,23 @@
                                 @endif
                                 <td>Ações</td>
                                 </tr>
-                            </thead>  
+                            </thead>
                             <tbody>
                                 @forelse($process->group as $group)
                                     <tr>
                                         <td>{{$group->name}}</td>
                                         <td>{{count($group->group_person)}}</td>
-                                        <td><i class="fa fa-circle" style="color:green"></i> {{count($group->group_person)}}</td>
-                                        <td><i class="fa fa-circle" style="color:red"></i> {{count($group->group_person)}}</td>
-                                        <td><i class="fa fa-circle" style="color:orange"></i> {{count($group->group_person)}}</td>
+                                        <td><i class="fa fa-circle" style="color:green"></i> {{count($group->group_person_aprovado)}}</td>
+                                        <td><i class="fa fa-circle" style="color:red"></i> {{count($group->group_person_reprovado)}}</td>
+                                        <td><i class="fa fa-circle" style="color:orange"></i> {{count($group->group_person_ressalva)}}</td>
+                                        @if ($process->name == 'Seleção Psicológica')
+                                            <td><i class="fa fa-circle" style="color:orange"></i> {{count($group->group_person_avaliacao)}}</td>
+                                        @endif
                                         <td>
-                                            <a href="processo-seletivo/{{$process->id}}/grupos/{{$group->id}}/edit" class="btn btn-primary">
-                                                <i class="fa fa-eye"></i>
-                                            </a> 
-                                            <button class="btn btn-danger"><i class="fa fa-trash"></i></button> 
+                                            <a href="processo-seletivo/{{$process->id}}/grupos/{{$group->id}}/edit" class="btn btn-warning" title="Editar">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 @empty
@@ -88,7 +91,7 @@
                                                 <td>Em progresso</td>
                                                 <td>Ações</td>
                                             </tr>
-                                        </thead>  
+                                        </thead>
                                         <tbody>
                                             @forelse($process->group as $group)
                                                 <tr>
@@ -108,15 +111,15 @@
                 @endswitch
             </div>
         @endforeach
-    </div>  
+    </div>
   </div>
 
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
-    
+
 @stop

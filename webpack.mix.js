@@ -18,7 +18,7 @@ mix.scripts([
     'node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
     'node_modules/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
     'node_modules/tableexport/src/v2/v2.1/Export2Excel.js',
-    'node_modules/tableexport/src/v2/v2.1/tableexport-2.1.min.js',
+    'node_modules/dropzone/dist/dropzone.js'
     ],
     'public/js/app.js')
     .sass('resources/assets/sass/app.scss', 'public/css')
@@ -27,5 +27,7 @@ mix.scripts([
         'node_modules/eonasdan-bootstrap-datetimepicker/src/sass/_bootstrap-datetimepicker.scss',
         'node_modules/eonasdan-bootstrap-datetimepicker/src/sass/bootstrap-datetimepicker-build.scss',
         'node_modules/tableexport/src/stable/css/tableexport.min.css',
+        'node_modules/dropzone/dist/basic.css',
+        'node_modules/dropzone/dist/dropzone.css',
     ], 'public/css/app.css')
     .copyDirectory('resources/assets/img', 'public/img');

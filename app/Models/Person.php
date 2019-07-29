@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
+use App\PeopleDocument;
 
 class Person extends Authenticatable
 {
@@ -54,5 +55,9 @@ class Person extends Authenticatable
 
     public function getBirthDateAttribute($value) {
         return Carbon::parse($value)->format('d/m/Y');
+    }
+
+    public function people_document() {
+        return $this->hasMany(PeopleDocument::class);
     }
 }

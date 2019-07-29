@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
+use App\PeopleDocument;
 
 class GroupController extends Controller
 {
@@ -24,12 +26,6 @@ class GroupController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     * POST: /groups
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
@@ -39,11 +35,35 @@ class GroupController extends Controller
         ]);
 
         $data = $request->all();
+
         $data['creation_date'] = Carbon::createFromFormat('d/m/Y', $data['creation_date'])->format('Y-m-d');
+
+        //cria o grupo
+        $construction = ['construction_id' => Session::get('construction')->id];
+        array_merge($construction, $data);
 
         $group = Group::create($data);
         $this->addFlash('Grupo criado com sucesso!', 'success');
-        
+
+        //cria a pessoa
+        $person = new Person();
+        $person->cpf = $data['cpf'];
+        $person->name = $data['fullName'];
+        $person->job_id = $data['job'];
+        $person->save();
+
+        //insere a pessoa no grupo
+        $groupPerson = new GroupPerson();
+        $groupPerson->group_id = $group->id;
+        $groupPerson->person_id = $person->id;
+        $groupPerson->status_id = $data['status'];
+        $groupPerson->note = $data['note'];
+        $groupPerson->save();
+
+        if($groupPerson->save()) {
+            $this->addFlash('Canditato cadastrado com sucesso!', 'success');
+        }
+
         return redirect('processo-seletivo/'.$request->process_id.'/grupos/'.$group->id.'/edit');
     }
 
@@ -65,7 +85,7 @@ class GroupController extends Controller
             if ($p->person->job_id != null) {
                 $p->person->job;
             }
-            
+
         }
         $group->groupPeople = $gp;
         return response()->json($group, 200);
@@ -101,84 +121,57 @@ class GroupController extends Controller
         return $groupsGps;
     }
 
-    /**
-     * Update the specified resource in storage.
-     * PUT: /groups/:id
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, $id)
     {
-        $groupPeople = $request->input()[1];
-        $g = Group::findOrFail($group->id);
-        $g->name = $request[0]['name'];
-        if (isset($request[0]['creation_date'])) $g->creation_date = explode("T", $request[0]['creation_date'])[0];
-        if (isset($request[0]['training_id'])) $g->training_id = $request[0]['training_id'];
-        if (isset($request[0]['clinic_name'])) $g->clinic_name = $request[0]['clinic_name'];
-        if (isset($request[0]['clinic_code'])) $g->clinic_code = $request[0]['clinic_code'];
-        if (isset($request[0]['crm'])) $g->crm = $request[0]['crm'];
-        $g->save();
 
-        //deletes any removed GPs
-        $dbGps = GroupPerson::where('group_id', $group->id)->get();
-        $dbGpIds = array();
-        $inputGpIds = array();
-        foreach ($dbGps as $dbGp) {
-            array_push($dbGpIds, $dbGp->id);
-        }
-        foreach ($groupPeople as $inputGp) {
-            if ($inputGp['id'] != null) array_push($inputGpIds, $inputGp['id']);
-        }
-        $gpToDelete = array_diff($dbGpIds, $inputGpIds);
-        foreach ($gpToDelete as $gotd) {
-            $gp = GroupPerson::find($gotd);
-            $gp->delete();
-        }
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'creation_date' => 'required'
+        ]);
 
-        foreach ($groupPeople as $gp) {
-            if ($gp['id'] != null) {
-                //update groupPerson
-                $existingGp = GroupPerson::findOrFail($gp['id']);
-                $existingGp->status_id = $gp['status_id'];
-                if (isset($gp['status_aso'])) $existingGp->status_aso_id = $gp['status_aso'];
-                $existingGp->description = $gp['description'];
-                $existingGp->note = $gp['note'];
-                $existingGp->save();
-                // input attachments
-                foreach ($gp['attachments'] as $att) {
-                    $baseStr = $att['value'];
-                    $path = storage_path() . '/app/public/groups/' . $group->id . '/people/' . $gp['person_id'];
-                    $this->uploadFile($baseStr, $path, $att['filename']);
-                }
-            } else {
-                //new groupPerson
-                $newGp = new GroupPerson;
-                $newGp->group_id = $group->id;
-                $newGp->status_id = $gp['status_id'];
-                $newGp->description = $gp['description'];
-                $newGp->note = $gp['note'];
-                if (isset($gp['status_aso'])) $newGp->status_aso_id = $gp['status_aso'];
-                //get person id or create a new one
-                $p = Person::where('cpf', $gp['person_cpf'])->first();
-                if ($p == null) {
-                    $p = new Person;
-                    $p->name = $gp['person_name'];
-                    $p->cpf = $gp['person_cpf'];
-                    $p->job_id = null;
-                    $p->save();
-                }
-                $newGp->person_id = $p->id;
-                $newGp->save();
-                // input attachments
-                foreach ($gp['attachments'] as $att) {
-                    $baseStr = $att['value'];
-                    $path = storage_path() . '/app/public/groups/' . $group->id . '/people/' . $newGp->person_id;
-                    $this->uploadFile($baseStr, $path, $att['filename']);
+        $data = $request->all();
+
+        $data['creation_date'] = Carbon::createFromFormat('d/m/Y', $data['creation_date'])->format('Y-m-d');
+
+        //cria o grupo
+        $group = Group::find($id);
+        $group->name = $data['name'];
+        $group->creation_date = $data['creation_date'];
+        $group->construction_id = $group->construction_id;
+        $group->save();
+
+        //cria ou atualiza a pessoa
+        if($data['cpf'] != '') {
+            $person = Person::firstOrNew(['id' => $data['person_id']]);
+            $person->cpf = $data['cpf'];
+            $person->name = $data['fullName'];
+            $person->job_id = $data['job'];
+            $person->save();
+
+            //insere a pessoa no grupo
+            $groupPerson = new GroupPerson();
+            $groupPerson->group_id = $group->id;
+            $groupPerson->person_id = $person->id;
+            $groupPerson->status_id = $data['status'];
+            $groupPerson->note = $data['note'];
+            $groupPerson->save();
+
+            if ($request->hasFile('files')) {
+                $files = $request->file('files');
+                foreach ($files as $file) {
+                    $filename = $file->storeAs('documents/'.$person->id.'/'.$group->construction_id, $file->getClientOriginalName());
+                    PeopleDocument::create([
+                        'people_id' => $person->id,
+                        'construction_id' => $group->construction_id,
+                        'filename' => $filename
+                    ]);
                 }
             }
         }
-        return response()->json($request->input(), 200);
+
+        $this->addFlash('Grupo atualizado com sucesso!', 'success');
+        return redirect('processo-seletivo/'.$request->process_id.'/grupos/'.$group->id.'/edit');
+
     }
 
     /**
@@ -204,7 +197,7 @@ class GroupController extends Controller
         if (!file_exists($path)) {
             File::makeDirectory($path, 0777, true);
         }
-        $ifp = fopen($path . '/' . $filename, 'wb'); 
+        $ifp = fopen($path . '/' . $filename, 'wb');
         // split the string on commas
         // $data[ 0 ] == "data:image/png;base64"
         // $data[ 1 ] == <actual base64 string>

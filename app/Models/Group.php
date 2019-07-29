@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class Group extends Model
 {
+
     protected $fillable = [
         'name',
         'construction_id',
@@ -35,6 +36,26 @@ class Group extends Model
 
     public function group_person() {
         return $this->hasMany(GroupPerson::class);
+    }
+
+    public function group_person_convocado() {
+        return $this->hasMany(GroupPerson::class)->where('status_id', 5);
+    }
+
+    public function group_person_aprovado() {
+        return $this->hasMany(GroupPerson::class)->where('status_id', 1);
+    }
+
+    public function group_person_reprovado() {
+        return $this->hasMany(GroupPerson::class)->where('status_id', 2);
+    }
+
+    public function group_person_ressalva() {
+        return $this->hasMany(GroupPerson::class)->where('status_id', 3);
+    }
+
+    public function group_person_avaliacao() {
+        return $this->hasMany(GroupPerson::class)->where('status_id', 4);
     }
 
     public function getCreationDateAttribute($value) {

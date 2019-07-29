@@ -57,13 +57,10 @@
             </div>
             <div class="form-group col-md-2">
                 <button type="button" class="btn btn-flat btn-info" style="margin:25px 0 0 0" title="Informações">
-                    <i class="fa fa-info fa-1x"></i> 
+                    <i class="fa fa-info fa-1x"></i>
                 </button>
                 <button type="button" class="btn btn-flat btn-warning" style="margin:25px 0 0 0" title="Anexar documento">
-                    <i class="fa fa-paperclip fa-1x"></i> 
-                </button>
-                <button type="button" class="btn btn-flat btn-danger" style="margin:25px 0 0 0" title="Excluir">
-                    <i class="fa fa-trash fa-1x"></i>
+                    <i class="fa fa-paperclip fa-1x"></i>
                 </button>
             </div>
         </div>
@@ -79,7 +76,7 @@
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
@@ -97,7 +94,7 @@
                     data: { "_token": "{{ csrf_token() }}",
                             cpf : $(this).val()
                     },
-                    dataType: "JSON", 
+                    dataType: "JSON",
                     beforeSend: function(){
                         $('#feedback-person').html('')
                         $('#cpf').attr('disabled', true);
@@ -112,7 +109,7 @@
                             $('#feedback-person').html('Candidato já encontrado no sistema.')
                             $('#fullName').val(response.name)
                         }
-                            
+
                         $('#cpf').attr('disabled', false);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
@@ -128,7 +125,7 @@
                 format: 'dd/mm/yyyy',
                 autoclose: true,
                 orientation: "bottom",
-                mask:true, 
+                mask:true,
             }).inputmask('99/99/9999')
 
         })
