@@ -59,8 +59,8 @@ class GroupController extends Controller
             $groupPerson->group_id = $group->id;
             $groupPerson->person_id = $person->id;
             $groupPerson->status_id = $data['status'];
-            $groupPerson->note = $data['note'];
-
+            if($data['note'] != '')
+                $groupPerson->note = $data['note'];
             if($data['status'] == 3 || $data['status'] == 4)
                 $groupPerson->description = $data['description'];
 
@@ -79,7 +79,6 @@ class GroupController extends Controller
                 }
             }
         }
-
 
         if($groupPerson->save()) {
             $this->addFlash('Candidato cadastrado com sucesso!', 'success');
@@ -173,7 +172,8 @@ class GroupController extends Controller
             $groupPerson->group_id = $group->id;
             $groupPerson->person_id = $person->id;
             $groupPerson->status_id = $data['status'];
-            $groupPerson->note = $data['note'];
+            if($data['note'] != '')
+                $groupPerson->note = $data['note'];
             if($data['status'] == 3 || $data['status'] == 4)
                 $groupPerson->description = $data['description'];
 

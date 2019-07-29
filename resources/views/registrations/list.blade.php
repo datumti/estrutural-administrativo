@@ -106,6 +106,7 @@
                                     <thead>
                                         <tr>
                                             <th>Nome</th>
+                                            <th>Validade (dias)</th>
                                             <th>Ações</th>
                                         </tr>
                                     </thead>
@@ -113,6 +114,7 @@
                                         @foreach ($trainings as $training)
                                             <tr>
                                                 <td>{{$training->name}}</td>
+                                                <td>{{$training->expiration}}</td>
 
                                                 <td class="table-actions">
                                                     <a href="{{route('treinamentos.edit', $training->id)}}" class="btn btn-warning" title="Editar"><i class="fa fa-pencil"></i></a>
@@ -143,6 +145,7 @@
                                     <thead>
                                         <tr>
                                             <th>Nome</th>
+                                            <th>Validade (dias)</th>
                                             <th>Ações</th>
                                         </tr>
                                     </thead>
@@ -150,6 +153,7 @@
                                         @foreach ($exams as $exam)
                                             <tr>
                                                 <td>{{$exam->name}}</td>
+                                                <td>{{$exam->expiration}}</td>
                                                 <td class="table-actions">
                                                     <a href="{{route('exames.edit', $exam->id)}}" class="btn btn-info" title="Editar"><i class="fa fa-pencil"></i></a>
                                                     <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button>
