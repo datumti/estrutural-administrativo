@@ -8,6 +8,7 @@ class GroupPerson extends Model
 {
     protected $table = 'group_person';
     protected $fillable = ['group_id', 'person_id', 'status_id', 'status_aso_id', 'note', 'description'];
+    protected $with = ['status', 'status_aso'];
 
     public function group()
     {
@@ -20,6 +21,11 @@ class GroupPerson extends Model
     }
 
     public function status()
+    {
+        return $this->belongsTo('App\Models\Status');
+    }
+
+    public function status_aso()
     {
         return $this->belongsTo('App\Models\Status');
     }

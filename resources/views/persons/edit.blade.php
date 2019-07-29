@@ -128,7 +128,104 @@
             </button>
         </div>
     {!! Form::close() !!}
-  </div>
+</div>
+
+<div class="box box-info">
+    <div class="box-header with-border">
+        <h3 class="box-title">Ficha do Candidato</h3>
+    </div>
+    <!-- /.box-header -->
+
+    @foreach ($constructions as $item)
+        <div class="box-header">
+            <h5 class="box-title">{{$item->name}}</h5>
+        </div>
+        @forelse ($item->group as $group)
+            <div class="box-body">
+                <div class="table-responsive">
+                    <table class="table no-margin">
+                        <thead>
+                            <tr>
+                                <th width="15%">{{$group->process->name}}</th>
+                                @if ($group->process->id == 1 || $group->process->id == 2)
+                                    <th width="30%">Nota</th>
+                                @elseif ($group->process->id == 4)
+                                    <th width="30%">Treinamento</th>
+                                @elseif ($group->process->id == 5)
+                                    <th width="30%">Status ASO</th>
+                                @endif
+                                <th>Data</th>
+                                <th>Detalhes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($group->group_person as $person)
+                                <tr>
+                                    <td>
+                                        {{$person->status->name}}
+                                    </td>
+                                    @if ($group->process->id == 1 || $group->process->id == 2)
+                                        <td>{{$person->note}}</td>
+                                    @elseif ($group->process->id == 4)
+                                        <td>{{$group->training->name}}</td>
+                                    @elseif ($group->process->id == 5)
+                                        <td>{{$person->status_aso->name}}</td>
+                                    @endif
+                                    <td>{{$person->updated_at->format('d/m/Y')}}</td>
+                                    <td>
+                                        <a type="button" href="#" class="btn btn-flat btn-info" data-toggle="modal" data-target="#modal-details">
+                                            <i class="fa fa-info"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+
+                            @endforelse
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @empty
+            <td colspan="4">nenhuma seleção técnica realizada...</td>
+        @endforelse
+    @endforeach
+
+    <!-- /.box-body -->
+    <div class="box-footer clearfix">
+
+    </div>
+    {!! Form::close() !!}
+
+    <div class="modal fade" id="modal-details" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLongTitle">Detalhes</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Observações</h4>
+                                <p>nenhuma observação do processo...</p>
+                            </div>
+                            <div class="col-md-12">
+                                <h4>Anexos</h4>
+                                <p>nenhum anexo do processo...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 @stop
 

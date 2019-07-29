@@ -24,7 +24,7 @@ class CreateGroupPersonTable extends Migration
                 $table->foreign('status_id')->references('id')->on('statuses');
                 $table->integer('status_aso_id')->unsigned()->nullable();
                 $table->foreign('status_aso_id')->references('id')->on('statuses');
-                $table->integer('note')->nullable();
+                $table->decimal('note', 8, 1)->nullable();
                 $table->text('description')->nullable();
                 $table->timestamps();
             });

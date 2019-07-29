@@ -6,9 +6,16 @@ use App\Models\Process;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use App\Models\Status;
+use App\Http\Middleware\CheckConstruction;
 
 class ProcessController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(CheckConstruction::class);
+    }
+
     /**
      * Display a listing of the resource.
      * GET: /exam
@@ -16,6 +23,8 @@ class ProcessController extends Controller
      */
     public function index()
     {
+        $construction = $this->getCheckConstruction('Erro!', 'danger');
+
         $processes = Process::with('group.group_person')->get();
         //return response()->json($processes, 200);
         return view('processes.list', compact('processes'));
@@ -33,9 +42,9 @@ class ProcessController extends Controller
     }
 
     public function edit($idProcess, $idGroup) {
-        
+
         $process = Process::find($idProcess);
-        
+
         $group = Group::with('group_person.person')
             ->where('id', $idGroup)
             ->first();

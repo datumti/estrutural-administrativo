@@ -8,10 +8,10 @@ use Carbon\Carbon;
 class Group extends Model
 {
     protected $fillable = [
-        'name', 
-        'construction_id', 
-        'process_id', 
-        'creation_date', 
+        'name',
+        'construction_id',
+        'process_id',
+        'creation_date',
         'training_id',
         'clinic_name',
         'clinic_code',

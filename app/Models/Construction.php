@@ -26,4 +26,8 @@ class Construction extends Model
         return $this->hasManyThrough(Job::class, Vacancy::class, 'job_id', 'id');
     }
 
+    public function group() {
+        return $this->hasMany(Group::class);
+    }
+
 }

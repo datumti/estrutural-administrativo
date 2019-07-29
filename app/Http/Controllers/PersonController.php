@@ -13,6 +13,8 @@ use App\Models\JobTraining;
 use App\Models\Resignation;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use App\Models\Construction;
+use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
@@ -47,7 +49,43 @@ class PersonController extends Controller
         $jobs->prepend('Selecione', 0);
         $profiles = Profile::pluck('name', 'id');
         $profiles->prepend('Selecione', 0);
-        return view('persons.edit', compact('people', 'jobs', 'profiles'));
+
+        $constructions = Construction::has('group.group_person')
+            ->with(['group.group_person' => function($query) use ($id) {
+                $query->where('group_person.person_id', $id);
+            }])
+            ->get();
+            //dd($constructions);
+
+       /*  $groups['tecnica'] = GroupPerson::where('person_id', $id)
+            ->join('groups', 'groups.id', '=', 'group_person.group_id')
+            ->join('processes', 'processes.id', '=', 'groups.process_id')
+            ->with('group.construction.contract')
+            ->where('processes.id', 1)
+            ->get();
+
+        $groups['psicologica'] = GroupPerson::where('person_id', $id)
+            ->join('groups', 'groups.id', '=', 'group_person.group_id')
+            ->join('processes', 'processes.id', '=', 'groups.process_id')
+            ->with('group.construction.contract')
+            ->where('processes.id', 2)
+            ->get();
+
+        $groups['treinamento'] = GroupPerson::where('person_id', $id)
+            ->join('groups', 'groups.id', '=', 'group_person.group_id')
+            ->join('processes', 'processes.id', '=', 'groups.process_id')
+            ->with('group.construction.contract')
+            ->where('processes.id', 4)
+            ->get();
+
+        $groups['exame'] = GroupPerson::where('person_id', $id)
+            ->join('groups', 'groups.id', '=', 'group_person.group_id')
+            ->join('processes', 'processes.id', '=', 'groups.process_id')
+            ->with('group.construction.contract')
+            ->where('processes.id', 5)
+            ->get(); */
+
+        return view('persons.edit', compact('people', 'jobs', 'profiles', 'constructions'));
     }
 
     public function getbycpf() {

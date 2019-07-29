@@ -24,7 +24,7 @@ class Controller extends BaseController
 
         if(!$construction) {
             $this->addFlash($warningMessage, $warningType);
-            redirect()->route('home');
+            return redirect('logout');
         }
 
         return $construction;
