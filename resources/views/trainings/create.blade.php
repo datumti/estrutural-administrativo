@@ -21,6 +21,10 @@
                 <label for="cpf">Nome</label>
                 {!! Form::text('name', null, ['id' => 'name', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
+            <div class="form-group col-md-2">
+                <label for="name">Validade (dias)</label>
+                {!! Form::number('expiration', null, ['id' => 'expiration', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+            </div>
             <div class="form-group col-md-7">
                 <label for="name">Descrição</label>
                 {!! Form::textarea('description', null, ['id' => 'description', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
@@ -38,10 +42,10 @@
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
 
-    
+
 @stop

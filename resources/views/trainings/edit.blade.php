@@ -23,6 +23,10 @@
                 <label for="name">Nome</label>
                 {!! Form::text('name', $training->name, ['id' => 'name', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
+            <div class="form-group col-md-2">
+                <label for="name">Validade (dias)</label>
+                {!! Form::number('expiration', $training->expiration, ['id' => 'expiration', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+            </div>
             <div class="form-group col-md-7">
                 <label for="name">Descrição</label>
                 {!! Form::textarea('description', $training->description, ['id' => 'description', 'class' => 'form-control', 'style' => 'width: 100%']) !!}

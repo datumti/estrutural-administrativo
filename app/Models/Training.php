@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Training extends Model
 {
     protected $primaryKey = 'id';
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'expiration'];
 }
