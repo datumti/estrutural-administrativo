@@ -42,14 +42,17 @@ class ProcessController extends Controller
         $status = Status::pluck('name', 'id');
         $status->prepend('Selecione', 0);
 
-        return view('processes.groups.create', compact('process', 'status'));
+        $jobs = Job::pluck('name', 'id');
+        $jobs->prepend('Selecione', 0);
+
+        return view('processes.groups.create', compact('process', 'status', 'jobs'));
     }
 
     public function edit($idProcess, $idGroup) {
 
         $process = Process::find($idProcess);
 
-        $group = Group::with('group_person.person')
+        $group = Group::with('group_person.person.people_document')
             ->where('id', $idGroup)
             ->first();
 

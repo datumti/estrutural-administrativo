@@ -148,7 +148,7 @@
                                         <h5>Tem certeza que deseja remover essa restrição?</h5>
                                         <br>
                                         <label for="description" class="label-description">Motivo*</label>
-                                        {!! Form::textarea('description', null, ['rows' => '3','class' => 'form-control exclusion-description', 'style' => 'width: 100%']) !!}
+                                        {!! Form::textarea('description', null, ['rows' => '3', 'class' => 'form-control exclusion-description', 'style' => 'width: 100%']) !!}
                                     </div>
                                 </div>
                                 <div class="modal-footer">

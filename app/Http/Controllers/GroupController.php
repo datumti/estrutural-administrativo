@@ -39,29 +39,50 @@ class GroupController extends Controller
         $data['creation_date'] = Carbon::createFromFormat('d/m/Y', $data['creation_date'])->format('Y-m-d');
 
         //cria o grupo
-        $construction = ['construction_id' => Session::get('construction')->id];
-        array_merge($construction, $data);
+        $group = new Group();
+        $group->name = $data['name'];
+        $group->creation_date = $data['creation_date'];
+        $group->construction_id = Session::get('construction')->id;
+        $group->process_id = $data['process_id'];
+        $group->save();
 
-        $group = Group::create($data);
-        $this->addFlash('Grupo criado com sucesso!', 'success');
+        //cria ou atualiza a pessoa
+        if($data['cpf'] != '') {
+            $person = Person::firstOrNew(['id' => $data['person_id']]);
+            $person->cpf = $data['cpf'];
+            $person->name = $data['fullName'];
+            $person->job_id = $data['job'];
+            $person->save();
 
-        //cria a pessoa
-        $person = new Person();
-        $person->cpf = $data['cpf'];
-        $person->name = $data['fullName'];
-        $person->job_id = $data['job'];
-        $person->save();
+            //insere a pessoa no grupo
+            $groupPerson = new GroupPerson();
+            $groupPerson->group_id = $group->id;
+            $groupPerson->person_id = $person->id;
+            $groupPerson->status_id = $data['status'];
+            $groupPerson->note = $data['note'];
 
-        //insere a pessoa no grupo
-        $groupPerson = new GroupPerson();
-        $groupPerson->group_id = $group->id;
-        $groupPerson->person_id = $person->id;
-        $groupPerson->status_id = $data['status'];
-        $groupPerson->note = $data['note'];
-        $groupPerson->save();
+            if($data['status'] == 3 || $data['status'] == 4)
+                $groupPerson->description = $data['description'];
+
+            $groupPerson->save();
+
+            if ($request->hasFile('files')) {
+                $files = $request->file('files');
+                foreach ($files as $file) {
+                    $filepath = $file->storeAs('/public/documents/'.$person->id.'/'.$group->construction_id, trim($file->getClientOriginalName()));
+                    PeopleDocument::create([
+                        'people_id' => $person->id,
+                        'construction_id' => $group->construction_id,
+                        'filename' => trim($file->getClientOriginalName()),
+                        'filepath' => $filepath
+                    ]);
+                }
+            }
+        }
+
 
         if($groupPerson->save()) {
-            $this->addFlash('Canditato cadastrado com sucesso!', 'success');
+            $this->addFlash('Candidato cadastrado com sucesso!', 'success');
         }
 
         return redirect('processo-seletivo/'.$request->process_id.'/grupos/'.$group->id.'/edit');
@@ -137,7 +158,6 @@ class GroupController extends Controller
         $group = Group::find($id);
         $group->name = $data['name'];
         $group->creation_date = $data['creation_date'];
-        $group->construction_id = $group->construction_id;
         $group->save();
 
         //cria ou atualiza a pessoa
@@ -154,16 +174,20 @@ class GroupController extends Controller
             $groupPerson->person_id = $person->id;
             $groupPerson->status_id = $data['status'];
             $groupPerson->note = $data['note'];
+            if($data['status'] == 3 || $data['status'] == 4)
+                $groupPerson->description = $data['description'];
+
             $groupPerson->save();
 
             if ($request->hasFile('files')) {
                 $files = $request->file('files');
                 foreach ($files as $file) {
-                    $filename = $file->storeAs('documents/'.$person->id.'/'.$group->construction_id, $file->getClientOriginalName());
+                    $filepath = $file->storeAs('/public/documents/'.$person->id.'/'.$group->construction_id, trim($file->getClientOriginalName()));
                     PeopleDocument::create([
                         'people_id' => $person->id,
                         'construction_id' => $group->construction_id,
-                        'filename' => $filename
+                        'filename' => trim($file->getClientOriginalName()),
+                        'filepath' => $filepath
                     ]);
                 }
             }

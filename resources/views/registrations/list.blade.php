@@ -115,7 +115,7 @@
                                                 <td>{{$training->name}}</td>
 
                                                 <td class="table-actions">
-                                                    <a href="{{route('treinamentos.edit', $training->id)}}" class="btn btn-info" title="Editar"><i class="fa fa-pencil"></i></a>
+                                                    <a href="{{route('treinamentos.edit', $training->id)}}" class="btn btn-warning" title="Editar"><i class="fa fa-pencil"></i></a>
                                                     <button class="btn btn-danger" title="Remover"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>

@@ -136,9 +136,9 @@
     </div>
     <!-- /.box-header -->
 
-    @foreach ($constructions as $item)
+    @forelse ($constructions as $item)
         <div class="box-header">
-            <h5 class="box-title">{{$item->name}}</h5>
+            <h4 class="box-title">{{$item->name}}</h4>
         </div>
         @forelse ($item->group as $group)
             <div class="box-body">
@@ -159,23 +159,63 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($group->group_person as $person)
+                            @forelse ($group->group_person as $gp)
                                 <tr>
                                     <td>
-                                        {{$person->status->name}}
+                                        {{$gp->status->name}}
                                     </td>
                                     @if ($group->process->id == 1 || $group->process->id == 2)
-                                        <td>{{$person->note}}</td>
+                                        <td>{{$gp->note}}</td>
                                     @elseif ($group->process->id == 4)
                                         <td>{{$group->training->name}}</td>
                                     @elseif ($group->process->id == 5)
-                                        <td>{{$person->status_aso->name}}</td>
+                                        <td>{{$gp->status_aso->name}}</td>
                                     @endif
-                                    <td>{{$person->updated_at->format('d/m/Y')}}</td>
+                                    <td>{{$gp->updated_at->format('d/m/Y')}}</td>
                                     <td>
-                                        <a type="button" href="#" class="btn btn-flat btn-info" data-toggle="modal" data-target="#modal-details">
+                                        <a type="button" href="#" class="btn btn-flat btn-info" data-toggle="modal" data-target="#modal-details-{{$gp->id}}">
                                             <i class="fa fa-info"></i>
                                         </a>
+                                        <div class="modal fade" id="modal-details-{{$gp->id}}" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="exampleModalLongTitle">Informações do Candidato</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group col-md-12">
+                                                                <h4 for="anexos">Anexos</h4>
+                                                                <ul>
+                                                                    @forelse ($gp->person->people_document as $key => $item)
+                                                                        <li>
+                                                                            {{$item->filename}}
+                                                                            <a target="new" href="{{$item->filepath}}" type="button" class="btn btn-flat btn-info btn-xs" style="margin:2px 0 2px 5px" title="Download">
+                                                                                <i class="fa fa-download"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                        <br>
+                                                                    @empty
+                                                                        nenhum anexo até o momento...
+                                                                    @endforelse
+                                                                </ul>
+                                                            </div>
+                                                            @if ($gp->description != '')
+                                                                <div class="form-group col-md-12">
+                                                                    <h4 for="">Observação</h4>
+                                                                    <span>{{$gp->description}}</span>
+                                                                </div>
+                                                            @endif
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                     </td>
                                 </tr>
                             @empty
@@ -189,41 +229,18 @@
         @empty
             <td colspan="4">nenhuma seleção técnica realizada...</td>
         @endforelse
-    @endforeach
+        <br>
+    @empty
+    <div class="box-body">
+        nenhuma obra até o momento...
+    </div>
+    @endforelse
 
     <!-- /.box-body -->
     <div class="box-footer clearfix">
 
     </div>
     {!! Form::close() !!}
-
-    <div class="modal fade" id="modal-details" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="exampleModalLongTitle">Detalhes</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h4>Observações</h4>
-                                <p>nenhuma observação do processo...</p>
-                            </div>
-                            <div class="col-md-12">
-                                <h4>Anexos</h4>
-                                <p>nenhum anexo do processo...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
-            </div>
-        </div>
-    </div>
 
 </div>
 

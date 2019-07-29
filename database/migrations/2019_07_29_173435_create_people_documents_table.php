@@ -18,6 +18,7 @@ class CreatePeopleDocumentsTable extends Migration
             $table->integer('people_id');
             $table->integer('construction_id');
             $table->string('filename');
+            $table->string('filepath');
             $table->timestamps();
         });
     }

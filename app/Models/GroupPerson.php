@@ -29,4 +29,8 @@ class GroupPerson extends Model
     {
         return $this->belongsTo('App\Models\Status');
     }
+
+/*     public function people_document() {
+        return $this->hasMany(PeopleDocument::class, 'people_id');
+    } */
 }

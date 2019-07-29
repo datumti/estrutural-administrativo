@@ -16,9 +16,10 @@
         </a>
     </div>
     <!-- /.box-header -->
-    {!! Form::open(['method' => 'post', 'route' => ['grupos.store']]) !!}
+    {!! Form::open(['method' => 'post', 'route' => ['grupos.store'], 'files' => true]) !!}
         <input type="hidden" name="process_id" value="{{$process->id}}">
         <input type="hidden" name="construction_id" value="{{Session::get('construction.id')}}">
+        <input type="hidden" name="person_id" value="" id="person_id">
         <div class="box-body">
             <div class="form-group col-md-4">
                 <label for="name">Nome</label>
@@ -49,19 +50,19 @@
 
             <div class="form-group col-md-4">
                 <label for="job">Cargo</label>
-                {!! Form::text('job', null, ['id' => 'job', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                {!! Form::select('job', $jobs, null, ['id' => 'jobs', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
             <div class="form-group col-md-2">
                 <label for="status">Status</label>
                 {!! Form::select('status', $status, null,['id' => 'status', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
-            <div class="form-group col-md-2">
-                <button type="button" class="btn btn-flat btn-info" style="margin:25px 0 0 0" title="Informações">
-                    <i class="fa fa-info fa-1x"></i>
-                </button>
-                <button type="button" class="btn btn-flat btn-warning" style="margin:25px 0 0 0" title="Anexar documento">
-                    <i class="fa fa-paperclip fa-1x"></i>
-                </button>
+            <div class="form-group col-md-6">
+                <label for="file">Anexos (você pode selecionar mais de um arquivo)</label>
+                <input type="file" class="form-control" name="files[]" multiple />
+            </div>
+            <div class="form-group col-md-4" id="description">
+                <label for="status">Ressalva/requer avaliação?</label>
+                {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 4, 'style' => 'width: 100%', 'disabled']) !!}
             </div>
         </div>
         <!-- /.box-body -->
@@ -84,6 +85,15 @@
     <script>
 
         $(document).ready( function () {
+
+            $('#status').on('change', function(e) {
+                if(e.currentTarget.value == 3 || e.currentTarget.value == 4) {
+                    $('#description textarea').attr('disabled', false);
+                } else {
+                    $('#description textarea').attr('disabled', true);
+                }
+            })
+
             $('#cpf').inputmask('999.999.999-99');
 
             $('#cpf').on('blur', function() {
@@ -108,6 +118,7 @@
                             $('#feedback-person').css('color', 'blue')
                             $('#feedback-person').html('Candidato já encontrado no sistema.')
                             $('#fullName').val(response.name)
+                            $('#person_id').val(response.id)
                         }
 
                         $('#cpf').attr('disabled', false);

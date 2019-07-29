@@ -56,14 +56,13 @@
                 {!! Form::select('status', $status, null,['id' => 'status', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
             <div class="form-group col-md-6">
-               {{--  <button type="button" class="btn btn-flat btn-info" style="margin:25px 0 0 0" title="Informações">
-                    <i class="fa fa-info fa-1x"></i>
-                </button> --}}
                 <label for="file">Anexos (você pode selecionar mais de um arquivo)</label>
                 <input type="file" class="form-control" name="files[]" multiple />
-
             </div>
-
+            <div class="form-group col-md-4" id="description">
+                <label for="status">Ressalva/requer avaliação?</label>
+                {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 4, 'style' => 'width: 100%', 'disabled']) !!}
+            </div>
         </div>
 
 
@@ -94,6 +93,7 @@
                         </thead>
                         <tbody>
                             @forelse ($group->group_person as $gp)
+
                                 <tr>
                                     <td><a href="">{{$gp->person->id}}</a></td>
                                     <td>{{$gp->person->name}}</td>
@@ -113,12 +113,50 @@
                                         <button type="button" class="btn btn-flat btn-warning btn-xs" style="margin:2px 0 2px 5px" title="Editar" data-toggle="modal" data-target="#modal-person-edit">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button type="button" class="btn btn-flat btn-info btn-xs" style="margin:2px 0 2px 5px" title="Informações" data-toggle="modal" data-target="#modal-person-edit">
+                                        <button type="button" class="btn btn-flat btn-info btn-xs" style="margin:2px 0 2px 5px" title="Informações" data-toggle="modal" data-target="#modal-person-info-{{$gp->person_id}}">
                                             <i class="fa fa-info"></i>
                                         </button>
                                         <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-person-delete">
                                             <i class="fa fa-trash"></i>
                                         </button>
+                                        <div class="modal fade" id="modal-person-info-{{$gp->person_id}}" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="exampleModalLongTitle">Informações do Candidato</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group col-md-12">
+                                                            <label for="">Observação</label>
+                                                            <br>
+                                                            <span>{{$gp->description}}</span>
+                                                        </div>
+                                                        <div class="form-group col-md-12">
+                                                            <label for="anexos">Anexos</label>
+                                                            <ul>
+                                                                @forelse ($gp->person->people_document as $key => $item)
+                                                                    <li>
+                                                                        {{$item->filename}}
+                                                                        <a target="new" href="{{$item->filepath}}" type="button" class="btn btn-flat btn-info btn-xs" style="margin:2px 0 2px 5px" title="Download">
+                                                                            <i class="fa fa-download"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <br>
+                                                                @empty
+                                                                    nenhum anexo até o momento...
+                                                                @endforelse
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -134,6 +172,28 @@
             </div>
             <!-- /.box-body -->
     {!! Form::close() !!}
+
+    <div class="modal fade" id="modal-person-info" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                {!! Form::open(['method' => 'put', 'route' => ['processo-seletivo.update', '']]) !!}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLongTitle">Informações do Candidato</h4>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success" id="">Salvar</button>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="modal-person-delete" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -194,6 +254,14 @@
         $(document).ready( function () {
 
             /* $("#files").dropzone({ url: "/file/post" }); */
+
+            $('#status').on('change', function(e) {
+                if(e.currentTarget.value == 3 || e.currentTarget.value == 4) {
+                    $('#description textarea').attr('disabled', false);
+                } else {
+                    $('#description textarea').attr('disabled', true);
+                }
+            })
 
             $('#jobs').select2();
 

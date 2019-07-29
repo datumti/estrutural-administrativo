@@ -58,6 +58,6 @@ class Person extends Authenticatable
     }
 
     public function people_document() {
-        return $this->hasMany(PeopleDocument::class);
+        return $this->hasMany(PeopleDocument::class, 'people_id');
     }
 }
