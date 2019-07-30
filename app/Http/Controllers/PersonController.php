@@ -405,7 +405,7 @@ class PersonController extends Controller
         $person->addressExtra = $request->address_extra;
         $person->neighborhood = $request->neighborhood;
         $person->city = $request->city;
-        $person->states = $request->states;
+        $person->states = $request->state;
         $person->cep = $request->cep;
         $person->bootNumber = $request->boot_number;
         $person->pantsNumber = $request->pants_number;
@@ -496,7 +496,7 @@ class PersonController extends Controller
         $person->addressExtra = $request->address_extra;
         $person->neighborhood = $request->neighborhood;
         $person->city = $request->city;
-        $person->states = $request->states;
+        $person->states = $request->state;
         $person->cep = $request->cep;
         $person->bootNumber = $request->boot_number;
         $person->pantsNumber = $request->pants_number;

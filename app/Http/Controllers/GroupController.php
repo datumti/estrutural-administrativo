@@ -60,7 +60,7 @@ class GroupController extends Controller
             $groupPerson->person_id = $person->id;
             $groupPerson->status_id = $data['status'];
             if($data['note'] != '')
-                $groupPerson->note = $data['note'];
+                $groupPerson->note = str_replace(',', '.', $data['note']);
             if($data['status'] == 3 || $data['status'] == 4)
                 $groupPerson->description = $data['description'];
 
@@ -150,7 +150,6 @@ class GroupController extends Controller
         ]);
 
         $data = $request->all();
-
         $data['creation_date'] = Carbon::createFromFormat('d/m/Y', $data['creation_date'])->format('Y-m-d');
 
         //cria o grupo
@@ -160,20 +159,25 @@ class GroupController extends Controller
         $group->save();
 
         //cria ou atualiza a pessoa
-        if($data['cpf'] != '') {
+        if($data['person_id'] != '') {
+
             $person = Person::firstOrNew(['id' => $data['person_id']]);
-            $person->cpf = $data['cpf'];
             $person->name = $data['fullName'];
             $person->job_id = $data['job'];
+
+            if($data['cpf'] != '')
+                $person->cpf = $data['cpf'];
+
             $person->save();
 
             //insere a pessoa no grupo
-            $groupPerson = new GroupPerson();
+            $groupPerson = GroupPerson::firstOrNew(['id' => $data['group_person_id']]);
             $groupPerson->group_id = $group->id;
             $groupPerson->person_id = $person->id;
             $groupPerson->status_id = $data['status'];
+
             if($data['note'] != '')
-                $groupPerson->note = $data['note'];
+                $groupPerson->note = str_replace(',', '.', $data['note']);
             if($data['status'] == 3 || $data['status'] == 4)
                 $groupPerson->description = $data['description'];
 
@@ -195,7 +199,6 @@ class GroupController extends Controller
 
         $this->addFlash('Grupo atualizado com sucesso!', 'success');
         return redirect('processo-seletivo/'.$request->process_id.'/grupos/'.$group->id.'/edit');
-
     }
 
     /**

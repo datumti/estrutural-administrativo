@@ -38,30 +38,33 @@
                 <label for="cpf">CPF</label>
                 {!! Form::text('cpf', null, ['id' => 'cpf', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-4">
                 <label for="fullName">Nome completo</label>
                 {!! Form::text('fullName', null, ['id' => 'fullName', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="job">Cargo</label>
+                {!! Form::select('job', $jobs, null, ['id' => 'jobs', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
             <div class="form-group col-md-2">
                 <label for="note">Nota</label>
                 {!! Form::text('note', null, ['id' => 'note', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
-
-            <div class="form-group col-md-4">
-                <label for="job">Cargo</label>
-                {!! Form::select('job', $jobs, null, ['id' => 'jobs', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
-            </div>
             <div class="form-group col-md-2">
                 <label for="status">Status</label>
                 {!! Form::select('status', $status, null,['id' => 'status', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4" id="description">
+                @if ($process->id == 1)
+                    <label for="status">Ressalva?</label>
+                @else
+                    <label for="status">Requer avaliação?</label>
+                @endif
+                {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 4, 'style' => 'width: 100%', 'disabled']) !!}
+            </div>
+            <div class="form-group col-md-5">
                 <label for="file">Anexos (você pode selecionar mais de um arquivo)</label>
                 <input type="file" class="form-control" name="files[]" multiple />
-            </div>
-            <div class="form-group col-md-4" id="description">
-                <label for="status">Ressalva/requer avaliação?</label>
-                {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 4, 'style' => 'width: 100%', 'disabled']) !!}
             </div>
         </div>
 
@@ -93,9 +96,8 @@
                         </thead>
                         <tbody>
                             @forelse ($group->group_person as $gp)
-
                                 <tr>
-                                    <td><a href="">{{$gp->person->id}}</a></td>
+                                    <td><a href="{{route('gestao-pessoas.edit', $gp->person->id)}}" title="Ficha do Candidato">{{$gp->person->id}}</a></td>
                                     <td>{{$gp->person->name}}</td>
                                     <td>
                                         {{$gp->person->cpf}}
@@ -110,15 +112,15 @@
                                         {{$gp->status->name}}
                                     </td>
                                     <td class="table-actions">
-                                        <button type="button" class="btn btn-flat btn-warning btn-xs" style="margin:2px 0 2px 5px" title="Editar" data-toggle="modal" data-target="#modal-person-edit">
+                                        <button type="button" class="btn btn-flat btn-warning btn-xs" style="margin:2px 0 2px 5px" title="Editar" data-toggle="modal" data-target="#modal-person-edit-{{$gp->person_id}}">
                                             <i class="fa fa-pencil"></i>
                                         </button>
                                         <button type="button" class="btn btn-flat btn-info btn-xs" style="margin:2px 0 2px 5px" title="Informações" data-toggle="modal" data-target="#modal-person-info-{{$gp->person_id}}">
                                             <i class="fa fa-info"></i>
                                         </button>
-                                        <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-person-delete">
+                                        {{-- <button type="button" class="btn btn-flat btn-danger btn-xs" style="margin:2px 0 2px 5px" title="Remover" data-toggle="modal" data-target="#modal-person-delete">
                                             <i class="fa fa-trash"></i>
-                                        </button>
+                                        </button> --}}
                                         <div class="modal fade" id="modal-person-info-{{$gp->person_id}}" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                 <div class="modal-content">
@@ -129,11 +131,6 @@
                                                         <h4 class="modal-title" id="exampleModalLongTitle">Informações do Candidato</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="form-group col-md-12">
-                                                            <label for="">Observação</label>
-                                                            <br>
-                                                            <span>{{$gp->description}}</span>
-                                                        </div>
                                                         <div class="form-group col-md-12">
                                                             <label for="anexos">Anexos</label>
                                                             <ul>
@@ -150,10 +147,70 @@
                                                                 @endforelse
                                                             </ul>
                                                         </div>
+                                                        @if ($gp->description != '')
+                                                            <div class="form-group col-md-12">
+                                                                <label for="">Observação</label>
+                                                                <br>
+                                                                <span>{{$gp->description}}</span>
+                                                            </div>
+                                                        @endif
+
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="modal-person-edit-{{$gp->person_id}}" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    {!! Form::open(['method' => 'put', 'route' => ['grupos.update', $gp->group_id]]) !!}
+                                                        <input type="hidden" name="person_id" value="{{$gp->person_id}}">
+                                                        <input type="hidden" name="group_person_id" value="{{$gp->id}}">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="exampleModalLongTitle">Atualizar Candidato</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="box-body" style="">
+                                                                <div class="form-group col-md-8">
+                                                                    <label for="fullName">Nome completo</label>
+                                                                    {!! Form::text('fullName', $gp->person->name, ['id' => 'fullName', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label for="note">Nota</label>
+                                                                    {!! Form::text('note', $gp->note, ['id' => 'note', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="job">Cargo</label>
+                                                                    {!! Form::select('job', $jobs, $gp->person->job->id, ['id' => 'jobs', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="status">Status</label>
+                                                                    {!! Form::select('status', $status, $gp->status_id,['id' => 'status-modal', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <label for="file">Anexos (você pode selecionar mais de um arquivo)</label>
+                                                                    <input type="file" class="form-control" name="files[]" multiple />
+                                                                </div>
+                                                                <div class="form-group col-md-6" id="description-modal">
+                                                                    @if ($process->id == 1)
+                                                                        <label for="status">Ressalva?</label>
+                                                                    @else
+                                                                        <label for="status">Requer avaliação?</label>
+                                                                    @endif
+                                                                    {!! Form::textarea('description', $gp->description, ['class' => 'form-control', 'rows' => 4, 'style' => 'width: 100%', 'disabled']) !!}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                            <button type="submit" class="btn btn-success" id="">Salvar</button>
+                                                        </div>
+                                                    {!! Form::close() !!}
                                                 </div>
                                             </div>
                                         </div>
@@ -172,28 +229,6 @@
             </div>
             <!-- /.box-body -->
     {!! Form::close() !!}
-
-    <div class="modal fade" id="modal-person-info" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                {!! Form::open(['method' => 'put', 'route' => ['processo-seletivo.update', '']]) !!}
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="exampleModalLongTitle">Informações do Candidato</h4>
-                    </div>
-                    <div class="modal-body">
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success" id="">Salvar</button>
-                    </div>
-                {!! Form::close() !!}
-            </div>
-        </div>
-    </div>
 
     <div class="modal fade" id="modal-person-delete" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -217,28 +252,6 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal-person-edit" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                {!! Form::open(['method' => 'put', 'route' => ['processo-seletivo.update', '']]) !!}
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="exampleModalLongTitle">Atualizar candidato</h4>
-                    </div>
-                    <div class="modal-body">
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success" id="">Salvar</button>
-                    </div>
-                {!! Form::close() !!}
-            </div>
-        </div>
-    </div>
-
   </div>
 
 @stop
@@ -253,7 +266,25 @@
 
         $(document).ready( function () {
 
-            /* $("#files").dropzone({ url: "/file/post" }); */
+            if($('#status-modal').val() == 3 || $('#status-modal').val() == 4) {
+                $('#description-modal textarea').attr('disabled', false);
+            } else {
+                $('#description-modal textarea').attr('disabled', true);
+            }
+
+            if($('#status').val() == 3 || $('#status').val() == 4) {
+                $('#description textarea').attr('disabled', false);
+            } else {
+                $('#description textarea').attr('disabled', true);
+            }
+
+            $('#status-modal').on('change', function(e) {
+                if(e.currentTarget.value == 3 || e.currentTarget.value == 4) {
+                    $('#description-modal textarea').attr('disabled', false);
+                } else {
+                    $('#description-modal textarea').attr('disabled', true);
+                }
+            })
 
             $('#status').on('change', function(e) {
                 if(e.currentTarget.value == 3 || e.currentTarget.value == 4) {
@@ -299,7 +330,7 @@
                     success: function(response, status) {
                         if(status == 'nocontent') {
                             $('#feedback-person').css('color', 'red')
-                            $('#feedback-person').html('Nenhum candidato encontrado. Um novo candidato será cadastrado.')
+                            $('#feedback-person').html('CPF não encontrado na base de dados. Um novo candidato será cadastrado.')
                         } else {
                             console.log(response)
                             $('#feedback-person').css('color', 'blue')
@@ -308,7 +339,7 @@
                         }
 
                         $('#cpf').attr('disabled', false);
-                        $('#formGroup').append('<input type="hidden" name="person_id" value="${person_id}">');
+                        $('#formGroup').append(`<input type="hidden" name="person_id" value="${response.id}">`);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         $('#cpf').attr('disabled', false);

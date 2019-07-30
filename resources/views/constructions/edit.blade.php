@@ -228,7 +228,7 @@
                             {!! Form::select('job_id', $jobs, null, ['id' => 'jobs', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
-                            <label for="construction_name">Número de posições</label>
+                            <label for="construction_name">Número de vagas</label>
                             <input type="number" name="number" class="form-control" id="number" placeholder="" value="">
                         </div>
                         <div class="form-group">

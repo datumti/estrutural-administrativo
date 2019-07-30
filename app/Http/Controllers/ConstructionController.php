@@ -23,7 +23,7 @@ class ConstructionController extends Controller
 
     // Seta na sessão do PHP a obra para facilitar gerenciamento
     public function set($constructionId) {
-        
+
         \Session::put('construction', Construction::find($constructionId));
         $this->addFlash('Obra selecionada com sucesso!', 'success');
 
@@ -44,15 +44,18 @@ class ConstructionController extends Controller
             ->where('id', $id)
             ->first();
 
-        $peoples = Person::pluck('name', 'id');            
+        $peoples = Person::pluck('name', 'id');
         $peoples->prepend('Selecione', '0');
 
         $exams = Exam::orderBy('name')->pluck('name', 'id');
         $trainings = Training::orderBy('name')->pluck('name', 'id');
+
         $jobs = Job::orderBy('name')->pluck('name', 'id');
+        $jobs->prepend('Selecione', '');
+
         $contracts = ContractConstruction::where('construction_id', $construction->id)->orderBy('id')->pluck('contract_id', 'contract_id');
         $contracts->prepend('Selecione', '');
-        
+
         return view('constructions.edit', compact('construction', 'exams', 'trainings', 'jobs', 'contracts', 'peoples'));
     }
 
@@ -81,7 +84,7 @@ class ConstructionController extends Controller
     public function store(Request $request)
     {
         $construction = Construction::create($request->all());
-        
+
         foreach ($request->contracts as $c) {
             $cc = new ContractConstruction;
             $cc->contract_id = $c;
@@ -120,7 +123,7 @@ class ConstructionController extends Controller
         $construction = Construction::findOrFail($id);
         $construction->name = $request->name;
         $construction->cut_grade = $request->cut_grade;
-        
+
         if($construction->save()) {
             ContractConstruction::where('construction_id', $construction->id)->delete();
             if($request->contracts) {
@@ -136,7 +139,7 @@ class ConstructionController extends Controller
 
             return redirect()->back();
         }
-    
+
 
         /* $construction->vacancies = $this->updateConstructionVacancy($request);
         $construction->managers = $this->updateConstructionManager($request);
@@ -268,8 +271,8 @@ class ConstructionController extends Controller
                     $newVacancy->quality_vacancy = 0;
                 }
 
-               
-                
+
+
                 $newVacancy->save();
                 //save exams
                 foreach ($vacancy['exams'] as $exam) {
@@ -297,8 +300,8 @@ class ConstructionController extends Controller
                 }else{
                     $existingVacancy->quality_vacancy = 0;
                 }
-                
-            
+
+
                 $existingVacancy->save();
                 $this->updateVacancyExamsAndTrainings($existingVacancy, $vacancy['exams'], $vacancy['trainings']);
             }

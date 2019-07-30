@@ -39,31 +39,31 @@
                 <label for="cpf">CPF</label>
                 {!! Form::text('cpf', null, ['id' => 'cpf', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-4">
                 <label for="fullName">Nome completo</label>
                 {!! Form::text('fullName', null, ['id' => 'fullName', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+            </div>
+            <div class="form-group col-md-3">
+                <label for="job">Cargo</label>
+                {!! Form::select('job', $jobs, null, ['id' => 'jobs', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
             <div class="form-group col-md-2">
                 <label for="note">Nota</label>
                 {!! Form::text('note', null, ['id' => 'note', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
             </div>
-
-            <div class="form-group col-md-4">
-                <label for="job">Cargo</label>
-                {!! Form::select('job', $jobs, null, ['id' => 'jobs', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
-            </div>
             <div class="form-group col-md-2">
                 <label for="status">Status</label>
                 {!! Form::select('status', $status, null,['id' => 'status', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
-            </div>
-            <div class="form-group col-md-6">
-                <label for="file">Anexos (você pode selecionar mais de um arquivo)</label>
-                <input type="file" class="form-control" name="files[]" multiple />
             </div>
             <div class="form-group col-md-4" id="description">
                 <label for="status">Ressalva/requer avaliação?</label>
                 {!! Form::textarea('description', null, ['class' => 'form-control', 'rows' => 4, 'style' => 'width: 100%', 'disabled']) !!}
             </div>
+            <div class="form-group col-md-5">
+                <label for="file">Anexos (você pode selecionar mais de um arquivo)</label>
+                <input type="file" class="form-control" name="files[]" multiple />
+            </div>
+
         </div>
         <!-- /.box-body -->
         <div class="box-footer clearfix">
@@ -112,7 +112,7 @@
                     success: function(response, status) {
                         if(status == 'nocontent') {
                             $('#feedback-person').css('color', 'red')
-                            $('#feedback-person').html('Nenhum candidato encontrado. Um novo candidato será cadastrado.')
+                            $('#feedback-person').html('CPF não encontrado na base de dados. Um novo candidato será cadastrado.')
                         } else {
                             console.log(response)
                             $('#feedback-person').css('color', 'blue')

@@ -30,6 +30,13 @@ class GroupPerson extends Model
         return $this->belongsTo('App\Models\Status');
     }
 
+    /* public function setNoteAttribute($value) {
+        $this->attributes['note'] = str_replace(',', '.', $value);
+    } */
+
+    public function getNoteAttribute($value) {
+        return str_replace('.', ',', $value);
+    }
 /*     public function people_document() {
         return $this->hasMany(PeopleDocument::class, 'people_id');
     } */
