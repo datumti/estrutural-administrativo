@@ -13,6 +13,8 @@ use App\PeopleDocument;
 class Person extends Authenticatable
 {
 
+    protected $with = ['job'];
+
     use Notifiable;
 
     protected $fillable = [

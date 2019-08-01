@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Status;
 use App\Http\Middleware\CheckConstruction;
 use App\Models\Job;
+use App\Models\Person;
+use Illuminate\Support\Facades\Session;
 
 class ProcessController extends Controller
 {
@@ -27,7 +29,10 @@ class ProcessController extends Controller
         $construction = $this->getCheckConstruction('Erro!', 'danger');
 
         $processes = Process::with(['group.group_person'])
-            ->with(['group.group_person_convocado', 'group.group_person_aprovado', 'group.group_person_reprovado', 'group.group_person_ressalva'])
+            ->with(['group.group_person_convocado',
+                    'group.group_person_aprovado',
+                    'group.group_person_reprovado',
+                    'group.group_person_ressalva'])
             ->get();
 
 
@@ -62,7 +67,11 @@ class ProcessController extends Controller
         $jobs = Job::pluck('name', 'id');
         $jobs->prepend('Selecione', 0);
 
-        return view('processes.groups.edit', compact('process', 'group', 'status', 'jobs'));
+        $sugestions = Person::join('vacancies', 'vacancies.job_id', '=', 'people.job_id')
+            ->where('vacancies.construction_id', Session::get('construction')->id)
+            ->get();
+
+        return view('processes.groups.edit', compact('process', 'group', 'status', 'jobs', 'sugestions'));
     }
 
     /**

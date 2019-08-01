@@ -43,7 +43,7 @@ return [
     'file'                 => 'The :attribute must be a file.',
     'filled'               => 'The :attribute field must have a value.',
     'gt'                   => [
-        'numeric' => 'The :attribute must be greater than :value.',
+        'numeric' => ':attribute deve ser selecionado',
         'file'    => 'The :attribute must be greater than :value kilobytes.',
         'string'  => 'The :attribute must be greater than :value characters.',
         'array'   => 'The :attribute must have more than :value items.',
@@ -148,7 +148,8 @@ return [
         'name' => 'Nome',
         'email' => 'Email',
         'file' => 'Arquivo',
-        'journey' => 'Turno'
+        'journey' => 'Turno',
+        'profile' => 'Perfil de acesso'
     ],
 
 ];
