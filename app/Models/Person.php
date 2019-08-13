@@ -45,6 +45,10 @@ class Person extends Authenticatable
         'profile_id'
     ];
 
+    public function group_person() {
+        return $this->hasOne(GroupPerson::class);
+    }
+
     public function job()
     {
         return $this->belongsTo('App\Models\Job');

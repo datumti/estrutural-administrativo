@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-        
+
 <div class="content">
     <ul class="nav nav-tabs">
         <li class="nav-item active">
@@ -34,7 +34,7 @@
                                 <tr>
                                     <th>Nome</th>
                                     <th>CPF</th>
-                                    <th>RG</th>
+                                    <th>Apto para FSA?</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -43,9 +43,9 @@
                                     <tr>
                                         <td>{{$people->name}}</td>
                                         <td>{{$people->cpf}}</td>
-                                        <td>{{$people->cpf}}</td>
+                                        <td>{{$people->group_person->status->name}}</td>
                                         <td class="table-actions">
-                                            
+
                                         </td>
                                     </tr>
                                 @empty
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
         <div id="funcionarios" class="tab-pane">
             <br>
             <div class="box box-info">
@@ -69,22 +69,21 @@
                                 <tr>
                                     <th>Nome</th>
                                     <th>CPF</th>
-                                    <th>RG</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                     <tr>
-                                        <td colspan="4">nenhum candidato até o momento...</td>
+                                        <td colspan="3">nenhum candidato até o momento...</td>
                                     </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
         <div id="demissao" class="tab-pane">
             <br>
             <div class="box box-info">
@@ -115,11 +114,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                               
+
                                                     <tr>
                                                         <td colspan="4">nenhum candidato até o momento...</td>
                                                     </tr>
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -140,11 +139,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
+
                                                     <tr>
                                                         <td colspan="4">nenhum candidato até o momento...</td>
                                                     </tr>
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -169,7 +168,7 @@
                                                     <tr>
                                                         <td colspan="4">nenhum candidato até o momento...</td>
                                                     </tr>
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -183,7 +182,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Desligados</h3>
                 </div>
-                <div class="box-body">    
+                <div class="box-body">
                     <div class="table-responsive">
                         <table class="table no-margin">
                             <thead>
@@ -195,17 +194,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                     <tr>
                                         <td colspan="4">nenhum desligamento até o momento...</td>
                                     </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </div>  
+        </div>
         <div id="transferencia" class="tab-pane">
             <br>
             <div class="box box-info">
@@ -221,11 +220,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                     <tr>
                                         <td colspan="4">nenhum candidato até o momento...</td>
                                     </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -235,7 +234,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Transferidos</h3>
                 </div>
-                <div class="box-body">    
+                <div class="box-body">
                     <div class="table-responsive">
                         <table class="table no-margin">
                             <thead>
@@ -247,26 +246,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                     <tr>
                                         <td colspan="4">nenhuma transferência até o momento...</td>
                                     </tr>
-                                
+
                             </tbody>
                         </table>
                     </div>
                 </div>
                 </div>
             </div>
-        </div>  
+        </div>
     </div>
-    
-  </div>        
+
+  </div>
 
 @stop
 
 @section('css')
-    
+
 @stop
 
 @section('js')
@@ -275,6 +274,6 @@
             $('.table').DataTable({
                 "dom": "f"
             });
-        } );  
+        } );
     </script>
 @stop

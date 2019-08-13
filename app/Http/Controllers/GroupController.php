@@ -21,7 +21,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::all();
+        $groups = Group::awhere('construction_id', Session::get('construction')->id)->get();
         return response()->json($groups, 200);
     }
 
@@ -64,8 +64,6 @@ class GroupController extends Controller
             if($data['status'] == 3 || $data['status'] == 4)
                 $groupPerson->description = $data['description'];
 
-            $groupPerson->save();
-
             if ($request->hasFile('files')) {
                 $files = $request->file('files');
                 foreach ($files as $file) {
@@ -78,10 +76,12 @@ class GroupController extends Controller
                     ]);
                 }
             }
-        }
 
-        if($groupPerson->save()) {
-            $this->addFlash('Candidato cadastrado com sucesso!', 'success');
+            if($groupPerson->save()) {
+                $this->addFlash('Grupo criado e candidato cadastrado com sucesso!', 'success');
+            }
+        } else {
+            $this->addFlash('Grupo cadastrado com sucesso!', 'success');
         }
 
         return redirect('processo-seletivo/'.$request->process_id.'/grupos/'.$group->id.'/edit');

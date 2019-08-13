@@ -15,6 +15,7 @@ use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Models\Construction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class PersonController extends Controller
 {
@@ -25,22 +26,14 @@ class PersonController extends Controller
      */
     public function index()
     {
-
-        $peoples = Person::all();
+        $peoples = Person::select('people.id', 'people.name', 'people.cpf')
+            ->join('group_person', 'group_person.person_id', '=', 'people.id')
+            ->join('groups', 'groups.id', '=', 'group_person.id')
+            ->where('groups.construction_id', Session::get('construction')->id)
+            ->get();
 
         return view('persons.list', compact('peoples'));
     }
-
-
-    public function create() {
-
-        $jobs = Job::pluck('name', 'id');
-        $jobs->prepend('Selecione', 0);
-        $profiles = Profile::pluck('name', 'id');
-        $profiles->prepend('Selecione', 0);
-        return view('persons.create', compact('jobs', 'profiles'));
-    }
-
 
     public function edit($id)
     {
