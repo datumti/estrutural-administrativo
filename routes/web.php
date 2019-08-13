@@ -61,7 +61,6 @@ Route::get('cadastros/pessoas/create', 'RegistrationController@createPerson'); *
 
 Route::post('/construction/{constructionId}', 'ConstructionController@set')->name('gestao-obras.set');
 
-
 Route::get('/processo-seletivo/{processId}/grupos/create', 'ProcessController@create');
 Route::get('/processo-seletivo/{processId}/grupos/{groupId}/edit', 'ProcessController@edit');
 
@@ -69,6 +68,7 @@ Route::get('/processo-seletivo/{processId}/grupos/{groupId}/edit', 'ProcessContr
 Route::post('/pessoas/getbycpf', 'PersonController@getByCpf');
 Route::get('/gerentes/get/{managerId}', 'ManagerController@get');
 
+Route::post('/grupos/insertPerson/{personId}', 'GroupController@insertPerson')->name('grupos.insertPerson');
 
 /* // CONTRACTS
 Route::get('/contracts/construction/{id}', 'ContractConstructionController@showByConstruction');
@@ -80,8 +80,6 @@ Route::get('/statuses/group/all', 'StatusController@group');
 // CONSTRUCTIONS
 Route::get('/constructions/{id}/changestatus', 'ConstructionController@changeStatus');
 Route::get('/construction/{constructionId}/people/cpf/{cpf}/process/{process}', 'PersonController@showByCpf');
-
-
 
 // GROUPS
 Route::get('/groups/construction/{c}/process/{p}', 'GroupController@findByConstruction');

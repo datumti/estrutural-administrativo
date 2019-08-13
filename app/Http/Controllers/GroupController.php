@@ -201,6 +201,20 @@ class GroupController extends Controller
         return redirect('processo-seletivo/'.$request->process_id.'/grupos/'.$group->id.'/edit');
     }
 
+    public function insertPerson($personId) {
+
+        //insere a pessoa no grupo
+        $groupPerson = new GroupPerson();
+        $groupPerson->group_id = request()->get('group_id');
+        $groupPerson->person_id = $personId;
+        $groupPerson->status_id = 5; //em progresso
+        $groupPerson->save();
+
+        $this->addFlash('Grupo atualizado com sucesso!', 'success');
+        return redirect()->back();
+    }
+
+
     /**
      * Remove the specified resource from storage.
      * DELETE: /groups/:id

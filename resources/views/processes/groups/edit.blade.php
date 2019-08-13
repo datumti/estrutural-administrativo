@@ -77,6 +77,7 @@
         </button>
     </div>
 </div>
+
 <div class="box box-info">
     <div class="box-header with-border">
         <h3 class="box-title">Candidatos no Grupo</h3>
@@ -164,6 +165,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="modal fade" id="modal-person-edit-{{$gp->person_id}}" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                         <div class="modal-content">
@@ -231,8 +233,7 @@
     </div>
     <!-- /.box-body -->
 </div>
-        {!! Form::close() !!}
-
+{!! Form::close() !!}
 <div class="box box-info">
         <div class="box-header with-border">
             <h3 class="box-title">Sugestões de candidatos</h3>
@@ -242,7 +243,7 @@
                 <table class="table no-margin">
                     <thead>
                         <tr>
-                            <th></th>
+                            {{-- <th></th> --}}
                             <th>ID</th>
                             <th>Nome</th>
                             <th>CPF</th>
@@ -252,16 +253,45 @@
                     </thead>
                     <tbody>
                         @forelse ($sugestions as $item)
-                        <tr>
-                            <td><input type="checkbox" name="" id=""></td>
-                            <td>{{$item->id}}</td>
-                            <td>{{$item->name}}</td>
-                            <td>{{$item->cpf}}</td>
-                            <td>{{$item->job->name}}</td>
-                            <td></td>
-                        </tr>
-                        @empty
+                            {!! Form::open(['method' => 'post', 'route' => ['grupos.insertPerson', $item->id]]) !!}
+                                {!! Form::hidden('group_id', $group->id) !!}
+                                <tr>
+                                    <td>
+                                        <a href="{{route('gestao-pessoas.edit', $item->id)}}" title="Ficha do Candidato">{{$item->id}}</a>
+                                    </td>
+                                    <td>{{$item->name}}</td>
+                                    <td>{{$item->cpf}}</td>
+                                    <td>{{$item->job_name}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-flat btn-success btn-xs" style="margin:2px 0 2px 5px" title="Adicionar ao grupo" data-toggle="modal" data-target="#modal-person-add">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        <div class="modal fade" id="modal-person-add" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        <h4 class="modal-title" id="exampleModalLongTitle">Adicionar Candidato ao grupo</h4>
+                                                    </div>
+                                                    <div class="modal-body">
 
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                                        <button type="submit" class="btn btn-success">Adicionar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {!! Form::close() !!}
+                        @empty
+                            <tr>
+                                <td> Nenhuma sugestão até o momento... </td>
+                            </tr>
                         @endforelse
 
                     </tbody>
