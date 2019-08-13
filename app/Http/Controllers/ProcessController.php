@@ -70,8 +70,10 @@ class ProcessController extends Controller
         $sugestions = Person::select('people.id', 'people.name', 'people.cpf', 'jobs.name as job_name')
             ->join('vacancies', 'vacancies.job_id', '=', 'people.job_id')
             ->join('jobs', 'jobs.id', '=', 'vacancies.job_id')
+            ->join('group_person', 'group_person.person_id', '=', 'people.id')
             ->where('vacancies.construction_id', Session::get('construction')->id)
             ->whereRaw('people.id not in (SELECT person_id FROM group_person WHERE group_id = '.$idGroup.')')
+            ->whereIn('group_person.status_id', [1,3])
             ->get();
 
         return view('processes.groups.edit', compact('process', 'group', 'status', 'jobs', 'sugestions'));

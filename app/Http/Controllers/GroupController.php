@@ -152,14 +152,15 @@ class GroupController extends Controller
         $data = $request->all();
         $data['creation_date'] = Carbon::createFromFormat('d/m/Y', $data['creation_date'])->format('Y-m-d');
 
-        //cria o grupo
+        //busca o grupo
         $group = Group::find($id);
+
         $group->name = $data['name'];
         $group->creation_date = $data['creation_date'];
         $group->save();
 
         //cria ou atualiza a pessoa
-        if($data['person_id'] != '') {
+        if(request()->get('cpf') != '') {
 
             $person = Person::firstOrNew(['id' => $data['person_id']]);
             $person->name = $data['fullName'];

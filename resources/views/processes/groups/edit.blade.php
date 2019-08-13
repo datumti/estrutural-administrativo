@@ -77,7 +77,6 @@
         </button>
     </div>
 </div>
-
 <div class="box box-info">
     <div class="box-header with-border">
         <h3 class="box-title">Candidatos no Grupo</h3>
@@ -172,6 +171,9 @@
                                             {!! Form::open(['method' => 'put', 'route' => ['grupos.update', $gp->group_id]]) !!}
                                                 <input type="hidden" name="person_id" value="{{$gp->person_id}}">
                                                 <input type="hidden" name="group_person_id" value="{{$gp->id}}">
+                                                <input type="hidden" name="name" value="{{$group->name}}">
+                                                <input type="hidden" name="creation_date" value="{{$group->creation_date}}">
+                                                <input type="hidden" name="process_id" value="{{$process->id}}">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -253,7 +255,7 @@
                     </thead>
                     <tbody>
                         @forelse ($sugestions as $item)
-                            {!! Form::open(['method' => 'post', 'route' => ['grupos.insertPerson', $item->id]]) !!}
+                            {!! Form::open(['method' => 'put', 'route' => ['grupos.insertPerson', $item->id]]) !!}
                                 {!! Form::hidden('group_id', $group->id) !!}
                                 <tr>
                                     <td>
@@ -280,7 +282,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                                        <button type="submit" class="btn btn-success">Adicionar</button>
+                                                        <button type="button" class="btn btn-success">Adicionar</button>
                                                     </div>
                                                 </div>
                                             </div>
