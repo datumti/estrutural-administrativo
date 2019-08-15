@@ -27,6 +27,16 @@ class CreateManagersTable extends Migration
                 $table->foreign('person_id_production')->references('id')->on('people');
                 $table->integer('person_id_discipline')->unsigned()->nullable();
                 $table->foreign('person_id_discipline')->references('id')->on('people');
+
+                $table->integer('manager_id_sms')->unsigned()->nullable();
+                $table->foreign('manager_id_sms')->references('id')->on('people');
+                $table->integer('manager_id_quality')->unsigned()->nullable();
+                $table->foreign('manager_id_quality')->references('id')->on('people');
+                $table->integer('manager_id_production')->unsigned()->nullable();
+                $table->foreign('manager_id_production')->references('id')->on('people');
+                $table->integer('manager_id_discipline')->unsigned()->nullable();
+                $table->foreign('manager_id_discipline')->references('id')->on('people');
+
                 $table->timestamps();
             });
         }
