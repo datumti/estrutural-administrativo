@@ -156,10 +156,14 @@
                 <thead>
                     <tr>
                         <th>Contrato</th>
-                        <th>SMS</th>
-                        <th>Qualidade</th>
-                        <th>Produtividade</th>
-                        <th>Disciplina</th>
+                        <th>Gerente SMS</th>
+                        <th>Responsável SMS</th>
+                        <th>Gerente Qualidade</th>
+                        <th>Responsável Qualidade</th>
+                        <th>Gerente Produtividade</th>
+                        <th>Responsável Produtividade</th>
+                        <th>Gerente Disciplina</th>
+                        <th>Responsável Disciplina</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -170,13 +174,25 @@
                                 {{$manager->contract_id}}
                             </td>
                             <td>
+                                {{$manager->managerSms->name}}
+                            </td>
+                            <td>
                                 {{$manager->personSms->name}}
+                            </td>
+                            <td>
+                                {{$manager->managerQuality->name}}
                             </td>
                             <td>
                                 {{$manager->personQuality->name}}
                             </td>
                             <td>
+                                {{$manager->managerProduction->name}}
+                            </td>
+                            <td>
                                 {{$manager->personProduction->name}}
+                            </td>
+                            <td>
+                                {{$manager->managerDiscipline->name}}
                             </td>
                             <td>
                                 {{$manager->personDiscipline->name}}
@@ -308,20 +324,36 @@
                             {!! Form::select('contract_id', $contracts, null, ['id' => 'contract-selected', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
+                            <label for="people_sms">Gerente SMS</label>
+                            {!! Form::select('manager_sms', $peoples, null, ['id' => 'manager_sms_new', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                        </div>
+                        <div class="form-group">
                             <label for="people_sms">Responsável SMS</label>
-                            {!! Form::select('people_sms', $peoples, null, ['id' => 'people_sms', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                            {!! Form::select('people_sms', $peoples, null, ['id' => 'people_sms_new', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                        </div>
+                        <div class="form-group">
+                            <label for="manager_quality">Gerente Qualidade</label>
+                            {!! Form::select('manager_quality', $peoples, null, ['id' => 'manager_quality_new', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
                             <label for="people_quality">Responsável Qualidade</label>
-                            {!! Form::select('people_quality', $peoples, null, ['id' => 'people_quality', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                            {!! Form::select('people_quality', $peoples, null, ['id' => 'people_quality_new', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                        </div>
+                        <div class="form-group">
+                            <label for="manager_production">Gerente Produtividade</label>
+                            {!! Form::select('manager_production', $peoples, null, ['id' => 'manager_production_new', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
                             <label for="people_production">Responsável Produtividade</label>
-                            {!! Form::select('people_production', $peoples, null, ['id' => 'people_production', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                            {!! Form::select('people_production', $peoples, null, ['id' => 'people_production_new', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                        </div>
+                        <div class="form-group">
+                            <label for="manager_discipline">Gerente Disciplina</label>
+                            {!! Form::select('manager_discipline', $peoples, null, ['id' => 'manager_discipline_new', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
                             <label for="people_discipline">Responsável Disciplina</label>
-                            {!! Form::select('people_discipline', $peoples, null, ['id' => 'people_discipline', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                            {!! Form::select('people_discipline', $peoples, null, ['id' => 'people_discipline_new', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -349,16 +381,32 @@
                             {!! Form::select('contract_id', $contracts, null, ['id' => 'contract-selected', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
+                            <label for="people_sms">Gerente SMS</label>
+                            {!! Form::select('manager_sms', $peoples, null, ['id' => 'manager_sms', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                        </div>
+                        <div class="form-group">
                             <label for="people_sms">Responsável SMS</label>
                             {!! Form::select('people_sms', $peoples, null, ['id' => 'people_sms', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                        </div>
+                        <div class="form-group">
+                            <label for="manager_quality">Gerente Qualidade</label>
+                            {!! Form::select('manager_quality', $peoples, null, ['id' => 'manager_quality', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
                             <label for="people_quality">Responsável Qualidade</label>
                             {!! Form::select('people_quality', $peoples, null, ['id' => 'people_quality', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
+                            <label for="manager_production">Gerente Produtividade</label>
+                            {!! Form::select('manager_production', $peoples, null, ['id' => 'manager_production', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                        </div>
+                        <div class="form-group">
                             <label for="people_production">Responsável Produtividade</label>
                             {!! Form::select('people_production', $peoples, null, ['id' => 'people_production', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
+                        </div>
+                        <div class="form-group">
+                            <label for="manager_discipline">Gerente Disciplina</label>
+                            {!! Form::select('manager_discipline', $peoples, null, ['id' => 'manager_discipline', 'class' => 'form-control', 'style' => 'width: 100%']) !!}
                         </div>
                         <div class="form-group">
                             <label for="people_discipline">Responsável Disciplina</label>
@@ -443,10 +491,25 @@
                     },
                     success: function(response, status) {
                         $('select[name="contract_id"]').val(response.contract_id)
-                        $('select[name="people_sms"]').val(response.person_id_sms)
-                        $('select[name="people_quality"]').val(response.person_id_quality)
-                        $('select[name="people_production"]').val(response.person_id_production)
-                        $('select[name="people_discipline"]').val(response.person_id_discipline)
+                        $('#people_sms').val(response.person_id_sms)
+                        $('#people_quality').val(response.person_id_quality)
+                        $('#people_production').val(response.person_id_production)
+                        $('#people_discipline').val(response.person_id_discipline)
+                        $('#manager_sms').val(response.manager_id_sms)
+                        $('#manager_quality').val(response.manager_id_quality)
+                        $('#manager_production').val(response.manager_id_production)
+                        $('#manager_discipline').val(response.manager_id_discipline)
+
+                        $('#people_sms').select2();
+            $('#people_quality').select2();
+            $('#people_production').select2();
+            $('#people_discipline').select2();
+
+
+            $('#manager_quality').select2();
+            $('#manager_production').select2();
+            $('#manager_discipline').select2();
+
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(thrownError)
@@ -495,10 +558,17 @@
             $('#trainings').select2();
             $('#jobs').select2();
 
-            $('#people_sms').select2();
-            $('#people_quality').select2();
-            $('#people_production').select2();
-            $('#people_discipline').select2();
+            $('#people_sms_new').select2();
+            $('#people_quality_new').select2();
+            $('#people_production_new').select2();
+            $('#people_discipline_new').select2();
+
+            $('#manager_sms_new').select2();
+            $('#manager_quality_new').select2();
+            $('#manager_production_new').select2();
+            $('#manager_discipline_new').select2();
+
+
         });
     </script>
 @stop

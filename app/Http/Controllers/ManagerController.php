@@ -55,7 +55,7 @@ class ManagerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
 
         $manager = new Manager();
         $manager->construction_id = $request->construction_id;
@@ -64,11 +64,15 @@ class ManagerController extends Controller
         $manager->person_id_quality = $request->people_quality;
         $manager->person_id_production = $request->people_production;
         $manager->person_id_discipline = $request->people_discipline;
+        $manager->manager_id_sms = $request->people_sms;
+        $manager->manager_id_quality = $request->manager_quality;
+        $manager->manager_id_production = $request->manager_production;
+        $manager->manager_id_discipline = $request->manager_discipline;
 
         if($manager->save()) {
-            $this->addFlash('Gerentes inseridos com sucesso!', 'success');
+            $this->addFlash('Responsáveis inseridos com sucesso!', 'success');
         } else {
-            $this->addFlash('Erro ao inserir gerentes da obra!', 'danger');
+            $this->addFlash('Erro ao inserir responsáveis da obra!', 'danger');
         }
 
         return redirect()->back();
@@ -108,6 +112,10 @@ class ManagerController extends Controller
         $manager->person_id_quality = $request->people_quality;
         $manager->person_id_production = $request->people_production;
         $manager->person_id_discipline = $request->people_discipline;
+        $manager->manager_id_sms = $request->people_sms;
+        $manager->manager_id_quality = $request->manager_quality;
+        $manager->manager_id_production = $request->manager_production;
+        $manager->manager_id_discipline = $request->manager_discipline;
 
         if($manager->save()) {
             $this->addFlash('Responsáveis atualizados com sucesso!', 'success');
