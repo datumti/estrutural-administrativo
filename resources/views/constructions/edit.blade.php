@@ -88,7 +88,7 @@
                         <tr>
                         <th>Contrato</th>
                         <th>Quantidade</th>
-                        <th>Tipo</th>
+                        <th>Cargo</th>
                         <th>Exame(s)</th>
                         <th>Treinamento(s)</th>
                         <th>Ações</th>
